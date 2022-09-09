@@ -6,7 +6,7 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
-<body id="pageIndex">
+<body onload="subscribeUpdateBoardSize()">
 <?php require_once('../templates/header.php'); ?>
 
 <div>
@@ -25,7 +25,8 @@
         </h1>
         <form action="memory.php" method="post">
             <div class="form-group mb-3">
-                <label for="sizeBoard" class="form-label">Mida del taulell: <span id="sizeBoardLabel">? x ?</span></label>
+                <label for="sizeBoard" class="form-label">Mida del taulell: <span
+                            id="sizeBoardLabel">? x ?</span></label>
                 <input type="range" class="form-range" min="2" max="20" step="2" id="sizeBoard" name="size" value=6>
             </div>
 

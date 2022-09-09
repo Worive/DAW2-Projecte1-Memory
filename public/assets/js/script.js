@@ -1,7 +1,7 @@
 // -------------------------------------------
 // UPDATE BOARD SIZE
 // -------------------------------------------
-if (document.getElementById('pageIndex') != null) {
+function subscribeUpdateBoardSize() {
     const sizeBoard = document.getElementById('sizeBoard');
 
     sizeBoard.addEventListener('input', (event) => {
