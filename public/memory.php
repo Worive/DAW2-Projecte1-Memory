@@ -17,14 +17,20 @@ function checkPlayer($value): bool
     return false;
 }
 
-$size = -1;
+$sizeWidth = -1;
+$sizeHeight = -1;
 $players = -1;
-if (isset($_POST['size']) && isset($_POST['players'])) {
-    $size = htmlspecialchars($_POST["size"]);
+if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players'])) {
+    $sizeWidth = htmlspecialchars($_POST["size-width"]);
+    $sizeHeight = htmlspecialchars($_POST["size-height"]);
     $players = htmlspecialchars($_POST["players"]);
 
-    if (!checkSize($size)) {
-        printf('INVALID SIZE VALUE');
+    if (!checkSize($sizeWidth)) {
+        printf('INVALID SIZE WIDTH VALUE');
+    }
+
+    if (!checkSize($sizeHeight)) {
+        printf('INVALID SIZE HEIGHT VALUE');
     }
 
     if (!checkPlayer($players)) {
@@ -47,8 +53,8 @@ if (isset($_POST['size']) && isset($_POST['players'])) {
     <link href="assets/css/style.css" rel="stylesheet">
 
     <script>
-        const BOARD_SIZE_WIDTH = <?php echo $size?>;
-        const BOARD_SIZE_HEIGHT = <?php echo $size?>;
+        const BOARD_SIZE_WIDTH = <?php echo $sizeWidth?>;
+        const BOARD_SIZE_HEIGHT = <?php echo $sizeHeight?>;
         const PLAYER_AMOUNT = <?php echo $players?>;
     </script>
 </head>

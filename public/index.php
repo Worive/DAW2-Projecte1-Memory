@@ -25,9 +25,18 @@
         </h1>
         <form action="memory.php" method="post">
             <div class="form-group mb-3">
-                <label for="sizeBoard" class="form-label">Mida del taulell: <span
+                <label class="form-label">Mida del taulell: <span
                             id="sizeBoardLabel">? x ?</span></label>
-                <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoard" name="size" value=6>
+                <br>
+                <label class="form-label" for="sizeBoardWidth">
+                    Width
+                </label>
+                <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardWidth" name="size-width" value=4>
+                sizeBoardWidth
+                <label class="form-label" for="sizeBoardHeight">
+                    Height
+                </label>
+                <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardHeight" name="size-height" value=4>
             </div>
 
             <div>

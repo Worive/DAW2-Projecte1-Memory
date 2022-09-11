@@ -3,9 +3,14 @@
 // -------------------------------------------
 
 function subscribeUpdateBoardSize() {
-    const sizeBoard = document.getElementById('sizeBoard');
+    const sizeBoardWidth = document.getElementById('sizeBoardWidth');
+    const sizeBoardHeight = document.getElementById('sizeBoardHeight');
 
-    sizeBoard.addEventListener('input', (event) => {
+    sizeBoardWidth.addEventListener('input', (event) => {
+        updateBoardSize();
+    })
+
+    sizeBoardHeight.addEventListener('input', (event) => {
         updateBoardSize();
     })
 
@@ -14,9 +19,10 @@ function subscribeUpdateBoardSize() {
 
 function updateBoardSize() {
     let sizeBoardLabel = document.getElementById('sizeBoardLabel');
-    let sizeBoardValue = document.getElementById('sizeBoard').value;
+    let sizeBoardWidth = document.getElementById('sizeBoardWidth').value;
+    let sizeBoardHeight = document.getElementById('sizeBoardHeight').value;
 
-    sizeBoardLabel.innerText = sizeBoardValue + ' x ' + sizeBoardValue;
+    sizeBoardLabel.innerText = sizeBoardWidth + ' x ' + sizeBoardHeight;
 }
 
 
