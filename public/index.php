@@ -32,7 +32,7 @@
                     Width
                 </label>
                 <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardWidth" name="size-width" value=4>
-                sizeBoardWidth
+
                 <label class="form-label" for="sizeBoardHeight">
                     Height
                 </label>
