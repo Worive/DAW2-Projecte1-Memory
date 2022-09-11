@@ -71,6 +71,8 @@ function initGame() {
         console.error("[MEMORY] Invalid data provided. Game cannot start!");
         return;
     }
+
+    setBoardSize();
 }
 
 /*
@@ -96,4 +98,15 @@ function validateData() {
     isValid = isValid && verifyNumberAndRange(PLAYER_AMOUNT, "PLAYER_AMOUNT", 1, 2);
 
     return isValid;
+}
+
+/*
+Apply the correct size to the board
+ */
+function setBoardSize() {
+    console.log(`[MEMORY] Setting Board's Size: ${BOARD_SIZE_WIDTH}x${BOARD_SIZE_HEIGHT}`)
+    const board = document.getElementById('board');
+
+    board.classList.add('board-width-' + BOARD_SIZE_WIDTH)
+    board.classList.add('board-height-' + BOARD_SIZE_HEIGHT)
 }
