@@ -1,6 +1,7 @@
 // -------------------------------------------
-// UPDATE BOARD SIZE
+//             UPDATE BOARD SIZE
 // -------------------------------------------
+
 function subscribeUpdateBoardSize() {
     const sizeBoard = document.getElementById('sizeBoard');
 
@@ -18,63 +19,84 @@ function updateBoardSize() {
     sizeBoardLabel.innerText = sizeBoardValue + ' x ' + sizeBoardValue;
 }
 
+
 // -------------------------------------------
-// MEMORY GAME
+//                MEMORY GAME
 // -------------------------------------------
 
+/*
+ Emojis for the game
+ */
+const emojis = {
+    animals: [
+        '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🦮', '🐩', '🐺', '🦊', '🦝', '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴',
+        '🐎', '🦄', '🦓', '🦌', '🦬', '🐮', '🐂', '🐃', '🐄', '🐷', '🐖', '🐗', '🐽', '🐏', '🐑', '🐐', '🐪', '🐫',
+        '🦙', '🦒', '🦒', '🐘', '🦣', '🦏', '🦛', '🐭', '🐁', '🐀', '🐹', '🐰', '🐇', '🐿', '🦫', '🦔', '🦇', '🐻',
+        '🐨', '🐼', '🦥', '🦦', '🦨', '🦘', '🦡',
+
+        '🦃', '🐔', '🐓', '🐣', '🐤', '🐥', '🐦', '🐧', '🕊', '🦅', '🦆', '🦢', '🦉', '🦤', '🦩', '🦚', '🦜',
+        '🐸',
+        '🐊', '🐢', '🦎', '🐍', '🐲', '🐉', '🦖', '🦕',
+        '🐳', '🐋', '🐬', '🦭', '🐟', '🐠', '🐡', '🦈', '🐙', '🐚',
+        '🐌', '🦋', '🐛', '🐜', '🐝', '🪲', '🐞', '🦗', '🪳', '🕷', '🕸', '🦂', '🦟', '🪰', '🪱', '🦠'
+    ]
+}
+
+/*
+ Different game status
+ */
+const Status = {
+    idle: 0,
+    selected: 1,
+    compare: 2
+}
+
+/*
+ Game Data
+ */
+const data = {
+    status: Status.idle,
+    selectedA: null,
+    selectedB: null,
+    moves: 0,
+    total: 0,
+    time: 0,
+}
+
+const BOARD_SIZE = 8;
+const PLAYER_AMOUNT = 1;
+
+/*
+ Starts the game
+ */
 function initGame() {
-    if (typeof BOARD_SIZE != "number" || typeof PLAYER_AMOUNT != "number") {
-        console.error("couldn't start the game!");
-        console.log(typeof BOARD_SIZE)
-        console.log(typeof PLAYER_AMOUNT)
+    if (!validateData()) {
+        console.error("[MEMORY] Invalid data provided. Game cannot start!")
         return;
     }
-
-    console.log("STARTING GAME")
-
-    const boardElement = document.getElementById('board');
-
-    const images = getImageList(BOARD_SIZE * BOARD_SIZE / 2)
-
-    for (let i = 0; i < BOARD_SIZE; i++) {
-        boardElement.innerHTML += getRow(images)
-    }
 }
 
-function getRow(images) {
-    let output = '<div class="row">';
+/*
+ Validate game setup data.
+ */
+function validateData() {
+    let isValid = true;
 
-    for (let i = 0; i < BOARD_SIZE; i++) {
-        output += getImage(images);
+    if (typeof BOARD_SIZE != "number") {
+        console.warn("[DATA VALIDATION] BOARD_SIZE is not a number: " + typeof BOARD_SIZE);
+        isValid = false;
+    } else if (BOARD_SIZE < 2 || BOARD_SIZE > 8) {
+        console.warn("[DATA VALIDATION] BOARD_SIZE is out of allowed range (2-8): " + BOARD_SIZE);
+        isValid = false;
     }
 
-    output += '</div>'
-
-    return output;
-
-}
-
-function getImage(images) {
-    let pos = Math.random() * images.size;
-
-    console.log(images)
-
-    let content = images[pos];
-    images.splice(pos, 1);
-
-    return content;
-}
-
-function getImageList(amountImages) {
-    let arr = [];
-
-    for (let i = 0; i < amountImages; i++) {
-        arr.push('<div>' +
-            '<img src="https://via.placeholder.com/100" alt="100x100" id="image' + i + '"/>' +
-            '</div>')
+    if (typeof PLAYER_AMOUNT != "number") {
+        console.warn("[DATA VALIDATION] PLAYER_AMOUNT is not a number: " + typeof PLAYER_AMOUNT);
+        isValid = false;
+    } else if (PLAYER_AMOUNT < 1 || PLAYER_AMOUNT > 2) {
+        console.warn("[DATA VALIDATION] PLAYER AMOUNT is out of allowed range (1-2): " + PLAYER_AMOUNT);
+        isValid = false;
     }
 
-    return arr;
-
+    return isValid;
 }
-
