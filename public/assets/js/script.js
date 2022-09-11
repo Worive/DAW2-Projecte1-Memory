@@ -68,7 +68,7 @@ const data = {
  */
 function initGame() {
     if (!validateData()) {
-        console.error("[MEMORY] Invalid data provided. Game cannot start!")
+        console.error("[MEMORY] Invalid data provided. Game cannot start!");
         return;
     }
 }
@@ -79,10 +79,10 @@ function initGame() {
 function validateData() {
     function verifyNumberAndRange(size, name, minRange, maxRange) {
         if (typeof size != "number") {
-            console.warn("[DATA VALIDATION] " + name + " is not a number: " + typeof size);
+            console.warn(`[DATA VALIDATION] ${name} is not a number: ${typeof size}`);
             return false;
         } else if (size < minRange || size > maxRange) {
-            console.warn("[DATA VALIDATION] {} is out of allowed range ({}-{}): ".format(name, minRange, maxRange) + size);
+            console.warn(`[DATA VALIDATION] ${name} is out of allowed range (${minRange}-${maxRange}): ${size}`);
             return false;
         }
 
