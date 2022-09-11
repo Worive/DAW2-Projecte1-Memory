@@ -27,7 +27,7 @@
             <div class="form-group mb-3">
                 <label for="sizeBoard" class="form-label">Mida del taulell: <span
                             id="sizeBoardLabel">? x ?</span></label>
-                <input type="range" class="form-range" min="2" max="20" step="2" id="sizeBoard" name="size" value=6>
+                <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoard" name="size" value=6>
             </div>
 
             <div>
