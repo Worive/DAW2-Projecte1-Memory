@@ -40,3 +40,27 @@ foreach ($_POST as $key => $value) {
     echo "<br>";
     echo $key . ' -> ' . $value;
 }
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projecte 1</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+<?php require_once('../templates/header.php'); ?>
+
+<div class="d-flex justify-content-center my-3">
+    <div class="board"></div>
+</div>
+
+<?php require_once('../templates/footer.php'); ?>
+
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/script.js"></script>
+</body>
+</html>
