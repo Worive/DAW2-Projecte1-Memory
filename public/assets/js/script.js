@@ -63,9 +63,6 @@ const data = {
     time: 0,
 }
 
-const BOARD_SIZE = 8;
-const PLAYER_AMOUNT = 1;
-
 /*
  Starts the game
  */

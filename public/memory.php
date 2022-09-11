@@ -17,7 +17,8 @@ function checkPlayer($value): bool
     return false;
 }
 
-
+$size = -1;
+$players = -1;
 if (isset($_POST['size']) && isset($_POST['players'])) {
     $size = htmlspecialchars($_POST["size"]);
     $players = htmlspecialchars($_POST["players"]);
@@ -31,11 +32,12 @@ if (isset($_POST['size']) && isset($_POST['players'])) {
         return;
     }
 
-
 } else {
     printf('MISSING POST VALUES!');
 }
 
+
+// DEBUG
 foreach ($_POST as $key => $value) {
     echo "<br>";
     echo $key . ' -> ' . $value;
@@ -50,6 +52,12 @@ foreach ($_POST as $key => $value) {
     <title>Projecte 1</title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+
+    <script>
+        const BOARD_SIZE_WIDTH = <?php echo $size?>
+        const BOARD_SIZE_HEIGHT = <?php echo $size?>
+        const PLAYER_AMOUNT = <?php echo $players?>
+    </script>
 </head>
 <body>
 <?php require_once('../templates/header.php'); ?>
