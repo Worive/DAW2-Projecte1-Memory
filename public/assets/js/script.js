@@ -77,23 +77,23 @@ function initGame() {
  Validate game setup data.
  */
 function validateData() {
+    function verifyNumberAndRange(size, name, minRange, maxRange) {
+        if (typeof size != "number") {
+            console.warn("[DATA VALIDATION] " + name + " is not a number: " + typeof size);
+            return false;
+        } else if (size < minRange || size > maxRange) {
+            console.warn("[DATA VALIDATION] {} is out of allowed range ({}-{}): ".format(name, minRange, maxRange) + size);
+            return false;
+        }
+
+        return true;
+    }
+
     let isValid = true;
 
-    if (typeof BOARD_SIZE != "number") {
-        console.warn("[DATA VALIDATION] BOARD_SIZE is not a number: " + typeof BOARD_SIZE);
-        isValid = false;
-    } else if (BOARD_SIZE < 2 || BOARD_SIZE > 8) {
-        console.warn("[DATA VALIDATION] BOARD_SIZE is out of allowed range (2-8): " + BOARD_SIZE);
-        isValid = false;
-    }
-
-    if (typeof PLAYER_AMOUNT != "number") {
-        console.warn("[DATA VALIDATION] PLAYER_AMOUNT is not a number: " + typeof PLAYER_AMOUNT);
-        isValid = false;
-    } else if (PLAYER_AMOUNT < 1 || PLAYER_AMOUNT > 2) {
-        console.warn("[DATA VALIDATION] PLAYER AMOUNT is out of allowed range (1-2): " + PLAYER_AMOUNT);
-        isValid = false;
-    }
+    isValid = isValid && verifyNumberAndRange(BOARD_SIZE_HEIGHT, "BOARD_SIZE_HEIGHT", 2, 8);
+    isValid = isValid && verifyNumberAndRange(BOARD_SIZE_WIDTH, "BOARD_SIZE_WIDTH", 2, 8);
+    isValid = isValid && verifyNumberAndRange(PLAYER_AMOUNT, "PLAYER_AMOUNT", 1, 2);
 
     return isValid;
 }
