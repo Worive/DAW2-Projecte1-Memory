@@ -51,7 +51,7 @@ footer {
 
 /* ===========[ Board ]=========== */
 
-.board {
+#board {
     display: flex;
     flex-wrap: wrap;
     background-color: rgb(172, 170, 170);

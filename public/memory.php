@@ -36,13 +36,6 @@ if (isset($_POST['size']) && isset($_POST['players'])) {
     printf('MISSING POST VALUES!');
 }
 
-
-// DEBUG
-foreach ($_POST as $key => $value) {
-    echo "<br>";
-    echo $key . ' -> ' . $value;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +56,7 @@ foreach ($_POST as $key => $value) {
 <?php require_once('../templates/header.php'); ?>
 
 <div class="d-flex justify-content-center my-3">
-    <div class="board"></div>
+    <div id="board"></div>
 </div>
 
 <?php require_once('../templates/footer.php'); ?>
