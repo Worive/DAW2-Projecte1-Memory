@@ -76,6 +76,15 @@ footer {
 
 .card > div {
     display: none;
+
+    /* Disable selection */
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
 }
 
 .card.visible > div {
