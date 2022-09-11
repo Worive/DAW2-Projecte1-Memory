@@ -14,18 +14,18 @@ footer {
 /* ===========[ Board Sizes ]=========== */
 
 .board-width-2 {
-    min-width: 800px;
-    width: 800px;
+    min-width: 200px;
+    width: 200px;
 }
 
 .board-width-4 {
-    min-width: 800px;
-    width: 800px;
+    min-width: 400px;
+    width: 400px;
 }
 
 .board-width-6 {
-    min-width: 800px;
-    width: 800px;
+    min-width: 600px;
+    width: 600px;
 }
 
 .board-width-8 {
@@ -34,15 +34,15 @@ footer {
 }
 
 .board-height-2 {
-    height: 800px;
+    height: 200px;
 }
 
 .board-height-4 {
-    height: 800px;
+    height: 400px;
 }
 
 .board-height-6 {
-    height: 800px;
+    height: 600px;
 }
 
 .board-height-8 {
@@ -52,9 +52,6 @@ footer {
 /* ===========[ Board ]=========== */
 
 .board {
-    height: 800px;
-    min-width: 800px;
-    width: 800px;
     display: flex;
     flex-wrap: wrap;
     background-color: rgb(172, 170, 170);
