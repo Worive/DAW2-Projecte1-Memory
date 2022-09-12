@@ -115,6 +115,7 @@ function initGame() {
     }
 
     setBoardSize();
+    addCards();
 }
 
 /*
@@ -151,4 +152,99 @@ function setBoardSize() {
 
     board.classList.add('board-width-' + BOARD_SIZE_WIDTH)
     board.classList.add('board-height-' + BOARD_SIZE_HEIGHT)
+}
+
+/*
+ Add cards to the board.
+ */
+function addCards() {
+    
+    // Fisher-Yates Shuffle
+    function shuffle(array) {
+        let currentIndex = array.length,  randomIndex;
+        
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+    
+    
+    const cardAmount = BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH;
+
+    let emojiList = getRandomList(cardAmount);
+    shuffle(emojiList);
+
+    emojiList = emojiList.sort(() => Math.random() - 0.5);
+
+
+    const board = document.getElementById('board');
+    for (let i = 0; i < cardAmount; i++) {
+        const square = document.createElement('div');
+        square.setAttribute('class', 'memory-card');
+        square.setAttribute('id', ('card-' + i));
+        square.setAttribute('card', emojiList[i].key);
+
+        const inner = document.createElement('div');
+        inner.setAttribute('class', 'card-inner')
+        square.appendChild(inner)
+
+        const value = document.createElement('div');
+        value.setAttribute('class', 'card-front');
+        value.innerText = emojiList[i].value;
+        inner.appendChild(value);
+
+        const back = document.createElement('div');
+        back.setAttribute('class', 'card-back');
+        inner.appendChild(back);
+
+        square.addEventListener('click', (event) => {
+            // TODO
+        })
+
+
+
+        board.appendChild(square);
+    }
+}
+
+/*
+Generates a list of emojis
+ */
+function getRandomList(size) {
+    const arr = []
+
+    for (let i = 0; i < size / 2; i++) {
+        let emoji = getRandomEmoji();
+
+        while (arr.filter(e => e.key === emoji.key).length > 0) {
+            emoji = getRandomEmoji();
+        }
+
+        arr.push(...[emoji, emoji]);
+        
+    }
+
+    return arr;
+}
+
+/*
+Return a random emoji
+ */
+function getRandomEmoji() {
+    const pos = Math.floor(Math.random() * emojis.animals.length);
+
+    let emoji = emojis.animals[pos];
+
+    if (emoji === undefined) {
+        console.log(pos);
+        console.log(emoji);
+    }
+
+    return {key: pos, value: emoji}
 }

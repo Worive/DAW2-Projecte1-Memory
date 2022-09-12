@@ -62,20 +62,54 @@ footer {
 
 /* ===========[ Card ]=========== */
 
-.card {
+.memory-card {
     width: 90px;
     height: 90px;
     text-align: center;
     line-height: 90px;
-    background-color: rgb(121, 120, 117);
+    background-color: rgb(172, 170, 170);
+    border: 0;
     justify-content: center;
     align-items: center;
     font-size: 60px;
     color: white;
 }
 
-.card > div {
-    display: none;
+.memory-card.selected .card-inner {
+    transform: rotateY(180deg);
+}
+
+.memory-card.wrong .card-inner .card-front{
+    background-color: #e15656;
+}
+
+.memory-card.found .card-inner .card-front{
+    background-color: #56e172;
+}
+
+.card-front,.card-back {
+    border-radius: 6px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card-front {
+    transition: background-color 0.3s;
+    background-color: rgb(134, 132, 132);
+    color: white;
+    transform: rotateY(180deg);
 
     /* Disable selection */
     -moz-user-select: -moz-none;
@@ -87,6 +121,10 @@ footer {
     -webkit-user-drag: none;
 }
 
-.card.visible > div {
+.card-back {
+    background-color: rgb(71, 68, 68);
+}
+
+.memory-card.visible > .card-front {
     display: block;
 }
