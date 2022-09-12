@@ -53,9 +53,9 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     <link href="assets/css/style.css" rel="stylesheet">
 
     <script>
-        const BOARD_SIZE_WIDTH = <?php echo $sizeWidth?>;
-        const BOARD_SIZE_HEIGHT = <?php echo $sizeHeight?>;
-        const PLAYER_AMOUNT = <?php echo $players?>;
+        const BOARD_SIZE_WIDTH = <?= $sizeWidth?>;
+        const BOARD_SIZE_HEIGHT = <?= $sizeHeight?>;
+        const PLAYER_AMOUNT = <?= $players?>;
     </script>
 </head>
 <body onload="initGame()">
