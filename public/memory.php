@@ -62,6 +62,13 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 <?php require_once('../templates/header.php'); ?>
 
 <div class="d-flex justify-content-center my-3">
+    <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Moves: <span id="moves-counter">0</span></li>
+            <li class="list-group-item">Cards Found: <span id="total-counter">0</span></li>
+            <li class="list-group-item">Time: <span id="time-counter">00:00</span></li>
+        </ul>
+    </div>
     <div id="board"></div>
 </div>
 
