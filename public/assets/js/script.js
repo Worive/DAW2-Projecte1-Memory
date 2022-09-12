@@ -340,5 +340,35 @@ const timer = document.getElementById('time-counter');
 function win() {
     data.time.stop();
 
-    // TODO: Implement
+    switch (PLAYER_AMOUNT) {
+        case 1:
+            addScore('guest', data.moves, data.time.formattedTime)
+            break;
+    }
+}
+// -------------------------------------------
+//                LEADER SCORE
+// -------------------------------------------
+
+const SCOREBOARD = loadScores();
+
+function loadScores() {
+    let scoreboard = window.localStorage.getItem('scoreboard');
+
+    if (scoreboard) {
+        return scoreboard;
+    } else {
+        return {
+            scores: []
+        }
+    }
+}
+
+function addScore(username, moves, time) {
+    SCOREBOARD.scores.push({
+        username: username,
+        moves: moves,
+        time: time,
+        date: Date.now(),
+    })
 }
