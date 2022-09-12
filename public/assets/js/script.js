@@ -45,10 +45,10 @@ function Timer(interval) {
         clearTimeout(timeout);
     }
 
-    this.formattedTime = formattedTime();
+    this.formattedTime = formattedTime(seconds);
 
-    function formattedTime() {
-        var sec_num = seconds;
+    function formattedTime(secs) {
+        var sec_num = secs;
         var minutes = Math.floor(sec_num / 60);
         var seconds = sec_num - (minutes * 60);
 
@@ -60,7 +60,7 @@ function Timer(interval) {
     function step() {
         seconds += 1;
         const drift = Date.now() - expected;
-        timer.innerText = formattedTime();
+        timer.innerText = formattedTime(seconds);
         expected += that.interval;
         timeout = setTimeout(step, Math.max(0, that.interval-drift));
     }
