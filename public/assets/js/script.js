@@ -350,13 +350,13 @@ function win() {
 //                LEADER SCORE
 // -------------------------------------------
 
-const SCOREBOARD = loadScores();
+const LEADER_BOARD = loadLeaderBoard();
 
-function loadScores() {
-    let scoreboard = window.localStorage.getItem('scoreboard');
+function loadLeaderBoard() {
+    let leaderBoard = window.localStorage.getItem('leaderBoard');
 
-    if (scoreboard) {
-        return scoreboard;
+    if (leaderBoard) {
+        return leaderBoard;
     } else {
         return {
             scores: []
@@ -365,7 +365,7 @@ function loadScores() {
 }
 
 function addScore(username, moves, time) {
-    SCOREBOARD.scores.push({
+    LEADER_BOARD.scores.push({
         username: username,
         moves: moves,
         time: time,
