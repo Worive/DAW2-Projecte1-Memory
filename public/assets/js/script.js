@@ -30,6 +30,42 @@ function updateBoardSize() {
 //                MEMORY GAME
 // -------------------------------------------
 
+function Timer(interval) {
+    let that = this;
+    let expected, timeout;
+    this.interval = interval;
+    let seconds = 0;
+
+    this.start = function() {
+        expected = Date.now() + this.interval;
+        timeout = setTimeout(step, this.interval);
+    }
+
+    this.stop = function() {
+        clearTimeout(timeout);
+    }
+
+    this.formattedTime = formattedTime();
+
+    function formattedTime() {
+        var sec_num = seconds;
+        var minutes = Math.floor(sec_num / 60);
+        var seconds = sec_num - (minutes * 60);
+
+        if (minutes < 10) {minutes = "0"+minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        return minutes+':'+seconds;
+    }
+
+    function step() {
+        seconds += 1;
+        const drift = Date.now() - expected;
+        timer.innerText = formattedTime();
+        expected += that.interval;
+        timeout = setTimeout(step, Math.max(0, that.interval-drift));
+    }
+}
+
 /*
  Emojis for the game
  */
@@ -66,7 +102,7 @@ const data = {
     selectedB: null,
     moves: 0,
     total: 0,
-    time: 0,
+    time: new Timer(1000)
 }
 
 /*
