@@ -356,7 +356,7 @@ function loadLeaderBoard() {
     let leaderBoard = window.localStorage.getItem('leaderBoard');
 
     if (leaderBoard) {
-        return leaderBoard;
+        return JSON.parse(leaderBoard);
     } else {
         return {
             scores: []
@@ -371,4 +371,6 @@ function addScore(username, moves, time) {
         time: time,
         date: Date.now(),
     })
+
+    window.localStorage.setItem('leaderBoard', JSON.stringify(LEADER_BOARD));
 }
