@@ -204,7 +204,7 @@ function addCards() {
         inner.appendChild(back);
 
         square.addEventListener('click', (event) => {
-            // TODO
+            onClickCard(event.target);
         })
 
 
@@ -247,4 +247,98 @@ function getRandomEmoji() {
     }
 
     return {key: pos, value: emoji}
+}
+
+
+/*
+Handle card click
+ */
+function onClickCard(target) {
+    //Ignore already selected cards
+    if (target.classList.contains('selected')) {
+        return;
+    }
+
+    //In case you click on child retrieve the parent.
+    if (target.classList.contains('memory-card')) {
+        flipCard(target);
+    } else {
+        onClickCard(target.parentElement)
+    }
+}
+
+/*
+Flips card
+ */
+function flipCard(element) {
+    function addClassToSelectedCards(className) {
+        document.getElementById(data.selectedA).classList.add(className);
+        document.getElementById(data.selectedB).classList.add(className);
+    }
+
+    const isSelected = element.classList.contains('selected');
+
+    if (isSelected) {
+        return;
+    }
+
+    switch (data.status) {
+        case Status.idle:
+            element.classList.add('selected');
+            data.selectedA = element.getAttribute('id')
+            data.status = Status.selected;
+            break;
+        case Status.selected:
+
+            if (data.moves === 0) {
+                data.time.start();
+            }
+
+            addMove()
+
+            element.classList.add('selected');
+            data.selectedB = element.getAttribute('id');
+
+            if (document.getElementById(data.selectedA).getAttribute('card') === document.getElementById(data.selectedB).getAttribute('card')) {
+                addClassToSelectedCards('found');
+                addTotalPoint()
+            } else {
+                addClassToSelectedCards('wrong');
+
+                const a = data.selectedA;
+                const b = data.selectedB;
+
+                setTimeout(() => resetSelectedCards(a, b), 800);
+            }
+            data.status = Status.idle;
+            break;
+    }
+}
+
+async function resetSelectedCards(selectedCardA, selectedCardB) {
+    document.getElementById(selectedCardA).setAttribute('class', 'memory-card')
+    document.getElementById(selectedCardB).setAttribute('class', 'memory-card')
+}
+
+function addTotalPoint() {
+    data.total += 1;
+    document.getElementById('total-counter').innerText = data.total;
+
+    if (data.total === BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2) {
+        win();
+    }
+}
+
+function addMove() {
+    data.moves += 1;
+    document.getElementById('moves-counter').innerText = data.moves;
+}
+
+const timer = document.getElementById('time-counter');
+
+
+function win() {
+    data.time.stop();
+
+    // TODO: Implement
 }
