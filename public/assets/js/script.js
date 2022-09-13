@@ -36,12 +36,12 @@ function Timer(interval) {
     this.interval = interval;
     let seconds = 0;
 
-    this.start = function() {
+    this.start = function () {
         expected = Date.now() + this.interval;
         timeout = setTimeout(step, this.interval);
     }
 
-    this.stop = function() {
+    this.stop = function () {
         clearTimeout(timeout);
     }
 
@@ -52,9 +52,13 @@ function Timer(interval) {
         var minutes = Math.floor(sec_num / 60);
         var seconds = sec_num - (minutes * 60);
 
-        if (minutes < 10) {minutes = "0"+minutes;}
-        if (seconds < 10) {seconds = "0"+seconds;}
-        return minutes+':'+seconds;
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        return minutes + ':' + seconds;
     }
 
     function step() {
@@ -62,7 +66,7 @@ function Timer(interval) {
         const drift = Date.now() - expected;
         timer.innerText = formattedTime(seconds);
         expected += that.interval;
-        timeout = setTimeout(step, Math.max(0, that.interval-drift));
+        timeout = setTimeout(step, Math.max(0, that.interval - drift));
     }
 }
 
@@ -77,10 +81,40 @@ const emojis = {
         '🐨', '🐼', '🦥', '🦦', '🦨', '🦘', '🦡',
 
         '🦃', '🐔', '🐓', '🐣', '🐤', '🐥', '🐦', '🐧', '🕊', '🦅', '🦆', '🦢', '🦉', '🦤', '🦩', '🦚', '🦜',
+
         '🐸',
+
         '🐊', '🐢', '🦎', '🐍', '🐲', '🐉', '🦖', '🦕',
+
         '🐳', '🐋', '🐬', '🦭', '🐟', '🐠', '🐡', '🦈', '🐙', '🐚',
+
         '🐌', '🦋', '🐛', '🐜', '🐝', '🪲', '🐞', '🦗', '🪳', '🕷', '🕸', '🦂', '🦟', '🪰', '🪱', '🦠'
+
+    ],
+    food: [
+        '🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🥭', '🍎', '🍏',
+        '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥',
+
+        '🥑', '🍆', '🥔', '🥕', '🌽', '🌶', '🫑', '🥒', '🥬', '🥦',
+        '🧄', '🧅', '🍄', '🥜', '🌰',
+
+        '🍞', '🥐', '🥖', '🫓', '🥨', '🥯', '🥞', '🧇', '🧀', '🍖', '🍗', '🥩', '🥓', '🍔', '🍟', '🍕', '🌭', '🥪',
+        '🌮', '🌯', '🫔', '🥙', '🧆', '🥚', '🍳', '🥘', '🍲', '🫕', '🥣', '🥗', '🍿', '🧈', '🧂', '🥫',
+
+        '🍱', '🍘', '🍙', '🍚', '🍛', '🍜', '🍝', '🍠', '🍢', '🍣', '🍤', '🍥', '🥮', '🍡', '🥟', '🥠', '🥡',
+
+        '🦀', '🦞', '🦐', '🦑', '🦪',
+
+        '🍦', '🍧', '🍨', '🍩', '🍪', '🎂', '🍰', '🧁', '🥧', '🍫', '🍬', '🍭', '🍮', '🍯',
+
+        '🍼', '🥛', '☕', '🫖', '🫖', '🍵', '🍶', '🍾', '🍷', '🍸', '🍹', '🍺', '🍻', '🥂', '🥃', '🥤', '🧋', '🧃',
+        '🧉', '🧊'
+    ],
+    transport: [
+        '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒',
+        '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🚲', '🛴', '🛵', '🚏', '🛣', '🛤', '⛽', '🚨',
+        '🚥', '🚦', '🚧', '🛑', '⚓', '⛵', '🛶', '🚤', '🛳', '⛴', '🛥', '🚢', '✈', '🛩', '🛫', '🛬', '💺', '🚁',
+        '🚟', '🚠', '🚡'
     ]
 }
 
@@ -158,23 +192,23 @@ function setBoardSize() {
  Add cards to the board.
  */
 function addCards() {
-    
+
     // Fisher-Yates Shuffle
     function shuffle(array) {
-        let currentIndex = array.length,  randomIndex;
-        
+        let currentIndex = array.length, randomIndex;
+
         while (currentIndex != 0) {
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
-            
+
             [array[currentIndex], array[randomIndex]] = [
                 array[randomIndex], array[currentIndex]];
         }
 
         return array;
     }
-    
-    
+
+
     const cardAmount = BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH;
 
     let emojiList = getRandomList(cardAmount);
@@ -208,7 +242,6 @@ function addCards() {
         })
 
 
-
         board.appendChild(square);
     }
 }
@@ -227,7 +260,7 @@ function getRandomList(size) {
         }
 
         arr.push(...[emoji, emoji]);
-        
+
     }
 
     return arr;
@@ -346,6 +379,7 @@ function win() {
             break;
     }
 }
+
 // -------------------------------------------
 //                LEADER SCORE
 // -------------------------------------------
