@@ -5,7 +5,7 @@
 
     <ul class="nav nav-pills">
         <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Game</a></li>
-        <li class="nav-item"><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
+        <li class="nav-item"><a href="leaderboard.php" class="nav-link">Leaderboard</a></li>
     </ul>
 
 </header>

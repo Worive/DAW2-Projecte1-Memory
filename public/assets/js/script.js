@@ -45,7 +45,13 @@ function Timer(interval) {
         clearTimeout(timeout);
     }
 
-    this.formattedTime = formattedTime(seconds);
+    this.formattedTime = function () {
+        return formattedTime(seconds);
+    }
+
+    this.seconds = function () {
+        return seconds;
+    }
 
     function formattedTime(secs) {
         var sec_num = secs;
@@ -75,6 +81,7 @@ function Timer(interval) {
  */
 const emojis = {
     animals: [
+
         '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🦮', '🐩', '🐺', '🦊', '🦝', '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴',
         '🐎', '🦄', '🦓', '🦌', '🦬', '🐮', '🐂', '🐃', '🐄', '🐷', '🐖', '🐗', '🐽', '🐏', '🐑', '🐐', '🐪', '🐫',
         '🦙', '🦒', '🦒', '🐘', '🦣', '🦏', '🦛', '🐭', '🐁', '🐀', '🐹', '🐰', '🐇', '🐿', '🦫', '🦔', '🦇', '🐻',
@@ -375,7 +382,8 @@ function win() {
 
     switch (PLAYER_AMOUNT) {
         case 1:
-            addScore('guest', data.moves, data.time.formattedTime)
+            const points = data.time.seconds() + data.moves * 3;
+            addScore(points, 'guest', data.moves, data.time.formattedTime())
             break;
     }
 }
@@ -398,8 +406,9 @@ function loadLeaderBoard() {
     }
 }
 
-function addScore(username, moves, time) {
+function addScore(points, username, moves, time) {
     LEADER_BOARD.scores.push({
+        points: points,
         username: username,
         moves: moves,
         time: time,
@@ -407,4 +416,47 @@ function addScore(username, moves, time) {
     })
 
     window.localStorage.setItem('leaderBoard', JSON.stringify(LEADER_BOARD));
+}
+
+function fillTable() {
+    function compare( a, b ) {
+        if ( a.points < b.points ){
+            return -1;
+        }
+        if ( a.points > b.points ){
+            return 1;
+        }
+        return 0;
+    }
+
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const leaderBoardElement = document.getElementById('leaderboard')
+
+    LEADER_BOARD.scores.sort()
+
+    for (const score of LEADER_BOARD.scores.sort(compare)) {
+        const entry = document.createElement('tr');
+
+        const points = document.createElement('th');
+        points.innerText = score.points;
+        entry.appendChild(points);
+
+        const username = document.createElement('th');
+        username.innerText = score.username;
+        entry.appendChild(username);
+
+        const moves = document.createElement('th');
+        moves.innerText = score.moves;
+        entry.appendChild(moves);
+
+        const time = document.createElement('th');
+        time.innerText = score.time;
+        entry.appendChild(time);
+
+        const date = document.createElement('th');
+        date.innerText = new Date(score.date).toLocaleDateString('es-es', dateOptions);
+        entry.appendChild(date);
+
+        leaderBoardElement.appendChild(entry)
+    }
 }
