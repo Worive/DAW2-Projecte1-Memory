@@ -49,7 +49,6 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 <head>
     <meta charset="UTF-8">
     <title>Projecte 1</title>
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
 
     <script>
@@ -73,8 +72,5 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 </div>
 
 <?php require_once('../templates/footer.php'); ?>
-
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/script.js"></script>
 </body>
 </html>
