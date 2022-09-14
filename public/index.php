@@ -45,7 +45,7 @@
                                id="players1" value=1 checked="">
                         <span>
         1 Jugador
-        <small class="d-block text-muted">Quantes actions faràs per completar-ho?</small>
+        <small class="d-block text-muted">Quants moviments faràs per completar-ho?</small>
       </span>
                     </label>
                     <label class="list-group-item d-flex gap-2">
