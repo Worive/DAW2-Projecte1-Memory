@@ -37,14 +37,14 @@ function Timer(player) {
     let seconds = 0;
 
     this.start = function () {
-        console.log('STARTING TIME FOR PLAYER ' + player)
+        // console.log('STARTING TIME FOR PLAYER ' + player)
 
         expected = Date.now() + this.interval;
         timeout = setTimeout(step, this.interval);
     }
 
     this.stop = function () {
-        console.log('STOPPING TIME FOR PLAYER ' + player)
+        // console.log('STOPPING TIME FOR PLAYER ' + player)
 
         clearTimeout(timeout);
     }
@@ -132,6 +132,7 @@ const emojis = {
 class PlayerData {
     constructor(username, i) {
         this.username = username;
+        this.id = i;
         this.moves = 0;
         this.cards = 0;
         this.time = new Timer(i);
@@ -169,7 +170,7 @@ class PlayerData {
     }
 
     flipSecondCard(card) {
-        this.moves += 1;
+        this.addMove();
 
         card.classList.add('selected');
         this.selectedCards.second = card.getAttribute('id');
@@ -194,7 +195,12 @@ class PlayerData {
     addTotalPoints() {
         this.cards += 1;
         TURN_DATA.remainingCards -= 1;
-        document.getElementById('total-counter').innerText = data.total;
+        document.getElementById('total-counter-' + this.id).innerText = this.cards;
+    }
+
+    addMove() {
+        this.moves += 1;
+        document.getElementById('moves-counter-' + this.id).innerText = this.moves;
     }
 
     addClassToSelectedCards(className) {
@@ -451,48 +457,6 @@ function onClickCard(target) {
         getCurrentPlayer().flipCard(target);
     } else {
         onClickCard(target.parentElement)
-    }
-}
-
-/*
-Flips card
- */
-function flipCard(element) {
-    function addClassToSelectedCards(className) {
-        document.getElementById(data.selectedA).classList.add(className);
-        document.getElementById(data.selectedB).classList.add(className);
-    }
-
-    switch (data.status) {
-        case Status.idle:
-            element.classList.add('selected');
-            data.selectedA = element.getAttribute('id')
-            data.status = Status.selected;
-            break;
-        case Status.selected:
-
-            if (data.moves === 0) {
-                data.time.start();
-            }
-
-            addMove()
-
-            element.classList.add('selected');
-            data.selectedB = element.getAttribute('id');
-
-            if (document.getElementById(data.selectedA).getAttribute('card') === document.getElementById(data.selectedB).getAttribute('card')) {
-                addClassToSelectedCards('found');
-                addTotalPoint()
-            } else {
-                addClassToSelectedCards('wrong');
-
-                const a = data.selectedA;
-                const b = data.selectedB;
-
-                setTimeout(() => resetSelectedCards(a, b), 800);
-            }
-            data.status = Status.idle;
-            break;
     }
 }
 
