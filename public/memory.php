@@ -11,7 +11,7 @@ function checkSize($value): bool
 function checkPlayer($value): bool
 {
     if (is_numeric($value)) {
-        return (in_array($value, [1, 2]));
+        return (in_array($value, [1, 2, 3, 4]));
     }
 
     return false;
@@ -77,7 +77,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     }
 
     if (!checkPlayer($players)) {
-        printf('INVALID PLAYER VALUE');
+        printf('INVALID PLAYER VALUE:' . $players);
         return;
     }
 
