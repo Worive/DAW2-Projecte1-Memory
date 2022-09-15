@@ -17,6 +17,11 @@ function checkPlayer($value): bool
     return false;
 }
 
+function checkPlayerName($value): bool {
+    $length = strlen($value);
+    return $length <= 16 && $length >= 3;
+}
+
 function checkCardType($value): bool {
     return in_array($value, ['animals', 'food', 'random', 'transport']);
 }
@@ -25,11 +30,28 @@ $sizeWidth = -1;
 $sizeHeight = -1;
 $players = -1;
 $cardType = 'random';
+$playerNames = [];
 if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type'])) {
     $sizeWidth = htmlspecialchars($_POST["size-width"]);
     $sizeHeight = htmlspecialchars($_POST["size-height"]);
     $players = htmlspecialchars($_POST["players"]);
     $cardType = htmlspecialchars($_POST["card-type"]);
+
+    for ($i = 1; $i <= $players; $i++) {
+        if (isset($_POST['player-name-' . $i])) {
+            $playerName = htmlspecialchars($_POST['player-name-' . $i]);
+
+            if (checkPlayerName($playerName)) {
+                $playerNames[] = $playerName;
+            } else {
+                error_log("Invalid username provided for player " . $i . " :" . $playerName);
+            }
+        } else {
+            error_log("Username not provided for player " . $i);
+        }
+    }
+
+
 
     if (!checkSize($sizeWidth)) {
         printf('INVALID SIZE WIDTH VALUE');
@@ -67,6 +89,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         const BOARD_SIZE_HEIGHT = <?= $sizeHeight?>;
         const PLAYER_AMOUNT = <?= $players?>;
         const CARD_TYPE = '<?= $cardType ?>';
+        const PLAYER_NAMES = JSON.parse('<?= json_encode($playerNames); ?>');
     </script>
 </head>
 <body onload="initGame()">
@@ -74,10 +97,17 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 
 <div class="d-flex justify-content-center my-3">
     <div class="card" style="width: 18rem;">
+        <h1 class="card-title">Player-1</h1>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Moves: <span id="moves-counter">0</span></li>
-            <li class="list-group-item">Cards Found: <span id="total-counter">0</span></li>
-            <li class="list-group-item">Time: <span id="time-counter">00:00</span></li>
+            <li class="list-group-item">Moves: <span id="moves-counter-1">0</span></li>
+            <li class="list-group-item">Cards Found: <span id="total-counter-1">0</span></li>
+            <li class="list-group-item">Time: <span id="time-counter-1">00:00</span></li>
+        </ul>
+        <h1 class="card-title">Player-2</h1>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Moves: <span id="moves-counter-2">0</span></li>
+            <li class="list-group-item">Cards Found: <span id="total-counter-2">0</span></li>
+            <li class="list-group-item">Time: <span id="time-counter-2">00:00</span></li>
         </ul>
     </div>
     <div id="board"></div>

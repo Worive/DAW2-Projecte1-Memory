@@ -30,18 +30,22 @@ function updateBoardSize() {
 //                MEMORY GAME
 // -------------------------------------------
 
-function Timer(interval) {
+function Timer(player) {
     let that = this;
     let expected, timeout;
-    this.interval = interval;
+    this.interval = 1000;
     let seconds = 0;
 
     this.start = function () {
+        console.log('STARTING TIME FOR PLAYER ' + player)
+
         expected = Date.now() + this.interval;
         timeout = setTimeout(step, this.interval);
     }
 
     this.stop = function () {
+        console.log('STOPPING TIME FOR PLAYER ' + player)
+
         clearTimeout(timeout);
     }
 
@@ -70,7 +74,7 @@ function Timer(interval) {
     function step() {
         seconds += 1;
         const drift = Date.now() - expected;
-        timer.innerText = formattedTime(seconds);
+        document.getElementById('time-counter-' + player).innerText = formattedTime(seconds);
         expected += that.interval;
         timeout = setTimeout(step, Math.max(0, that.interval - drift));
     }
@@ -125,6 +129,82 @@ const emojis = {
     ]
 }
 
+class PlayerData {
+    constructor(username, i) {
+        this.username = username;
+        this.moves = 0;
+        this.cards = 0;
+        this.time = new Timer(i);
+
+        this.selectedCards = {
+            first: null,
+            second: null
+        }
+
+        this.status = Status.idle;
+
+    }
+
+    flipCard(card) {
+        console.log(`FLIP CARD ${this.username}`)
+
+        switch (this.status) {
+            case Status.idle:
+                console.log(`SELECT FIRST CARD ${this.username}`)
+                this.flipFirstCard(card)
+                break;
+            case Status.selected:
+                console.log(`SELECT SECOND CARD ${this.username}`)
+                this.flipSecondCard(card)
+                nextTurn();
+
+        }
+
+    }
+
+    flipFirstCard(card) {
+        card.classList.add('selected');
+        this.selectedCards.first = card.getAttribute('id');
+        this.status = Status.selected;
+    }
+
+    flipSecondCard(card) {
+        this.moves += 1;
+
+        card.classList.add('selected');
+        this.selectedCards.second = card.getAttribute('id');
+
+        if (document.getElementById(this.selectedCards.first).getAttribute('card') ===
+            document.getElementById(this.selectedCards.second).getAttribute('card')) {
+            this.addClassToSelectedCards('found');
+            this.addTotalPoints()
+        } else {
+            this.addClassToSelectedCards('wrong');
+
+            const a = this.selectedCards.first;
+            const b = this.selectedCards.second;
+
+            setTimeout(() => resetSelectedCards(a, b), 800);
+        }
+
+        this.status = Status.idle;
+        this.time.stop();
+    }
+
+    addTotalPoints() {
+        this.cards += 1;
+        TURN_DATA.remainingCards -= 1;
+        document.getElementById('total-counter').innerText = data.total;
+    }
+
+    addClassToSelectedCards(className) {
+        document.getElementById(this.selectedCards.first).classList.add(className);
+        document.getElementById(this.selectedCards.second).classList.add(className);
+    }
+
+
+}
+
 /*
  Different game status
  */
@@ -146,6 +226,42 @@ const data = {
     time: new Timer(1000)
 }
 
+function setupPlayers() {
+    let playerData = [];
+
+    for (let i = 0; i < PLAYER_AMOUNT; i++) {
+        playerData.push(new PlayerData(PLAYER_NAMES[i], i+1))
+    }
+
+    return playerData;
+}
+
+const TURN_DATA = {
+    currentPlayer: 0,
+    players: setupPlayers(),
+    remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2
+}
+
+function nextTurn() {
+    console.log(`NEW TURN`)
+    if (TURN_DATA.remainingCards <= 0) {
+        console.log(`WON`)
+        win();
+    }
+
+    if (TURN_DATA.currentPlayer === PLAYER_AMOUNT - 1) {
+        TURN_DATA.currentPlayer = 0;
+    } else {
+        TURN_DATA.currentPlayer += 1;
+    }
+
+    getCurrentPlayer().time.start()
+}
+
+function getCurrentPlayer() {
+    return TURN_DATA.players[TURN_DATA.currentPlayer];
+}
+
 /*
  Starts the game
  */
@@ -157,6 +273,8 @@ function initGame() {
 
     setBoardSize();
     addCards();
+
+    getCurrentPlayer().time.start();
 }
 
 /*
@@ -301,7 +419,7 @@ function getRandomEmoji() {
                 emoji = emojis.animals[pos]
             } else if (pos - emojis.animals.length < emojis.food.length) {
                 emoji = emojis.food[pos - emojis.animals.length]
-            }  else if (pos - emojis.food.length - emojis.animals.length < emojis.transport.length) {
+            } else if (pos - emojis.food.length - emojis.animals.length < emojis.transport.length) {
                 emoji = emojis.transport[pos - emojis.food.length - emojis.animals.length]
             } else {
                 console.error('Position of emoji out of range:' + pos)
@@ -330,7 +448,7 @@ function onClickCard(target) {
 
     //In case you click on child retrieve the parent.
     if (target.classList.contains('memory-card')) {
-        flipCard(target);
+        getCurrentPlayer().flipCard(target);
     } else {
         onClickCard(target.parentElement)
     }
@@ -343,12 +461,6 @@ function flipCard(element) {
     function addClassToSelectedCards(className) {
         document.getElementById(data.selectedA).classList.add(className);
         document.getElementById(data.selectedB).classList.add(className);
-    }
-
-    const isSelected = element.classList.contains('selected');
-
-    if (isSelected) {
-        return;
     }
 
     switch (data.status) {
@@ -403,9 +515,6 @@ function addMove() {
     document.getElementById('moves-counter').innerText = data.moves;
 }
 
-const timer = document.getElementById('time-counter');
-
-
 function win() {
     data.time.stop();
 
@@ -448,17 +557,17 @@ function addScore(points, username, moves, time) {
 }
 
 function fillTable() {
-    function compare( a, b ) {
-        if ( a.points < b.points ){
+    function compare(a, b) {
+        if (a.points < b.points) {
             return -1;
         }
-        if ( a.points > b.points ){
+        if (a.points > b.points) {
             return 1;
         }
         return 0;
     }
 
-    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     const leaderBoardElement = document.getElementById('leaderboard')
 
     LEADER_BOARD.scores.sort()
