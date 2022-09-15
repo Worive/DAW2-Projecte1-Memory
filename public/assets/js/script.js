@@ -1,5 +1,5 @@
 // -------------------------------------------
-//             UPDATE BOARD SIZE
+//             FORM PAGE
 // -------------------------------------------
 
 function subscribeUpdateBoardSize() {
@@ -24,6 +24,20 @@ function updateBoardSize() {
 
     sizeBoardLabel.innerText = sizeBoardWidth + ' x ' + sizeBoardHeight;
 }
+
+function updateRequirements(id) {
+    switch (id) {
+        case 1:
+            document.getElementById('player-name-1').required = true;
+            document.getElementById('player-name-2').required = false;
+            break;
+        case 2:
+            document.getElementById('player-name-1').required = true;
+            document.getElementById('player-name-2').required = true;
+    }
+}
+
+
 
 
 // -------------------------------------------
@@ -242,11 +256,7 @@ function setupPlayers() {
     return playerData;
 }
 
-const TURN_DATA = {
-    currentPlayer: 0,
-    players: setupPlayers(),
-    remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2
-}
+let TURN_DATA;
 
 function nextTurn() {
     console.log(`NEW TURN`)
@@ -272,9 +282,16 @@ function getCurrentPlayer() {
  Starts the game
  */
 function initGame() {
+
     if (!validateData()) {
         console.error("[MEMORY] Invalid data provided. Game cannot start!");
         return;
+    }
+
+    TURN_DATA = {
+        currentPlayer: 0,
+        players: setupPlayers(),
+        remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2
     }
 
     setBoardSize();

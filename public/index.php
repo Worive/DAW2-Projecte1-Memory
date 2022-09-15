@@ -52,7 +52,7 @@
                 <div class="list-group mx-0 w-auto">
                     <label class="list-group-item d-flex gap-2">
                         <input class="form-check-input flex-shrink-0" type="radio" name="players"
-                               id="players1" value=1 checked="">
+                               id="players1" value=1 checked="" onchange="updateRequirements(1)">
                         <span>
         1 Jugador
         <small class="d-block text-muted">Quants moviments faràs per completar-ho?</small>
@@ -60,7 +60,7 @@
                     </label>
                     <label class="list-group-item d-flex gap-2">
                         <input class="form-check-input flex-shrink-0" type="radio" name="players"
-                               id="players2" value=2>
+                               id="players2" value=2 onchange="updateRequirements(2)">
                         <span>
         2 Jugadors
         <small class="d-block text-muted">El que faci més pareilles.</small>
@@ -89,5 +89,9 @@
 </div>
 
 <?php require_once('../templates/footer.php'); ?>
+
+<script>
+    updateRequirements(1);
+</script>
 </body>
 </html>
