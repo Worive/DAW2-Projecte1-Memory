@@ -100,25 +100,25 @@
                 <div class="col-sm-6" id="group-player1">
                     <label for="player-name-1" class="form-label">Player 1 Name</label>
                     <input type="text" class="form-control" id="player-name-1" placeholder="" value=""
-                           name="player-name-1" >
+                           name="player-name-1"  minlength="3" maxlength="16">
                 </div>
 
                 <div class="col-sm-6" id="group-player2">
                     <label for="player-name-2" class="form-label">Player 2 Name</label>
                     <input type="text" class="form-control" id="player-name-2" placeholder="" value=""
-                           name="player-name-2">
+                           name="player-name-2" minlength="3" maxlength="16">
                 </div>
 
                 <div class="col-sm-6" id="group-player3">
                     <label for="player-name-3" class="form-label">Player 3 Name</label>
                     <input type="text" class="form-control" id="player-name-3" placeholder="" value=""
-                           name="player-name-3">
+                           name="player-name-3"  minlength="3" maxlength="16">
                 </div>
 
                 <div class="col-sm-6" id="group-player4">
                     <label for="player-name-4" class="form-label">Player 4 Name</label>
                     <input type="text" class="form-control" id="player-name-4" placeholder="" value=""
-                           name="player-name-4">
+                           name="player-name-4" minlength="3" maxlength="16">
                 </div>
             </div>
 
