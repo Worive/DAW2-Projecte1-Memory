@@ -61,7 +61,7 @@
                 <div class="list-group mx-0 w-auto">
                     <label class="list-group-item d-flex gap-2">
                         <input class="form-check-input flex-shrink-0" type="radio" name="players"
-                               id="players1" value=1 checked="" onchange="updateRequirements(1)">
+                               id="players1" value=1 checked onchange="updateRequirements(1)">
                         <span>
         1 Jugador
         <small class="d-block text-muted">Quants moviments faràs per completar-ho?</small>
@@ -77,7 +77,7 @@
                     </label>
                     <label class="list-group-item d-flex gap-2">
                         <input class="form-check-input flex-shrink-0" type="radio" name="players"
-                               id="players3" value=1 checked="" onchange="updateRequirements(3)">
+                               id="players3" value=3 onchange="updateRequirements(3)">
                         <span>
         3 Jugadors
         <small class="d-block text-muted">El que faci més pareilles.</small>
@@ -85,7 +85,7 @@
                     </label>
                     <label class="list-group-item d-flex gap-2">
                         <input class="form-check-input flex-shrink-0" type="radio" name="players"
-                               id="players4" value=1 checked="" onchange="updateRequirements(4)">
+                               id="players4" value=4 onchange="updateRequirements(4)">
                         <span>
         4 Jugadors
         <small class="d-block text-muted">El que faci més pareilles.</small>
@@ -100,7 +100,7 @@
                 <div class="col-sm-6" id="group-player1">
                     <label for="player-name-1" class="form-label">Player 1 Name</label>
                     <input type="text" class="form-control" id="player-name-1" placeholder="" value=""
-                           name="player-name-1">
+                           name="player-name-1" >
                 </div>
 
                 <div class="col-sm-6" id="group-player2">
