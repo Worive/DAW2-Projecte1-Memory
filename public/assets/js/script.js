@@ -482,20 +482,6 @@ async function resetSelectedCards(selectedCardA, selectedCardB) {
     document.getElementById(selectedCardB).setAttribute('class', 'memory-card')
 }
 
-function addTotalPoint() {
-    data.total += 1;
-    document.getElementById('total-counter').innerText = data.total;
-
-    if (data.total === BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2) {
-        win();
-    }
-}
-
-function addMove() {
-    data.moves += 1;
-    document.getElementById('moves-counter').innerText = data.moves;
-}
-
 function win() {
     data.time.stop();
 
