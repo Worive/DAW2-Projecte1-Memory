@@ -27,15 +27,24 @@
                 <label class="form-label">Mida del taulell: <span
                             id="sizeBoardLabel">? x ?</span></label>
                 <br>
-                <label class="form-label" for="sizeBoardWidth">
-                    Width
-                </label>
-                <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardWidth" name="size-width" value=4>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label class="form-label" for="sizeBoardWidth">
+                            Width
+                        </label>
+                        <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardWidth"
+                               name="size-width" value=4>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="sizeBoardHeight">
+                            Height
+                        </label>
+                        <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardHeight"
+                               name="size-height" value=4>
 
-                <label class="form-label" for="sizeBoardHeight">
-                    Height
-                </label>
-                <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardHeight" name="size-height" value=4>
+                    </div>
+                </div>
+
             </div>
 
             <label for="card-type">Tipus de Carta</label>
@@ -66,20 +75,50 @@
         <small class="d-block text-muted">El que faci més pareilles.</small>
       </span>
                     </label>
+                    <label class="list-group-item d-flex gap-2">
+                        <input class="form-check-input flex-shrink-0" type="radio" name="players"
+                               id="players3" value=1 checked="" onchange="updateRequirements(3)">
+                        <span>
+        3 Jugadors
+        <small class="d-block text-muted">El que faci més pareilles.</small>
+      </span>
+                    </label>
+                    <label class="list-group-item d-flex gap-2">
+                        <input class="form-check-input flex-shrink-0" type="radio" name="players"
+                               id="players4" value=1 checked="" onchange="updateRequirements(4)">
+                        <span>
+        4 Jugadors
+        <small class="d-block text-muted">El que faci més pareilles.</small>
+      </span>
+                    </label>
                 </div>
             </div>
 
             <hr>
 
             <div class="row g-3">
-                <div class="col-sm-6">
+                <div class="col-sm-6" id="group-player1">
                     <label for="player-name-1" class="form-label">Player 1 Name</label>
-                    <input type="text" class="form-control" id="player-name-1" placeholder="" value="" name="player-name-1">
+                    <input type="text" class="form-control" id="player-name-1" placeholder="" value=""
+                           name="player-name-1">
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-6" id="group-player2">
                     <label for="player-name-2" class="form-label">Player 2 Name</label>
-                    <input type="text" class="form-control" id="player-name-2" placeholder="" value="" name="player-name-2">
+                    <input type="text" class="form-control" id="player-name-2" placeholder="" value=""
+                           name="player-name-2">
+                </div>
+
+                <div class="col-sm-6" id="group-player3">
+                    <label for="player-name-3" class="form-label">Player 3 Name</label>
+                    <input type="text" class="form-control" id="player-name-3" placeholder="" value=""
+                           name="player-name-3">
+                </div>
+
+                <div class="col-sm-6" id="group-player4">
+                    <label for="player-name-4" class="form-label">Player 4 Name</label>
+                    <input type="text" class="form-control" id="player-name-4" placeholder="" value=""
+                           name="player-name-4">
                 </div>
             </div>
 

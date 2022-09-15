@@ -26,14 +26,24 @@ function updateBoardSize() {
 }
 
 function updateRequirements(id) {
-    switch (id) {
-        case 1:
-            document.getElementById('player-name-1').required = true;
-            document.getElementById('player-name-2').required = false;
-            break;
-        case 2:
-            document.getElementById('player-name-1').required = true;
-            document.getElementById('player-name-2').required = true;
+    for (let i = 1; i <= 4; i++) {
+        if (i <= id) {
+            console.log('show ' + i)
+            document.getElementById('player-name-' + i).required = true;
+            if (i === id && id % 2 !== 0) {
+                document.getElementById('group-player' + i).setAttribute('class', 'col-sm-12');
+            } else {
+                document.getElementById('group-player' + i).setAttribute('class', 'col-sm-6');
+            }
+
+        } else {
+            document.getElementById('player-name-' + i).required = false;
+            document.getElementById('group-player' + i).setAttribute('class', 'col-sm-6 d-none');
+        }
+
+        if (i === id && id % 2 !== 0) {
+
+        }
     }
 }
 
