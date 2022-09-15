@@ -277,13 +277,42 @@ function getRandomList(size) {
 Return a random emoji
  */
 function getRandomEmoji() {
-    const pos = Math.floor(Math.random() * emojis.animals.length);
+    let emoji;
 
-    let emoji = emojis.animals[pos];
+    let pos;
+
+    switch (CARD_TYPE) {
+        case 'animals':
+            pos = Math.floor(Math.random() * emojis.animals.length);
+            emoji = emojis.animals[pos];
+            break;
+        case 'food':
+            pos = Math.floor(Math.random() * emojis.food.length);
+            emoji = emojis.food[pos];
+            break;
+        case 'transport':
+            pos = Math.floor(Math.random() * emojis.transport.length);
+            emoji = emojis.transport[pos];
+            break;
+        default:
+            pos = Math.floor(Math.random() * (emojis.animals.length + emojis.food.length + emojis.transport.length));
+
+            if (pos < emojis.animals.length) {
+                emoji = emojis.animals[pos]
+            } else if (pos - emojis.animals.length < emojis.food.length) {
+                emoji = emojis.food[pos - emojis.animals.length]
+            }  else if (pos - emojis.food.length - emojis.animals.length < emojis.transport.length) {
+                emoji = emojis.transport[pos - emojis.food.length - emojis.animals.length]
+            } else {
+                console.error('Position of emoji out of range:' + pos)
+            }
+    }
 
     if (emoji === undefined) {
+        console.log('UNDEFINED EMOJI FOUND:')
         console.log(pos);
         console.log(emoji);
+        console.log('----------------')
     }
 
     return {key: pos, value: emoji}

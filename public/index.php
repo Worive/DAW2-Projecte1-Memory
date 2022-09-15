@@ -38,6 +38,16 @@
                 <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardHeight" name="size-height" value=4>
             </div>
 
+            <label for="card-type">Tipus de Carta</label>
+            <select id="card-type" name="card-type" class="form-select">
+                <option value="animals" selected>Animals</option>
+                <option value="transport">Transport</option>
+                <option value="food">Menjar</option>
+                <option value="random">Random</option>
+            </select>
+
+            <hr>
+
             <div>
                 <div class="list-group mx-0 w-auto">
                     <label class="list-group-item d-flex gap-2">

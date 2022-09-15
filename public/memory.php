@@ -17,13 +17,19 @@ function checkPlayer($value): bool
     return false;
 }
 
+function checkCardType($value): bool {
+    return in_array($value, ['animals', 'food', 'random', 'transport']);
+}
+
 $sizeWidth = -1;
 $sizeHeight = -1;
 $players = -1;
-if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players'])) {
+$cardType = 'random';
+if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type'])) {
     $sizeWidth = htmlspecialchars($_POST["size-width"]);
     $sizeHeight = htmlspecialchars($_POST["size-height"]);
     $players = htmlspecialchars($_POST["players"]);
+    $cardType = htmlspecialchars($_POST["card-type"]);
 
     if (!checkSize($sizeWidth)) {
         printf('INVALID SIZE WIDTH VALUE');
@@ -35,6 +41,11 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 
     if (!checkPlayer($players)) {
         printf('INVALID PLAYER VALUE');
+        return;
+    }
+
+    if (!checkCardType($cardType)) {
+        printf("INVALID CARD TYPE");
         return;
     }
 
@@ -55,6 +66,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         const BOARD_SIZE_WIDTH = <?= $sizeWidth?>;
         const BOARD_SIZE_HEIGHT = <?= $sizeHeight?>;
         const PLAYER_AMOUNT = <?= $players?>;
+        const CARD_TYPE = '<?= $cardType ?>';
     </script>
 </head>
 <body onload="initGame()">
