@@ -10,7 +10,7 @@ function isActive($pageName, $page, $alsoDefault): void
 {
 
     if ($alsoDefault) {
-        if ($page === 'index.php' || $page === 'DAW2-Projecte1-Memory') {
+        if ($page === 'index.php' || $page === 'DAW2-Projecte1-Memory' || $page === $pageName) {
             echo ' active';
         }
     } else {
