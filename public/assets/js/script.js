@@ -502,7 +502,7 @@ function win() {
     switch (PLAYER_AMOUNT) {
         case 1:
             const points = data.time.seconds() + data.moves * 3;
-            addScore(points, 'guest', data.moves, data.time.formattedTime())
+            addScore(points, getCurrentPlayer().username, data.moves, data.time.formattedTime())
             break;
     }
 }
