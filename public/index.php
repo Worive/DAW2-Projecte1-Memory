@@ -69,20 +69,21 @@
                 </div>
             </div>
 
+            <hr>
+
             <div class="row g-3">
                 <div class="col-sm-6">
                     <label for="player-name-1" class="form-label">Player 1 Name</label>
                     <input type="text" class="form-control" id="player-name-1" placeholder="" value="" name="player-name-1">
                 </div>
-            </div>
-            <div class="row g-3">
+
                 <div class="col-sm-6">
                     <label for="player-name-2" class="form-label">Player 2 Name</label>
                     <input type="text" class="form-control" id="player-name-2" placeholder="" value="" name="player-name-2">
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Jugar</button>
+            <button type="submit" class="btn btn-primary mt-3 ">Jugar</button>
         </form>
     </div>
 </div>
