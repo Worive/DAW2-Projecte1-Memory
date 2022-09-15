@@ -40,10 +40,6 @@ function updateRequirements(id) {
             document.getElementById('player-name-' + i).required = false;
             document.getElementById('group-player' + i).setAttribute('class', 'col-sm-6 d-none');
         }
-
-        if (i === id && id % 2 !== 0) {
-
-        }
     }
 }
 
