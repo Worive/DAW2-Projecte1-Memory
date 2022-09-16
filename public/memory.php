@@ -51,7 +51,7 @@ function getRandomEmoji($cardType): array
     $emoji = 'unknown';
     switch ($cardType) {
         case 'animals' || 'food' || 'transport':
-            $pos = array_rand(range(0, sizeof(emojis[$cardType])));
+            $pos = array_rand(range(0, sizeof(emojis[$cardType]) - 1));
             $emoji = emojis[$cardType][$pos];
             break;
         case 'random':
@@ -245,7 +245,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 
     <div class="card">
         <div class="card-body">
-            Temps: <span id="total-time">00:00</span>
+            Temps: <span id="timer">00:00</span>
         </div>
     </div>
 

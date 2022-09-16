@@ -44,8 +44,6 @@ function updateRequirements(id) {
 }
 
 
-
-
 // -------------------------------------------
 //                MEMORY GAME
 // -------------------------------------------
@@ -100,7 +98,44 @@ function Timer(player) {
     }
 }
 
-let TURN_DATA;
+const TURN_DATA = {
+    currentPlayer: 0,
+    players: null,
+    remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2,
+    turn: null
+}
+
+function TurnTime(timeInSeconds) {
+    let that = this;
+    this.remaining = timeInSeconds;
+    this.enabled = timeInSeconds > 0;
+
+    this.start = function () {
+        if (this.enabled) {
+            console.log("Started timer: " + timeInSeconds)
+            this.remainingTime = timeInSeconds;
+            this.timeout = setInterval(step, 25)
+        }
+    }
+
+    this.stop = function () {
+        if (this.enabled) {
+            clearTimeout(this.timeout);
+        }
+    }
+
+    function step() {
+        that.remainingTime -= 0.025
+
+        if (that.remainingTime <= 0) {
+            nextTurn();
+        }
+
+        document.getElementById('timer').innerText = that.remainingTime.toFixed(2);
+
+    }
+}
+
 
 /**
  * PlayerData
@@ -142,6 +177,12 @@ class PlayerData {
     }
 
     flipSecondCard(card) {
+        function delay(milliseconds){
+            return new Promise(resolve => {
+                setTimeout(resolve, milliseconds);
+            });
+        }
+
         this.addMove();
 
         card.classList.add('selected');
@@ -193,29 +234,18 @@ const Status = {
     compare: 2
 }
 
-/*
- Game Data
- */
-const data = {
-    status: Status.idle,
-    selectedA: null,
-    selectedB: null,
-    moves: 0,
-    total: 0,
-    time: new Timer(1000)
-}
-
 function setupPlayers() {
     let playerData = [];
 
     for (let i = 0; i < PLAYER_AMOUNT; i++) {
-        playerData.push(new PlayerData(PLAYER_NAMES[i], i+1))
+        playerData.push(new PlayerData(PLAYER_NAMES[i], i + 1))
     }
 
     return playerData;
 }
 
 function nextTurn() {
+    TURN_DATA.turn.stop();
     console.log(`NEW TURN`)
     if (TURN_DATA.remainingCards <= 0) {
         console.log(`WON`)
@@ -232,6 +262,7 @@ function nextTurn() {
     document.getElementById('current-player').innerText = getCurrentPlayer().username;
 
     getCurrentPlayer().time.start()
+    TURN_DATA.turn.start();
 }
 
 function getCurrentPlayer() {
@@ -248,12 +279,8 @@ function initGame() {
         return;
     }
 
-    TURN_DATA = {
-        currentPlayer: 0,
-        players: setupPlayers(),
-        remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2
-    }
-
+    TURN_DATA.players = setupPlayers();
+    TURN_DATA.turn = new TurnTime(TIMER)
 
     for (let elementKey of document.querySelectorAll('div.memory-card')) {
         elementKey.addEventListener('click', (event) => {
@@ -262,6 +289,7 @@ function initGame() {
     }
 
     getCurrentPlayer().time.start();
+    TURN_DATA.turn.start();
 }
 
 /*
@@ -306,7 +334,7 @@ function onClickCard(target) {
     }
 }
 
-async function resetSelectedCards(selectedCardA, selectedCardB) {
+function resetSelectedCards(selectedCardA, selectedCardB) {
     document.getElementById(selectedCardA).setAttribute('class', 'memory-card')
     document.getElementById(selectedCardB).setAttribute('class', 'memory-card')
 }
@@ -320,7 +348,7 @@ function win() {
 
     switch (PLAYER_AMOUNT) {
         case 1:
-            const points = data.time.seconds() + data.moves * 3;
+            const points = getCurrentPlayer().time.seconds() + getCurrentPlayer().moves * 3;
             addScore(points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime())
             break;
     }
@@ -336,7 +364,7 @@ function loadLeaderBoard() {
     function getCookie(cname) {
         let name = cname + "=";
         let ca = document.cookie.split(';');
-        for(let i = 0; i < ca.length; i++) {
+        for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
             while (c.charAt(0) === ' ') {
                 c = c.substring(1);
@@ -363,7 +391,7 @@ function addScore(points, username, moves, time) {
     function setCookie(cname, cvalue, exdays) {
         const d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        let expires = "expires="+d.toUTCString();
+        let expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
