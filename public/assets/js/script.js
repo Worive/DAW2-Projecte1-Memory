@@ -100,12 +100,11 @@ function Timer(player) {
     }
 }
 
-/*
- Emojis for the game
- */
+/**
+ * Emojis for the game
+ **/
 const emojis = {
     animals: [
-
         '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🦮', '🐩', '🐺', '🦊', '🦝', '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴',
         '🐎', '🦄', '🦓', '🦌', '🦬', '🐮', '🐂', '🐃', '🐄', '🐷', '🐖', '🐗', '🐽', '🐏', '🐑', '🐐', '🐪', '🐫',
         '🦙', '🦒', '🦒', '🐘', '🦣', '🦏', '🦛', '🐭', '🐁', '🐀', '🐹', '🐰', '🐇', '🐿', '🦫', '🦔', '🦇', '🐻',
@@ -149,6 +148,12 @@ const emojis = {
     ]
 }
 
+let TURN_DATA;
+
+/**
+ * PlayerData
+ * Build with player's username and ID.
+ **/
 class PlayerData {
     constructor(username, i) {
         this.username = username;
@@ -167,18 +172,13 @@ class PlayerData {
     }
 
     flipCard(card) {
-        console.log(`FLIP CARD ${this.username}`)
-
         switch (this.status) {
             case Status.idle:
-                console.log(`SELECT FIRST CARD ${this.username}`)
                 this.flipFirstCard(card)
                 break;
             case Status.selected:
-                console.log(`SELECT SECOND CARD ${this.username}`)
                 this.flipSecondCard(card)
                 nextTurn();
-
         }
 
     }
@@ -215,6 +215,7 @@ class PlayerData {
     addTotalPoints() {
         this.cards += 1;
         TURN_DATA.remainingCards -= 1;
+        document.getElementById('remaining-pairs').innerText = '' + TURN_DATA.remainingCards;
         document.getElementById('total-counter-' + this.id).innerText = this.cards;
     }
 
@@ -262,8 +263,6 @@ function setupPlayers() {
     return playerData;
 }
 
-let TURN_DATA;
-
 function nextTurn() {
     console.log(`NEW TURN`)
     if (TURN_DATA.remainingCards <= 0) {
@@ -276,6 +275,8 @@ function nextTurn() {
     } else {
         TURN_DATA.currentPlayer += 1;
     }
+
+    document.getElementById('current-player').innerText = getCurrentPlayer().username;
 
     getCurrentPlayer().time.start()
 }

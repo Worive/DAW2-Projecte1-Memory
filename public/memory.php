@@ -110,6 +110,26 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 <body onload="initGame()">
 <?php require_once('../templates/header.php'); ?>
 
+<div class="d-flex justify-content-center my-3 gap-3">
+    <div class="card">
+        <div class="card-body">
+            Torn Actual: <span id="current-player"><?= $playerNames[0] ?></span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            Temps: <span id="total-time">00:00</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            Remaining pairs: <span id="remaining-pairs"><?= $sizeWidth * $sizeHeight / 2?></span>
+        </div>
+    </div>
+</div>
+
 <div class="d-flex justify-content-center my-3">
     <div class="card" style="width: 18rem;">
         <?= $playerStats ?>
