@@ -1,4 +1,112 @@
 <?php
+const emojis = [
+    "animals" => [
+        '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🦮', '🐩', '🐺', '🦊', '🦝', '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴',
+        '🐎', '🦄', '🦓', '🦌', '🦬', '🐮', '🐂', '🐃', '🐄', '🐷', '🐖', '🐗', '🐽', '🐏', '🐑', '🐐', '🐪', '🐫',
+        '🦙', '🦒', '🦒', '🐘', '🦣', '🦏', '🦛', '🐭', '🐁', '🐀', '🐹', '🐰', '🐇', '🐿', '🦫', '🦔', '🦇', '🐻',
+        '🐨', '🐼', '🦥', '🦦', '🦨', '🦘', '🦡',
+
+        '🦃', '🐔', '🐓', '🐣', '🐤', '🐥', '🐦', '🐧', '🕊', '🦅', '🦆', '🦢', '🦉', '🦤', '🦩', '🦚', '🦜',
+
+        '🐸',
+
+        '🐊', '🐢', '🦎', '🐍', '🐲', '🐉', '🦖', '🦕',
+
+        '🐳', '🐋', '🐬', '🦭', '🐟', '🐠', '🐡', '🦈', '🐙', '🐚',
+
+        '🐌', '🦋', '🐛', '🐜', '🐝', '🪲', '🐞', '🦗', '🪳', '🕷', '🕸', '🦂', '🦟', '🪰', '🪱', '🦠'
+
+    ],
+    "food" => [
+        '🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🥭', '🍎', '🍏',
+        '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥',
+
+        '🥑', '🍆', '🥔', '🥕', '🌽', '🌶', '🫑', '🥒', '🥬', '🥦',
+        '🧄', '🧅', '🍄', '🥜', '🌰',
+
+        '🍞', '🥐', '🥖', '🫓', '🥨', '🥯', '🥞', '🧇', '🧀', '🍖', '🍗', '🥩', '🥓', '🍔', '🍟', '🍕', '🌭', '🥪',
+        '🌮', '🌯', '🫔', '🥙', '🧆', '🥚', '🍳', '🥘', '🍲', '🫕', '🥣', '🥗', '🍿', '🧈', '🧂', '🥫',
+
+        '🍱', '🍘', '🍙', '🍚', '🍛', '🍜', '🍝', '🍠', '🍢', '🍣', '🍤', '🍥', '🥮', '🍡', '🥟', '🥠', '🥡',
+
+        '🦀', '🦞', '🦐', '🦑', '🦪',
+
+        '🍦', '🍧', '🍨', '🍩', '🍪', '🎂', '🍰', '🧁', '🥧', '🍫', '🍬', '🍭', '🍮', '🍯',
+
+        '🍼', '🥛', '☕', '🫖', '🫖', '🍵', '🍶', '🍾', '🍷', '🍸', '🍹', '🍺', '🍻', '🥂', '🥃', '🥤', '🧋', '🧃',
+        '🧉', '🧊'
+    ],
+    "transport" => [
+        '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒',
+        '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🚲', '🛴', '🛵', '🚏', '🛣', '🛤', '⛽', '🚨',
+        '🚥', '🚦', '🚧', '🛑', '⚓', '⛵', '🛶', '🚤', '🛳', '⛴', '🛥', '🚢', '✈', '🛩', '🛫', '🛬', '💺', '🚁',
+        '🚟', '🚠', '🚡'
+    ]
+];
+
+
+function getRandomEmoji($cardType): array
+{
+    $pos = -1;
+    $emoji = 'unknown';
+    switch ($cardType) {
+        case 'animals' || 'food' || 'transport':
+            $pos = array_rand(range(0, sizeof(emojis[$cardType])));
+            $emoji = emojis[$cardType][$pos];
+            break;
+        case 'random':
+
+            break;
+        default:
+            error_log('Unknown card type: ' . $cardType);
+
+    }
+
+    return [
+        "key" => $pos,
+        "value" => $emoji
+    ];
+}
+
+function getRandomList($size, $cardType): array
+{
+    $arr = [];
+
+    for ($i = 0; $i < $size; $i++) {
+        $emoji = getRandomEmoji($cardType);
+
+        while (in_array($emoji, $arr)) {
+            $emoji = getRandomEmoji($cardType);
+        }
+
+        $arr[] = $emoji;
+        $arr[] = $emoji;
+    }
+
+    return $arr;
+
+}
+
+function generateCards($size, $cardType): string
+{
+    $emojis = getRandomList($size / 2, $cardType);
+
+    shuffle($emojis);
+
+    $content = "";
+    for ($i = 0; $i < $size; $i++) {
+        $content .=
+            '<div class="memory-card" id="card-' . $i . '" card="' . $emojis[$i]['key'] . '">
+            <div class="card-inner">
+                <div class="card-front">' . $emojis[$i]['value'] . '</div>
+                <div class="card-back"></div>
+            </div>
+        </div>';
+    }
+
+    return $content;
+}
+
 function checkSize($value): bool
 {
     if (is_numeric($value)) {
@@ -33,6 +141,8 @@ $sizeHeight = -1;
 $players = -1;
 $cardType = 'random';
 $playerNames = [];
+$boardClass = "";
+$cards = "";
 
 $playerStats = "";
 if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type'])) {
@@ -40,6 +150,8 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     $sizeHeight = htmlspecialchars($_POST["size-height"]);
     $players = htmlspecialchars($_POST["players"]);
     $cardType = htmlspecialchars($_POST["card-type"]);
+
+    $boardClass = 'board-width-' . $sizeWidth . ' board-height-' . $sizeHeight;
 
     for ($i = 1; $i <= $players; $i++) {
         if (isset($_POST['player-name-' . $i])) {
@@ -49,13 +161,13 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
                 $playerNames[] = $playerName;
 
                 $playerStats .= '
-                              <h1 class="card-title">'. $playerName . '</h1>
+                              <h1 class="card-title">' . $playerName . '</h1>
         
         
                              <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Moves: <span id="moves-counter-'.$i.'">0</span></li>
-                                <li class="list-group-item">Cards Found: <span id="total-counter-'.$i.'">0</span></li>
-                                <li class="list-group-item">Time: <span id="time-counter-'.$i.'">00:00</span></li>
+                                <li class="list-group-item">Moves: <span id="moves-counter-' . $i . '">0</span></li>
+                                <li class="list-group-item">Cards Found: <span id="total-counter-' . $i . '">0</span></li>
+                                <li class="list-group-item">Time: <span id="time-counter-' . $i . '">00:00</span></li>
                             </ul>
                             ';
 
@@ -85,6 +197,9 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         printf("INVALID CARD TYPE");
         return;
     }
+
+    $cards = generateCards($sizeHeight * $sizeWidth, $cardType);
+
 
 } else {
     printf('MISSING POST VALUES!');
@@ -125,7 +240,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 
     <div class="card">
         <div class="card-body">
-            Remaining pairs: <span id="remaining-pairs"><?= $sizeWidth * $sizeHeight / 2?></span>
+            Remaining pairs: <span id="remaining-pairs"><?= $sizeWidth * $sizeHeight / 2 ?></span>
         </div>
     </div>
 </div>
@@ -134,7 +249,9 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     <div class="card" style="width: 18rem;">
         <?= $playerStats ?>
     </div>
-    <div id="board"></div>
+    <div id="board" class="<?= $boardClass ?>">
+        <?= $cards ?>
+    </div>
 </div>
 
 <?php require_once('../templates/footer.php'); ?>

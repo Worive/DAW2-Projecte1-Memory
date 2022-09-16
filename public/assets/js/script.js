@@ -100,54 +100,6 @@ function Timer(player) {
     }
 }
 
-/**
- * Emojis for the game
- **/
-const emojis = {
-    animals: [
-        '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🦮', '🐩', '🐺', '🦊', '🦝', '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴',
-        '🐎', '🦄', '🦓', '🦌', '🦬', '🐮', '🐂', '🐃', '🐄', '🐷', '🐖', '🐗', '🐽', '🐏', '🐑', '🐐', '🐪', '🐫',
-        '🦙', '🦒', '🦒', '🐘', '🦣', '🦏', '🦛', '🐭', '🐁', '🐀', '🐹', '🐰', '🐇', '🐿', '🦫', '🦔', '🦇', '🐻',
-        '🐨', '🐼', '🦥', '🦦', '🦨', '🦘', '🦡',
-
-        '🦃', '🐔', '🐓', '🐣', '🐤', '🐥', '🐦', '🐧', '🕊', '🦅', '🦆', '🦢', '🦉', '🦤', '🦩', '🦚', '🦜',
-
-        '🐸',
-
-        '🐊', '🐢', '🦎', '🐍', '🐲', '🐉', '🦖', '🦕',
-
-        '🐳', '🐋', '🐬', '🦭', '🐟', '🐠', '🐡', '🦈', '🐙', '🐚',
-
-        '🐌', '🦋', '🐛', '🐜', '🐝', '🪲', '🐞', '🦗', '🪳', '🕷', '🕸', '🦂', '🦟', '🪰', '🪱', '🦠'
-
-    ],
-    food: [
-        '🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🥭', '🍎', '🍏',
-        '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥',
-
-        '🥑', '🍆', '🥔', '🥕', '🌽', '🌶', '🫑', '🥒', '🥬', '🥦',
-        '🧄', '🧅', '🍄', '🥜', '🌰',
-
-        '🍞', '🥐', '🥖', '🫓', '🥨', '🥯', '🥞', '🧇', '🧀', '🍖', '🍗', '🥩', '🥓', '🍔', '🍟', '🍕', '🌭', '🥪',
-        '🌮', '🌯', '🫔', '🥙', '🧆', '🥚', '🍳', '🥘', '🍲', '🫕', '🥣', '🥗', '🍿', '🧈', '🧂', '🥫',
-
-        '🍱', '🍘', '🍙', '🍚', '🍛', '🍜', '🍝', '🍠', '🍢', '🍣', '🍤', '🍥', '🥮', '🍡', '🥟', '🥠', '🥡',
-
-        '🦀', '🦞', '🦐', '🦑', '🦪',
-
-        '🍦', '🍧', '🍨', '🍩', '🍪', '🎂', '🍰', '🧁', '🥧', '🍫', '🍬', '🍭', '🍮', '🍯',
-
-        '🍼', '🥛', '☕', '🫖', '🫖', '🍵', '🍶', '🍾', '🍷', '🍸', '🍹', '🍺', '🍻', '🥂', '🥃', '🥤', '🧋', '🧃',
-        '🧉', '🧊'
-    ],
-    transport: [
-        '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒',
-        '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🚲', '🛴', '🛵', '🚏', '🛣', '🛤', '⛽', '🚨',
-        '🚥', '🚦', '🚧', '🛑', '⚓', '⛵', '🛶', '🚤', '🛳', '⛴', '🛥', '🚢', '✈', '🛩', '🛫', '🛬', '💺', '🚁',
-        '🚟', '🚠', '🚡'
-    ]
-}
-
 let TURN_DATA;
 
 /**
@@ -302,8 +254,12 @@ function initGame() {
         remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2
     }
 
-    setBoardSize();
-    addCards();
+
+    for (let elementKey of document.querySelectorAll('div.memory-card')) {
+        elementKey.addEventListener('click', (event) => {
+            onClickCard(event.target);
+        })
+    }
 
     getCurrentPlayer().time.start();
 }
@@ -332,141 +288,6 @@ function validateData() {
 
     return isValid;
 }
-
-/*
-Apply the correct size to the board
- */
-function setBoardSize() {
-    console.log(`[MEMORY] Setting Board's Size: ${BOARD_SIZE_WIDTH}x${BOARD_SIZE_HEIGHT}`)
-    const board = document.getElementById('board');
-
-    board.classList.add('board-width-' + BOARD_SIZE_WIDTH)
-    board.classList.add('board-height-' + BOARD_SIZE_HEIGHT)
-}
-
-/*
- Add cards to the board.
- */
-function addCards() {
-
-    // Fisher-Yates Shuffle
-    function shuffle(array) {
-        let currentIndex = array.length, randomIndex;
-
-        while (currentIndex != 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            [array[currentIndex], array[randomIndex]] = [
-                array[randomIndex], array[currentIndex]];
-        }
-
-        return array;
-    }
-
-
-    const cardAmount = BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH;
-
-    let emojiList = getRandomList(cardAmount);
-    shuffle(emojiList);
-
-    emojiList = emojiList.sort(() => Math.random() - 0.5);
-
-
-    const board = document.getElementById('board');
-    for (let i = 0; i < cardAmount; i++) {
-        const square = document.createElement('div');
-        square.setAttribute('class', 'memory-card');
-        square.setAttribute('id', ('card-' + i));
-        square.setAttribute('card', emojiList[i].key);
-
-        const inner = document.createElement('div');
-        inner.setAttribute('class', 'card-inner')
-        square.appendChild(inner)
-
-        const value = document.createElement('div');
-        value.setAttribute('class', 'card-front');
-        value.innerText = emojiList[i].value;
-        inner.appendChild(value);
-
-        const back = document.createElement('div');
-        back.setAttribute('class', 'card-back');
-        inner.appendChild(back);
-
-        square.addEventListener('click', (event) => {
-            onClickCard(event.target);
-        })
-
-
-        board.appendChild(square);
-    }
-}
-
-/*
-Generates a list of emojis
- */
-function getRandomList(size) {
-    const arr = []
-
-    for (let i = 0; i < size / 2; i++) {
-        let emoji = getRandomEmoji();
-
-        while (arr.filter(e => e.key === emoji.key).length > 0) {
-            emoji = getRandomEmoji();
-        }
-
-        arr.push(...[emoji, emoji]);
-
-    }
-
-    return arr;
-}
-
-/*
-Return a random emoji
- */
-function getRandomEmoji() {
-    let emoji;
-
-    let pos;
-
-    switch (CARD_TYPE) {
-        case 'animals':
-            pos = Math.floor(Math.random() * emojis.animals.length);
-            emoji = emojis.animals[pos];
-            break;
-        case 'food':
-            pos = Math.floor(Math.random() * emojis.food.length);
-            emoji = emojis.food[pos];
-            break;
-        case 'transport':
-            pos = Math.floor(Math.random() * emojis.transport.length);
-            emoji = emojis.transport[pos];
-            break;
-        default:
-            pos = Math.floor(Math.random() * (emojis.animals.length + emojis.food.length + emojis.transport.length));
-
-            if (pos < emojis.animals.length) {
-                emoji = emojis.animals[pos]
-            } else if (pos - emojis.animals.length < emojis.food.length) {
-                emoji = emojis.food[pos - emojis.animals.length]
-            } else if (pos - emojis.food.length - emojis.animals.length < emojis.transport.length) {
-                emoji = emojis.transport[pos - emojis.food.length - emojis.animals.length]
-            } else {
-                console.error('Position of emoji out of range:' + pos)
-            }
-    }
-
-    if (emoji === undefined) {
-        console.log('UNDEFINED EMOJI FOUND:')
-        console.log(pos);
-        console.log(emoji);
-        console.log('----------------')
-    }
-
-    return {key: pos, value: emoji}
-}
-
 
 /*
 Handle card click
