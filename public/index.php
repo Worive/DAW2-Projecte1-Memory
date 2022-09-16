@@ -25,7 +25,7 @@
         <form action="memory.php" method="post">
             <div class="form-group mb-3">
                 <label class="form-label">Mida del taulell: <span
-                            id="sizeBoardLabel">? x ?</span></label>
+                            id="sizeBoardLabel">4 x 4</span></label>
                 <br>
                 <div class="row g-3">
                     <div class="col-sm-6">
@@ -47,13 +47,23 @@
 
             </div>
 
-            <label for="card-type">Tipus de Carta</label>
-            <select id="card-type" name="card-type" class="form-select">
-                <option value="animals" selected>Animals</option>
-                <option value="transport">Transport</option>
-                <option value="food">Menjar</option>
-                <option value="random">Random</option>
-            </select>
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <label for="card-type" class="form-label">Tipus de Carta</label>
+                    <select id="card-type" name="card-type" class="form-select">
+                        <option value="animals" selected>Animals</option>
+                        <option value="transport">Transport</option>
+                        <option value="food">Menjar</option>
+                        <option value="random">Random</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="timer" class="form-label">Timer</label>
+                    <input type="number" class="form-control" id="timer" placeholder="" value="0"
+                           name="timer" min="0" required>
+                    <small class="text-muted">Set as 0 for disabled.</small>
+                </div>
+
 
             <hr>
 
