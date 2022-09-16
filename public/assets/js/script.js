@@ -268,6 +268,7 @@ function nextTurn() {
     if (TURN_DATA.remainingCards <= 0) {
         console.log(`WON`)
         win();
+        return
     }
 
     if (TURN_DATA.currentPlayer === PLAYER_AMOUNT - 1) {
@@ -490,12 +491,16 @@ async function resetSelectedCards(selectedCardA, selectedCardB) {
 }
 
 function win() {
-    data.time.stop();
+    for (const player of TURN_DATA.players) {
+        player.time.stop();
+
+        console.log(player)
+    }
 
     switch (PLAYER_AMOUNT) {
         case 1:
             const points = data.time.seconds() + data.moves * 3;
-            addScore(points, getCurrentPlayer().username, data.moves, data.time.formattedTime())
+            addScore(points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime())
             break;
     }
 }
@@ -507,7 +512,22 @@ function win() {
 const LEADER_BOARD = loadLeaderBoard();
 
 function loadLeaderBoard() {
-    let leaderBoard = window.localStorage.getItem('leaderBoard');
+    function getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    let leaderBoard = getCookie('leaderboard')
 
     if (leaderBoard) {
         return JSON.parse(leaderBoard);
@@ -519,56 +539,22 @@ function loadLeaderBoard() {
 }
 
 function addScore(points, username, moves, time) {
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    const dateOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+
     LEADER_BOARD.scores.push({
         points: points,
         username: username,
         moves: moves,
         time: time,
-        date: Date.now(),
+        date: new Date().toLocaleDateString('es-es', dateOptions),
     })
 
-    window.localStorage.setItem('leaderBoard', JSON.stringify(LEADER_BOARD));
-}
-
-function fillTable() {
-    function compare(a, b) {
-        if (a.points < b.points) {
-            return -1;
-        }
-        if (a.points > b.points) {
-            return 1;
-        }
-        return 0;
-    }
-
-    const dateOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-    const leaderBoardElement = document.getElementById('leaderboard')
-
-    LEADER_BOARD.scores.sort()
-
-    for (const score of LEADER_BOARD.scores.sort(compare)) {
-        const entry = document.createElement('tr');
-
-        const points = document.createElement('th');
-        points.innerText = score.points;
-        entry.appendChild(points);
-
-        const username = document.createElement('th');
-        username.innerText = score.username;
-        entry.appendChild(username);
-
-        const moves = document.createElement('th');
-        moves.innerText = score.moves;
-        entry.appendChild(moves);
-
-        const time = document.createElement('th');
-        time.innerText = score.time;
-        entry.appendChild(time);
-
-        const date = document.createElement('th');
-        date.innerText = new Date(score.date).toLocaleDateString('es-es', dateOptions);
-        entry.appendChild(date);
-
-        leaderBoardElement.appendChild(entry)
-    }
+    setCookie('leaderboard', JSON.stringify(LEADER_BOARD), 365);
 }
