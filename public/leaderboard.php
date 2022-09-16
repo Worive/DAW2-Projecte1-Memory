@@ -1,6 +1,7 @@
 <?php
 
-function cmp($a, $b) {
+function cmp($a, $b): int
+{
     return strcmp($a->points, $b->points);
 }
 
