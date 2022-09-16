@@ -136,6 +136,10 @@ function checkCardType($value): bool
     return in_array($value, ['animals', 'food', 'random', 'transport']);
 }
 
+function checkTimer($value): bool {
+    return is_numeric($value) && $value >= 0;
+}
+
 $sizeWidth = -1;
 $sizeHeight = -1;
 $players = -1;
@@ -143,13 +147,15 @@ $cardType = 'random';
 $playerNames = [];
 $boardClass = "";
 $cards = "";
+$timer = 0;
 
 $playerStats = "";
-if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type'])) {
+if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type']) && isset($_POST['timer'])) {
     $sizeWidth = htmlspecialchars($_POST["size-width"]);
     $sizeHeight = htmlspecialchars($_POST["size-height"]);
     $players = htmlspecialchars($_POST["players"]);
     $cardType = htmlspecialchars($_POST["card-type"]);
+    $timer = htmlspecialchars($_POST["timer"]);
 
     $boardClass = 'board-width-' . $sizeWidth . ' board-height-' . $sizeHeight;
 
@@ -198,6 +204,10 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         return;
     }
 
+    if (!checkTimer($timer)) {
+        printf("INVALID TIMER VALUE: " . $timer);
+    }
+
     $cards = generateCards($sizeHeight * $sizeWidth, $cardType);
 
 
@@ -220,6 +230,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         const PLAYER_AMOUNT = <?= $players?>;
         const CARD_TYPE = '<?= $cardType ?>';
         const PLAYER_NAMES = JSON.parse('<?= json_encode($playerNames); ?>');
+        const TIMER = <?= $timer ?>;
     </script>
 </head>
 <body onload="initGame()">
