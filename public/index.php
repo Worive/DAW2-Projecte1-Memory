@@ -138,6 +138,7 @@
 </div>
 
 <?php require_once('../templates/footer.php'); ?>
+<script src="assets/js/index.js"></script>
 
 <script>
     updateRequirements(1);

@@ -2,4 +2,4 @@
     <span class="mb-3 mb-md-0 text-muted">Eliott Clergue - 2 DAW</span>
 </footer>
 
-<?php require_once('../templates/js-files.php'); ?>
+<script src="assets/js/bootstrap.bundle.min.js"></script>

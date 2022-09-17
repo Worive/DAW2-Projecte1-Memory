@@ -266,5 +266,6 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 </div>
 
 <?php require_once('../templates/footer.php'); ?>
+<script src="assets/js/memory.js"></script>
 </body>
 </html>
