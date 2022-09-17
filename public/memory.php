@@ -170,6 +170,7 @@ $cardType = 'random';
 $playerNames = [];
 $cards = "";
 $timer = 0;
+$firstPlayer = 0;
 
 $playerStats = "";
 if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type']) && isset($_POST['timer'])) {
@@ -224,6 +225,8 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         printf("INVALID TIMER VALUE: " . $timer);
     }
 
+    $firstPlayer = rand(0, $players - 1);
+
     $cards = generateCards($sizeHeight * $sizeWidth, $cardType);
 
 
@@ -256,6 +259,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         const CARD_TYPE = '<?= $cardType ?>';
         const PLAYER_NAMES = JSON.parse('<?= json_encode($playerNames); ?>');
         const TIMER = <?= $timer ?>;
+        const FIRST_PLAYER = <?= $firstPlayer ?>
     </script>
 </head>
 <body onload="initGame()">
@@ -264,7 +268,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 <div class="d-flex justify-content-center my-3 gap-3">
     <div class="card">
         <div class="card-body">
-            Torn Actual: <span id="current-player"><?= $playerNames[0] ?></span>
+            Torn Actual: <span id="current-player"><?= $playerNames[$firstPlayer] ?></span>
         </div>
     </div>
 

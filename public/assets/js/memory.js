@@ -219,7 +219,7 @@ class PlayerData {
  * @type {{currentPlayer: number, players: PlayerData[], turn: Timer, remainingCards: number}}
  */
 const GAME_DATA = {
-    currentPlayer: 0,
+    currentPlayer: FIRST_PLAYER,
     players: setupPlayers(),
     remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2,
     turn: new Timer(TIMER)
