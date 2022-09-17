@@ -28,6 +28,7 @@ function SelfAdjustingTimer(player) {
      * Starts the timer and define the expected time of end.
      */
     this.start = function () {
+        this.stop(); // Let's prevent double timers
         expected = Date.now() + this.interval;
         timeout = setTimeout(step, this.interval);
     }
@@ -136,7 +137,6 @@ class PlayerData {
                 break;
             case Status.selected:
                 this.flipSecondCard(card)
-                changeTurn();
         }
 
     }
@@ -166,7 +166,10 @@ class PlayerData {
         if (document.getElementById(this.selectedCards.first).getAttribute('card') ===
             document.getElementById(this.selectedCards.second).getAttribute('card')) {
             this.addClassToSelectedCards('found');
-            this.addTotalPoints()
+            this.addTotalPoints();
+            GAME_DATA.turn.start();
+
+            nextTurn(false);
         } else {
             this.addClassToSelectedCards('wrong');
 
@@ -174,10 +177,12 @@ class PlayerData {
             const b = this.selectedCards.second;
 
             setTimeout(() => resetSelectedCards(a, b), 800);
+            nextTurn();
+
+            this.time.stop();
         }
 
         this.status = Status.idle;
-        this.time.stop();
     }
 
     /**
@@ -240,6 +245,8 @@ function Timer(timeInSeconds) {
      */
     this.start = function () {
         if (this.enabled) {
+            this.stop();
+
             this.remainingTime = timeInSeconds;
             this.timeout = setInterval(step, 25)
         }
@@ -261,7 +268,9 @@ function Timer(timeInSeconds) {
         that.remainingTime -= 0.025
 
         if (that.remainingTime <= 0) {
-            changeTurn();
+            that.stop();
+            nextTurn();
+            return;
         }
 
         document.getElementById('timer').innerText = that.remainingTime.toFixed(2);
@@ -286,7 +295,7 @@ function setupPlayers() {
 /**
  * Change the turn.
  */
-function changeTurn() {
+function nextTurn(changePlayer = true) {
     GAME_DATA.turn.stop();
     console.log(`NEW TURN`)
     if (GAME_DATA.remainingCards <= 0) {
@@ -295,13 +304,16 @@ function changeTurn() {
         return
     }
 
-    if (GAME_DATA.currentPlayer === PLAYER_AMOUNT - 1) {
-        GAME_DATA.currentPlayer = 0;
-    } else {
-        GAME_DATA.currentPlayer += 1;
-    }
+    if (changePlayer) {
+        if (GAME_DATA.currentPlayer === PLAYER_AMOUNT - 1) {
+            GAME_DATA.currentPlayer = 0;
+        } else {
+            GAME_DATA.currentPlayer += 1;
+        }
 
-    document.getElementById('current-player').innerText = getCurrentPlayer().username;
+        document.getElementById('current-player').innerText = getCurrentPlayer().username;
+
+    }
 
     getCurrentPlayer().time.start()
     GAME_DATA.turn.start();
@@ -411,9 +423,10 @@ function resetSelectedCards(selectedCardA, selectedCardB) {
  * Handle the win.
  */
 function win() {
+    GAME_DATA.turn.stop();
+
     for (const player of GAME_DATA.players) {
         player.time.stop();
-
         console.log(player)
     }
 
