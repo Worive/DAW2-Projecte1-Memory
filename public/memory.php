@@ -130,10 +130,10 @@ function generateCards(int $size,string $cardType): string
     return $content;
 }
 
-function checkSize($value): bool
+function checkSize($n, $m): bool
 {
-    if (is_numeric($value)) {
-        return ($value % 2 == 0 && $value > 1 && $value < 23);
+    if (is_numeric($n) && is_numeric($m)) {
+        return ($n * $m % 2 == 0);
     }
 
     return false;
@@ -168,7 +168,6 @@ $sizeHeight = -1;
 $players = -1;
 $cardType = 'random';
 $playerNames = [];
-$boardClass = "";
 $cards = "";
 $timer = 0;
 
@@ -179,8 +178,6 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     $players = htmlspecialchars($_POST["players"]);
     $cardType = htmlspecialchars($_POST["card-type"]);
     $timer = htmlspecialchars($_POST["timer"]);
-
-    $boardClass = 'board-width-' . $sizeWidth . ' board-height-' . $sizeHeight;
 
     for ($i = 1; $i <= $players; $i++) {
         if (isset($_POST['player-name-' . $i])) {
@@ -209,12 +206,8 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     }
 
 
-    if (!checkSize($sizeWidth)) {
-        printf('INVALID SIZE WIDTH VALUE');
-    }
-
-    if (!checkSize($sizeHeight)) {
-        printf('INVALID SIZE HEIGHT VALUE');
+    if (!checkSize($sizeWidth, $sizeHeight)) {
+        printf('INVALID SIZE VALUE: ' . $sizeHeight . ' ' . $sizeWidth);
     }
 
     if (!checkPlayer($players)) {
@@ -246,6 +239,15 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     <meta charset="UTF-8">
     <title>Projecte 1</title>
     <link href="assets/css/style.css" rel="stylesheet">
+
+    <style>
+        #board {
+            min-width: <?= $sizeWidth ?>00px;
+            width: <?= $sizeWidth ?>00px;
+            height: <?= $sizeHeight ?>00px;
+            min-height: <?= $sizeHeight ?>00px;
+        }
+    </style>
 
     <script>
         const BOARD_SIZE_WIDTH = <?= $sizeWidth?>;
@@ -283,7 +285,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     <div class="card" style="width: 18rem;">
         <?= $playerStats ?>
     </div>
-    <div id="board" class="<?= $boardClass ?>">
+    <div id="board">
         <?= $cards ?>
     </div>
 </div>
