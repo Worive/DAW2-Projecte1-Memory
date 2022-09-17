@@ -104,8 +104,6 @@
                 </div>
             </div>
 
-            <hr>
-
             <div class="row g-3">
                 <div class="col-sm-6" id="group-player1">
                     <label for="player-name-1" class="form-label">Player 1 Name</label>
