@@ -17,7 +17,32 @@ function subscribeUpdateBoardSize() {
         updateBoardSize();
     })
 
+    sizeBoardHeight.addEventListener('change', (event) => {
+        updateStep();
+    })
+    sizeBoardWidth.addEventListener('change', (event) => {
+        updateStep();
+    })
+
     updateBoardSize();
+}
+
+function updateStep() {
+    const sizeBoardWidth = document.getElementById('sizeBoardWidth');
+    const sizeBoardHeight = document.getElementById('sizeBoardHeight');
+
+    if (sizeBoardHeight.value % 2 === 0) {
+        sizeBoardWidth.step = 1;
+    } else {
+        sizeBoardWidth.step = 2;
+    }
+
+    if (sizeBoardWidth.value % 2 === 0) {
+        sizeBoardHeight.step = 1;
+    } else {
+        sizeBoardHeight.step = 2;
+    }
+
 }
 
 /**
