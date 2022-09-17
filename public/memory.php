@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * List of emojis
+ */
 const emojis = [
     "animals" => [
         '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🦮', '🐩', '🐺', '🦊', '🦝', '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴',
@@ -44,8 +48,13 @@ const emojis = [
     ]
 ];
 
-
-function getRandomEmoji($cardType): array
+/**
+ * Get a random emoji depending on the card type.
+ *
+ * @param $cardType string - Card type
+ * @return array
+ */
+function getRandomEmoji(string $cardType): array
 {
     $pos = -1;
     $emoji = 'unknown';
@@ -68,7 +77,14 @@ function getRandomEmoji($cardType): array
     ];
 }
 
-function getRandomList($size, $cardType): array
+/**
+ * Get a random list of emojis
+ *
+ * @param int $size - Amount of emojis needed
+ * @param string $cardType - Emoji's type
+ * @return array
+ */
+function getRandomList(int $size, string $cardType): array
 {
     $arr = [];
 
@@ -87,7 +103,14 @@ function getRandomList($size, $cardType): array
 
 }
 
-function generateCards($size, $cardType): string
+/**
+ * Generate cards with the random emojis.
+ *
+ * @param int $size - Amount of cards.
+ * @param string $cardType - Cards type
+ * @return string
+ */
+function generateCards(int $size,string $cardType): string
 {
     $emojis = getRandomList($size / 2, $cardType);
 

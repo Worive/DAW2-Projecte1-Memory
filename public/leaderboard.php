@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Compares two scores.
+ *
+ * @param $a
+ * @param $b
+ * @return int
+ */
 function cmp($a, $b): int
 {
     return strcmp($a->points, $b->points);
