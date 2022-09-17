@@ -1,6 +1,18 @@
 // -------------------------------------------
 //                MEMORY GAME
 // -------------------------------------------
+
+/**
+ * Possibles Player Status.
+ * @readonly
+ * @enum
+ * @type {{idle: (Status|number), selected: (Status|number)}}
+ */
+const Status = {
+    idle: 0,
+    selected: 1,
+}
+
 /**
  * Self adjusting timer automatically updating the timer display.
  *
@@ -79,62 +91,6 @@ function SelfAdjustingTimer(player) {
 }
 
 /**
- * Game data
- *
- * @type {{currentPlayer: number, players: PlayerData[], turn: Timer, remainingCards: number}}
- */
-const GAME_DATA = {
-    currentPlayer: 0,
-    players: setupPlayers(),
-    remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2,
-    turn: new Timer(TIMER)
-}
-
-/**
- * Timer of time remaining for each player's turn.
- *
- * @param {number} timeInSeconds - Time in seconds.
- */
-function Timer(timeInSeconds) {
-    let that = this;
-
-    this.enabled = timeInSeconds > 0; // disable the timer if the time is 0 or less.
-
-    /**
-     * Start the timer if enabled.
-     */
-    this.start = function () {
-        if (this.enabled) {
-            this.remainingTime = timeInSeconds;
-            this.timeout = setInterval(step, 25)
-        }
-    }
-
-    /**
-     * Stops the timer if enabled
-     */
-    this.stop = function () {
-        if (this.enabled) {
-            clearTimeout(this.timeout);
-        }
-    }
-
-    /**
-     * Reduce the remaining time and proceed with next turn. Updating the timer display.
-     */
-    function step() {
-        that.remainingTime -= 0.025
-
-        if (that.remainingTime <= 0) {
-            changeTurn();
-        }
-
-        document.getElementById('timer').innerText = that.remainingTime.toFixed(2);
-    }
-}
-
-
-/**
  * A class representing the Player Data.
  *
  * @property {string} username - Username of the player
@@ -147,7 +103,7 @@ function Timer(timeInSeconds) {
 class PlayerData {
     /**
      * PlayerData's constructor
-     * 
+     *
      * @constructor
      * @param {string} username - Username of the player.
      * @param {number} id - ID of the player.
@@ -258,14 +214,58 @@ class PlayerData {
 }
 
 /**
- * Possibles Player Status.
- * @readonly
- * @enum
- * @type {{idle: (Status|number), selected: (Status|number)}}
+ * Game data
+ *
+ * @type {{currentPlayer: number, players: PlayerData[], turn: Timer, remainingCards: number}}
  */
-const Status = {
-    idle: 0,
-    selected: 1,
+const GAME_DATA = {
+    currentPlayer: 0,
+    players: setupPlayers(),
+    remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2,
+    turn: new Timer(TIMER)
+}
+
+/**
+ * Timer of time remaining for each player's turn.
+ *
+ * @param {number} timeInSeconds - Time in seconds.
+ */
+function Timer(timeInSeconds) {
+    let that = this;
+
+    this.enabled = timeInSeconds > 0; // disable the timer if the time is 0 or less.
+
+    /**
+     * Start the timer if enabled.
+     */
+    this.start = function () {
+        if (this.enabled) {
+            this.remainingTime = timeInSeconds;
+            this.timeout = setInterval(step, 25)
+        }
+    }
+
+    /**
+     * Stops the timer if enabled
+     */
+    this.stop = function () {
+        if (this.enabled) {
+            clearTimeout(this.timeout);
+        }
+    }
+
+    /**
+     * Reduce the remaining time and proceed with next turn. Updating the timer display.
+     */
+    function step() {
+        that.remainingTime -= 0.025
+
+        if (that.remainingTime <= 0) {
+            changeTurn();
+        }
+
+        document.getElementById('timer').innerText = that.remainingTime.toFixed(2);
+    }
 }
 
 /**
