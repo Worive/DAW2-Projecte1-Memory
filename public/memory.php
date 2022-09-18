@@ -110,7 +110,7 @@ function getRandomList(int $size, string $cardType): array
  * @param string $cardType - Cards type
  * @return string
  */
-function generateCards(int $size,string $cardType): string
+function generateCards(int $size, string $cardType): string
 {
     $emojis = getRandomList($size / 2, $cardType);
 
@@ -159,9 +159,24 @@ function checkCardType($value): bool
     return in_array($value, ['animals', 'food', 'random', 'transport']);
 }
 
-function checkTimer($value): bool {
+function checkTimer($value): bool
+{
     return is_numeric($value) && $value >= 0;
 }
+
+function logError($message): void
+{
+
+    if (!isset($_SESSION['error-messages'])) {
+        $_SESSION['error-messages'] = [];
+    }
+
+    error_log($message);
+
+    $_SESSION['error-messages'][] = $message;
+}
+
+session_start();
 
 $sizeWidth = -1;
 $sizeHeight = -1;
@@ -171,6 +186,7 @@ $playerNames = [];
 $cards = "";
 $timer = 0;
 $firstPlayer = 0;
+$error_found = false;
 
 $playerStats = "";
 if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type']) && isset($_POST['timer'])) {
@@ -200,38 +216,47 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 
             } else {
                 error_log("Invalid username provided for player " . $i . " :" . $playerName);
+                $error_found = true;
             }
         } else {
             error_log("Username not provided for player " . $i);
+            $error_found = true;
         }
     }
 
 
     if (!checkSize($sizeWidth, $sizeHeight)) {
-        printf('INVALID SIZE VALUE: ' . $sizeHeight . ' ' . $sizeWidth);
+        logError('INVALID SIZE VALUE: ' . $sizeHeight . ' ' . $sizeWidth);
+        $error_found = true;
     }
 
     if (!checkPlayer($players)) {
-        printf('INVALID PLAYER VALUE:' . $players);
-        return;
+        logError('INVALID PLAYER VALUE:' . $players);
+        $error_found = true;
     }
 
     if (!checkCardType($cardType)) {
-        printf("INVALID CARD TYPE");
-        return;
+        logError("INVALID CARD TYPE");
+        $error_found = true;
+
     }
 
     if (!checkTimer($timer)) {
-        printf("INVALID TIMER VALUE: " . $timer);
+        logError("INVALID TIMER VALUE: " . $timer);
+        $error_found = true;
+
     }
 
-    $firstPlayer = rand(0, $players - 1);
-
-    $cards = generateCards($sizeHeight * $sizeWidth, $cardType);
-
-
 } else {
-    printf('MISSING POST VALUES!');
+    logError('MISSING POST VALUES!');
+    $error_found = true;
+}
+
+if ($error_found) {
+    header('Location: index.php');
+} else {
+    $firstPlayer = rand(0, $players - 1);
+    $cards = generateCards($sizeHeight * $sizeWidth, $cardType);
 }
 
 ?>

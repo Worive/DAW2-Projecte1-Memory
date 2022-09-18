@@ -13,6 +13,24 @@ footer {
     margin-top: auto;
 }
 
+.toast-container {
+    z-index: 2;
+}
+
+.toast-danger, .toast-danger > .toast-header {
+    background-color: #f9e1e5;
+    color: #af233a;
+    border-color: #f4c8cf;
+}
+
+.toast-danger > .toast-header {
+    border-bottom-width: 2px;
+}
+
+.game-form-container {
+    max-width: 800px;
+}
+
 /* ===========[ Board ]=========== */
 
 #board {
