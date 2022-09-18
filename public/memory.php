@@ -192,9 +192,9 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
         
         
                              <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Moves: <span id="moves-counter-' . $i . '">0</span></li>
-                                <li class="list-group-item">Cards Found: <span id="total-counter-' . $i . '">0</span></li>
-                                <li class="list-group-item">Time: <span id="time-counter-' . $i . '">00:00</span></li>
+                                <li class="list-group-item">Moviments: <span id="moves-counter-' . $i . '">0</span></li>
+                                <li class="list-group-item">Punts: <span id="total-counter-' . $i . '">0</span></li>
+                                <li class="list-group-item">Temps: <span id="time-counter-' . $i . '">00:00</span></li>
                             </ul>
                             ';
 
@@ -280,7 +280,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 
     <div class="card">
         <div class="card-body">
-            Remaining pairs: <span id="remaining-pairs"><?= $sizeWidth * $sizeHeight / 2 ?></span>
+            Parelles restant: <span id="remaining-pairs"><?= $sizeWidth * $sizeHeight / 2 ?></span>
         </div>
     </div>
 </div>

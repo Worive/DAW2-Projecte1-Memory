@@ -18,7 +18,7 @@
         </div>
     </div>
     <hr>
-    <div class="container">
+    <div class="container mb-5">
         <h1 class="mt-5">
             Començar una partida
         </h1>
@@ -30,14 +30,14 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label class="form-label" for="sizeBoardWidth">
-                            Width
+                            Amplada
                         </label>
                         <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardWidth"
                                name="size-width" value=4>
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label" for="sizeBoardHeight">
-                            Height
+                            Altura
                         </label>
                         <input type="range" class="form-range" min="2" max="8" step="2" id="sizeBoardHeight"
                                name="size-height" value=4>
@@ -54,14 +54,14 @@
                         <option value="animals" selected>Animals</option>
                         <option value="transport">Transport</option>
                         <option value="food">Menjar</option>
-                        <option value="random">Random</option>
+                        <option value="random">Aleatori</option>
                     </select>
                 </div>
                 <div class="col-sm-6">
-                    <label for="timer" class="form-label">Timer</label>
-                    <input type="number" class="form-control" id="timer" placeholder="" value="0"
-                           name="timer" min="0" required>
-                    <small class="text-muted">Set as 0 for disabled.</small>
+                    <label for="timer" class="form-label">Temps per torn</label>
+                    <input type="number" class="form-control" id="timer" placeholder=""
+                           name="timer" min="0" required value="0">
+                    <small class="text-muted">0 o menys per desactivar-ho</small>
                 </div>
 
 
@@ -106,25 +106,25 @@
 
             <div class="row g-3">
                 <div class="col-sm-6" id="group-player1">
-                    <label for="player-name-1" class="form-label">Player 1 Name</label>
+                    <label for="player-name-1" class="form-label">Nom del jugador 1</label>
                     <input type="text" class="form-control" id="player-name-1" placeholder="" value=""
                            name="player-name-1"  minlength="3" maxlength="16">
                 </div>
 
                 <div class="col-sm-6" id="group-player2">
-                    <label for="player-name-2" class="form-label">Player 2 Name</label>
+                    <label for="player-name-2" class="form-label">Nom del jugador  2</label>
                     <input type="text" class="form-control" id="player-name-2" placeholder="" value=""
                            name="player-name-2" minlength="3" maxlength="16">
                 </div>
 
                 <div class="col-sm-6" id="group-player3">
-                    <label for="player-name-3" class="form-label">Player 3 Name</label>
+                    <label for="player-name-3" class="form-label">Nom del jugador  3</label>
                     <input type="text" class="form-control" id="player-name-3" placeholder="" value=""
                            name="player-name-3"  minlength="3" maxlength="16">
                 </div>
 
                 <div class="col-sm-6" id="group-player4">
-                    <label for="player-name-4" class="form-label">Player 4 Name</label>
+                    <label for="player-name-4" class="form-label">Nom del jugador 4</label>
                     <input type="text" class="form-control" id="player-name-4" placeholder="" value=""
                            name="player-name-4" minlength="3" maxlength="16">
                 </div>

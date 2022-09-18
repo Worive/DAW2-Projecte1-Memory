@@ -21,7 +21,7 @@ if (isset($_COOKIE['leaderboard'])) {
     $content .= '<table class="table">
         <thead>
         <tr>
-            <th scope="col">Score</th>
+            <th scope="col">Punts</th>
             <th scope="col">Nom</th>
             <th scope="col">Moviments</th>
             <th scope="col">Temps</th>
