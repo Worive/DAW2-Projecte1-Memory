@@ -3,11 +3,11 @@
 /**
  * Compares two scores.
  *
- * @param $a
- * @param $b
- * @return int
+ * @param $a - Score A
+ * @param $b - Score B
+ * @return int - Score Comparison result
  */
-function cmp($a, $b): int
+function compareScores($a, $b): int
 {
     return strcmp($b->points, $a->points);
 }
@@ -16,7 +16,7 @@ $content = "";
 if (isset($_COOKIE['leaderboard'])) {
     $leaderboard = json_decode($_COOKIE['leaderboard'])->scores;
 
-    usort($leaderboard, "cmp");
+    usort($leaderboard, "compareScores");
 
     $content .= '<table class="table table-striped">
         <thead>

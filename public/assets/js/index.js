@@ -27,6 +27,9 @@ function subscribeUpdateBoardSize() {
     updateBoardSize();
 }
 
+/**
+ * Update steps from 1 to 2 depending of other size board being even.
+ */
 function updateStep() {
     const sizeBoardWidth = document.getElementById('sizeBoardWidth');
     const sizeBoardHeight = document.getElementById('sizeBoardHeight');
