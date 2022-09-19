@@ -25,6 +25,7 @@ if (isset($_COOKIE['leaderboard'])) {
             <th scope="col">Nom</th>
             <th scope="col">Moviments</th>
             <th scope="col">Temps</th>
+            <th scope="col">Taulell</th>
             <th scope="col">Data</th>
         </tr>
         </thead>
@@ -37,6 +38,7 @@ if (isset($_COOKIE['leaderboard'])) {
                 <th>' . $score->username . '</th>
                 <th>' . $score->moves . '</th>
                 <th>' . $score->time . '</th>
+                <th>' . $score->boardSize . '</th>
                 <th>' . $score->date . '</th>
             </tr>
             ';

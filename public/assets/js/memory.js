@@ -475,7 +475,7 @@ function win() {
     switch (PLAYER_AMOUNT) {
         case 1:
             const points = calculatePoints(getCurrentPlayer().time.seconds(), getCurrentPlayer().moves, getCurrentPlayer().stats);
-            addScore(points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime())
+            addScore(points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime(), `${BOARD_SIZE_WIDTH} x ${BOARD_SIZE_HEIGHT}`)
             break;
     }
 
@@ -570,8 +570,9 @@ function loadLeaderBoard() {
  * @param {string} username - Player's username
  * @param {number} moves - Total of player's moves
  * @param {string} time - Time taken to win.
+ * @param {string} boardSize - Board size (example: 4 x 5)
  */
-function addScore(points, username, moves, time) {
+function addScore(points, username, moves, time, boardSize) {
     function setCookie(cname, cvalue, exdays) {
         const d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -602,6 +603,7 @@ function addScore(points, username, moves, time) {
         username: username,
         moves: moves,
         time: time,
+        boardSize: boardSize,
         date: formattedDate,
     })
 
