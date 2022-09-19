@@ -115,14 +115,49 @@ class PlayerData {
         this.moves = 0;
         this.cards = 0;
         this.time = new SelfAdjustingTimer(id);
-
         this.selectedCards = {
             first: null,
             second: null
         }
-
         this.status = Status.idle;
 
+        this.stats = {
+            knownCards: [],
+            consecutive: {
+                best: 0,
+                current: 0,
+                inRow: false
+            }
+        }
+    }
+
+    checkConsecutive(success) {
+        if (success) {
+            if (this.stats.consecutive.inRow) {
+                this.stats.consecutive.current += 1;
+            } else {
+                this.stats.consecutive.current = 1;
+                this.stats.consecutive.inRow = true;
+            }
+
+            if (this.stats.consecutive.current > this.stats.consecutive.best) {
+                this.stats.consecutive.best = this.stats.consecutive.current;
+            }
+        } else {
+            this.stats.consecutive.current = 0;
+            this.stats.consecutive.inRow = false;
+
+        }
+    }
+
+    checkKnownCard(success, cardId) {
+        if (this.stats.knownCards[cardId]) {
+            if (!success) {
+                this.stats.knownCards[cardId] += 1;
+            }
+        } else {
+            this.stats.knownCards[cardId] = 1;
+        }
     }
 
     /**
@@ -161,10 +196,17 @@ class PlayerData {
         this.addMove();
 
         card.classList.add('selected');
-        this.selectedCards.second = card.getAttribute('id');
+        this.selectedCards.second = card.id;
 
-        if (document.getElementById(this.selectedCards.first).getAttribute('card') ===
-            document.getElementById(this.selectedCards.second).getAttribute('card')) {
+        let firstCardID = document.getElementById(this.selectedCards.first).getAttribute('card');
+        let secondCardID = document.getElementById(this.selectedCards.second).getAttribute('card');
+        let isSuccess = firstCardID === secondCardID;
+        this.checkConsecutive(isSuccess);
+
+        this.checkKnownCard(isSuccess, this.selectedCards.first)
+        this.checkKnownCard(isSuccess, this.selectedCards.second)
+
+        if (isSuccess) {
             this.addClassToSelectedCards('found');
             this.addTotalPoints();
             GAME_DATA.turn.start();
@@ -297,14 +339,14 @@ function setupPlayers() {
  */
 function nextTurn(changePlayer = true) {
     GAME_DATA.turn.stop();
-    console.log(`NEW TURN`)
+    console.log(`NEW TURN: ` + changePlayer && PLAYER_AMOUNT > 1)
     if (GAME_DATA.remainingCards <= 0) {
         console.log(`WON`)
         win();
         return
     }
 
-    if (changePlayer) {
+    if (changePlayer && PLAYER_AMOUNT > 1) {
         if (GAME_DATA.currentPlayer === PLAYER_AMOUNT - 1) {
             GAME_DATA.currentPlayer = 0;
         } else {
@@ -432,10 +474,64 @@ function win() {
 
     switch (PLAYER_AMOUNT) {
         case 1:
-            const points = getCurrentPlayer().time.seconds() + getCurrentPlayer().moves * 3;
+            const points = calculatePoints(getCurrentPlayer().time.seconds(), getCurrentPlayer().moves, getCurrentPlayer().stats);
             addScore(points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime())
             break;
     }
+
+    const modal = new bootstrap.Modal(document.getElementById('win-recap'), {
+        backdrop: 'static'
+    });
+
+    modal.show()
+}
+
+/**
+ * Calculate total points depending on various factors.
+ *
+ * @param {number} timeInSeconds - Time in Seconds.
+ * @param {number} moves - Moves done
+ * @param {{knownCards: number[], consecutive: {best: number, current: number, inRow: boolean}}} stats - Best consecutive amount of cards found.
+ *
+ * @return {number} - Final Points.
+ */
+function calculatePoints(timeInSeconds, moves, stats) {
+    const difficulty = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 64; // 0 -> 100%
+
+    let knownChecked = 0;
+    for (const knownCardsKey in stats.knownCards) {
+        const value = stats.knownCards[knownCardsKey];
+
+        if (value > 1) knownChecked += value - 1;
+    }
+
+    let timePoints = timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * 2;
+
+    if (timePoints < 0) timePoints = 0;
+
+    const movePoints = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
+
+
+    console.log(
+        `Difficulty: ${difficulty*100}%`,
+        '\n',
+        `KnownChecked: ${knownChecked}`,
+        '\n',
+        `Time Points: ${timePoints}`,
+        '\n',
+        `Move perfection: ${movePoints*100}%`,
+        '\n',
+        `Consecutive: ${stats.consecutive.best}`,
+        '\n',
+        `TimeInSeconds: ${timeInSeconds}`,
+        '\n-------\n',
+        `POINTS: ${Math.round(difficulty * movePoints * (100 - knownChecked - timePoints + stats.consecutive.best))}`,
+        '\n',
+        `POINTS: 100 + ${difficulty} * ${movePoints} * (100 - ${knownChecked} - ${timePoints} + ${stats.consecutive.best}`
+
+    )
+
+    return Math.round(difficulty * movePoints * (100 - knownChecked - timePoints + stats.consecutive.best));
 }
 
 // -------------------------------------------
@@ -503,14 +599,30 @@ function addScore(points, username, moves, time) {
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
-    const dateOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    Number.prototype.padding = function (base, chr) {
+        const len = (String(base || 10).length
+            - String(this).length) + 1;
+
+        return len > 0 ? new Array(len).join(chr || '0')
+            + this : this;
+    }
+
+    let d = new Date();
+
+    const formattedDate = [
+            d.getDate().padding(),
+            (d.getMonth() + 1).padding(),
+            d.getFullYear()].join('/') + ' ' +
+        [d.getHours().padding(),
+            d.getMinutes().padding(),
+            d.getSeconds().padding()].join(':');
 
     LEADER_BOARD.scores.push({
         points: points,
         username: username,
         moves: moves,
         time: time,
-        date: new Date().toLocaleDateString('es-es', dateOptions),
+        date: formattedDate,
     })
 
     setCookie('leaderboard', JSON.stringify(LEADER_BOARD), 365);

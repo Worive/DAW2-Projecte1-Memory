@@ -18,7 +18,7 @@ if (isset($_COOKIE['leaderboard'])) {
 
     usort($leaderboard, "cmp");
 
-    $content .= '<table class="table">
+    $content .= '<table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Punts</th>

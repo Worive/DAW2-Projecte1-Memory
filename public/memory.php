@@ -187,6 +187,7 @@ $cards = "";
 $timer = 0;
 $firstPlayer = 0;
 $error_found = false;
+$timerValue = '∞';
 
 $playerStats = "";
 if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST['players']) && isset($_POST['card-type']) && isset($_POST['timer'])) {
@@ -244,11 +245,9 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
     if (!checkTimer($timer)) {
         logError("INVALID TIMER VALUE: " . $timer);
         $error_found = true;
-
     }
 
 } else {
-    logError('MISSING POST VALUES!');
     $error_found = true;
 }
 
@@ -257,6 +256,10 @@ if ($error_found) {
 } else {
     $firstPlayer = rand(0, $players - 1);
     $cards = generateCards($sizeHeight * $sizeWidth, $cardType);
+
+    if ($timer > 0) {
+        $timerValue = '00:00';
+    }
 }
 
 ?>
@@ -299,7 +302,7 @@ if ($error_found) {
 
     <div class="card">
         <div class="card-body">
-            Temps: <span id="timer">00:00</span>
+            Temps: <span id="timer"><?= $timerValue ?></span>
         </div>
     </div>
 
@@ -316,6 +319,24 @@ if ($error_found) {
     </div>
     <div id="board">
         <?= $cards ?>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="win-recap">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Victoria!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">Return to Home</button>
+                <button type="button" class="btn btn-primary">Replay</button>
+            </div>
+        </div>
     </div>
 </div>
 
