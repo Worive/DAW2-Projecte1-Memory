@@ -59,12 +59,16 @@ function getRandomEmoji(string $cardType): array
     $pos = -1;
     $emoji = 'unknown';
     switch ($cardType) {
-        case 'animals' || 'food' || 'transport':
+        case 'food':
+        case 'transport':
+        case 'animals':
             $pos = array_rand(range(0, sizeof(emojis[$cardType]) - 1));
             $emoji = emojis[$cardType][$pos];
             break;
         case 'random':
+            $pos = array_rand(range(0, sizeof(emojis['food'])+sizeof(emojis['transport'])+sizeof(emojis['animals']) - 1));
 
+            if ($pos < sizeof(emojis['food']))
             break;
         default:
             error_log('Unknown card type: ' . $cardType);
