@@ -99,7 +99,7 @@ if (isset($_SESSION['error-messages'])) {
                     <label for="timer" class="form-label">Temps per torn</label>
                     <input type="number" class="form-control" id="timer" placeholder=""
                            name="timer" min="0" required value="0">
-                    <small class="text-muted">0 o menys per desactivar-ho</small>
+                    <small class="text-muted">0 per desactivar-ho</small>
                 </div>
 
 
