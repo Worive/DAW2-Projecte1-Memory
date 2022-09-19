@@ -9,7 +9,7 @@
  */
 function cmp($a, $b): int
 {
-    return strcmp($a->points, $b->points);
+    return strcmp($b->points, $a->points);
 }
 
 $content = "";
