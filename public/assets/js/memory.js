@@ -511,26 +511,6 @@ function calculatePoints(timeInSeconds, moves, stats) {
 
     const movePoints = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
 
-
-    console.log(
-        `Difficulty: ${difficulty*100}%`,
-        '\n',
-        `KnownChecked: ${knownChecked}`,
-        '\n',
-        `Time Points: ${timePoints}`,
-        '\n',
-        `Move perfection: ${movePoints*100}%`,
-        '\n',
-        `Consecutive: ${stats.consecutive.best}`,
-        '\n',
-        `TimeInSeconds: ${timeInSeconds}`,
-        '\n-------\n',
-        `POINTS: ${Math.round(difficulty * movePoints * (100 - knownChecked - timePoints + stats.consecutive.best))}`,
-        '\n',
-        `POINTS: 100 + ${difficulty} * ${movePoints} * (100 - ${knownChecked} - ${timePoints} + ${stats.consecutive.best}`
-
-    )
-
     return Math.round(difficulty * movePoints * (100 - knownChecked - timePoints + stats.consecutive.best));
 }
 
