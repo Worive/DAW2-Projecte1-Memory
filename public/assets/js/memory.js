@@ -272,6 +272,48 @@ const GAME_DATA = {
     turn: new Timer(TIMER)
 }
 
+
+/**
+ * Configs and literals used in the game.
+ *
+ * @readonly
+ * @type {{scoring: {timeCookieDays: number, startingPoints: number, timePerTurn: number}, players: {min: number, max: number}, board: {minHeight: number, maxHeight: number, minWidth: number, maxWidth: number}, turns: {showDecimals: number, delayInSeconds: number, delayInMs: number}}}
+ */
+const CONFIG = {
+    board: {
+        maxWidth: 8,
+        minWidth: 2,
+        maxHeight: 8,
+        minHeight: 2,
+    },
+    players: {
+        max: 4,
+        min: 1,
+    },
+    scoring: {
+        startingPoints: 100,
+        timePerTurn: 2,
+        timeCookieDays: 365
+    },
+    turns: {
+        showDecimals: 2,
+        delayInMs: 25,
+        delayInSeconds: 0.025
+    }
+}
+
+/**
+ * Static selector of DOM elements.
+ *
+ * @readonly
+ * @type {{timer: HTMLElement, winRecap: HTMLElement, currentPlayer: HTMLElement}}
+ */
+const SELECTORS = {
+    timer: document.getElementById('timer'),
+    currentPlayer: document.getElementById('current-player'),
+    winRecap: document.getElementById('win-recap'),
+}
+
 /**
  * Timer of time remaining for each player's turn.
  *
@@ -290,7 +332,7 @@ function Timer(timeInSeconds) {
             this.stop();
 
             this.remainingTime = timeInSeconds;
-            this.timeout = setInterval(step, 25)
+            this.timeout = setInterval(step, CONFIG.turns.delayInMs)
         }
     }
 
@@ -307,7 +349,7 @@ function Timer(timeInSeconds) {
      * Reduce the remaining time and proceed with next turn. Updating the timer display.
      */
     function step() {
-        that.remainingTime -= 0.025
+        that.remainingTime -= CONFIG.turns.delayInSeconds;
 
         if (that.remainingTime <= 0) {
             that.stop();
@@ -315,7 +357,7 @@ function Timer(timeInSeconds) {
             return;
         }
 
-        document.getElementById('timer').innerText = that.remainingTime.toFixed(2);
+        SELECTORS.timer.innerText = that.remainingTime.toFixed(CONFIG.turns.showDecimals);
     }
 }
 
@@ -339,9 +381,7 @@ function setupPlayers() {
  */
 function nextTurn(changePlayer = true) {
     GAME_DATA.turn.stop();
-    console.log(`NEW TURN: ` + changePlayer && PLAYER_AMOUNT > 1)
     if (GAME_DATA.remainingCards <= 0) {
-        console.log(`WON`)
         win();
         return
     }
@@ -353,8 +393,7 @@ function nextTurn(changePlayer = true) {
             GAME_DATA.currentPlayer += 1;
         }
 
-        document.getElementById('current-player').innerText = getCurrentPlayer().username;
-
+        SELECTORS.currentPlayer.innerText = getCurrentPlayer().username;
     }
 
     getCurrentPlayer().time.start()
@@ -424,9 +463,9 @@ function validateData() {
 
     let isValid = true;
 
-    isValid = isValid && verifyNumberAndRange(BOARD_SIZE_HEIGHT, "BOARD_SIZE_HEIGHT", 2, 8);
-    isValid = isValid && verifyNumberAndRange(BOARD_SIZE_WIDTH, "BOARD_SIZE_WIDTH", 2, 8);
-    isValid = isValid && verifyNumberAndRange(PLAYER_AMOUNT, "PLAYER_AMOUNT", 1, 4);
+    isValid = isValid && verifyNumberAndRange(BOARD_SIZE_HEIGHT, "BOARD_SIZE_HEIGHT", CONFIG.board.minHeight, CONFIG.board.maxHeight);
+    isValid = isValid && verifyNumberAndRange(BOARD_SIZE_WIDTH, "BOARD_SIZE_WIDTH", CONFIG.board.minWidth, CONFIG.board.maxWidth);
+    isValid = isValid && verifyNumberAndRange(PLAYER_AMOUNT, "PLAYER_AMOUNT", CONFIG.players.min, CONFIG.players.max);
 
     return isValid;
 }
@@ -479,7 +518,7 @@ function win() {
             break;
     }
 
-    const modal = new bootstrap.Modal(document.getElementById('win-recap'), {
+    const modal = new bootstrap.Modal(SELECTORS.winRecap, {
         backdrop: 'static'
     });
 
@@ -505,13 +544,13 @@ function calculatePoints(timeInSeconds, moves, stats) {
         if (value > 1) knownChecked += value - 1;
     }
 
-    let timePoints = timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * 2;
+    let timePoints = timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * CONFIG.scoring.timePerTurn;
 
     if (timePoints < 0) timePoints = 0;
 
     const movePoints = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
 
-    return Math.round(difficulty * movePoints * (100 - knownChecked - timePoints + stats.consecutive.best));
+    return Math.round(difficulty * movePoints * (CONFIG.scoring.startingPoints - knownChecked - timePoints + stats.consecutive.best));
 }
 
 // -------------------------------------------
@@ -607,5 +646,5 @@ function addScore(points, username, moves, time, boardSize) {
         date: formattedDate,
     })
 
-    setCookie('leaderboard', JSON.stringify(LEADER_BOARD), 365);
+    setCookie('leaderboard', JSON.stringify(LEADER_BOARD), CONFIG.scoring.timeCookieDays);
 }
