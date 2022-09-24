@@ -68,7 +68,9 @@ function getRandomEmoji(string $cardType): array
         case 'random':
             $pos = array_rand(range(0, sizeof(emojis['food'])+sizeof(emojis['transport'])+sizeof(emojis['animals']) - 1));
 
-            if ($pos < sizeof(emojis['food']))
+            if ($pos < sizeof(emojis['food'])) {
+//                TODO: Implement
+            }
             break;
         default:
             error_log('Unknown card type: ' . $cardType);
@@ -155,7 +157,7 @@ function checkPlayer($value): bool
 function checkPlayerName($value): bool
 {
     $length = strlen($value);
-    return $length <= 16 && $length >= 3;
+    return $length <= 16 && $length >= 1;
 }
 
 function checkCardType($value): bool
