@@ -1,17 +1,29 @@
 @import "bootstrap.min.css";
 
-/* ===========[ Bottom Footer ]=========== */
+:root {
+    --bg-color-1: #2B2D42;
+    --color-primary: #EF233C;
+    --color-white: #EDF2F4;
+    --color-gray: #8D99AE;
+}
 
 body {
     height: 100vh;
     margin: 0;
     display:flex;
     flex-direction:column;
+    color: #EDF2F4;
+    background-color: var(--bg-color-1);
 }
+
+/* ===========[ Bottom Footer ]=========== */
 
 footer {
     margin-top: auto;
+    background-color: var(--bg-color-1) !important;
 }
+
+/* ===========[ Error Toast ]=========== */
 
 .toast-container {
     z-index: 2;
@@ -109,4 +121,85 @@ footer {
 
 .memory-card.visible > .card-front {
     display: block;
+}
+
+/* ===========[ Emoji Background ]=========== */
+
+#background {
+    position: fixed;
+    z-index: -100;
+    overflow: hidden;
+    gap: 3em;
+    padding: 20px;
+    filter: blur(3px) brightness(80%);
+    background-color: var(--bg-color-1);
+}
+
+#background > div {
+    font-size: 50px;
+    transform: rotate(-45deg);
+    width: fit-content;
+    height: fit-content;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+/* ===========[ Form ]=========== */
+
+.header, .body {
+    background-color: var(--bg-color-1);
+    border-top: solid 10px #EF233C;
+    border-radius: 10px 10px 0 0;
+    padding: 20px;
+}
+
+@media only screen and (min-width: 650px) {
+    .header, .body {
+        width: 600px;
+    }
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.body button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 300;
+}
+
+.body button.btn-lg {
+    width: 430px;
+    font-size: 30px;
+    letter-spacing: 3px;
+}
+
+.body button.btn-sm {
+    font-size: 27px;
+}
+
+.body button:hover {
+    background-color: #d01f34 !important;
+}
+
+.body hr {
+    color: var(--color-gray) !important;
+    opacity: 1 !important;
+}
+
+#btn-return {
+    font-size: 40px;
+    height: 50px;
+    line-height: 20px;
+}
+
+#player-names {
+    min-height: 142px;
 }
