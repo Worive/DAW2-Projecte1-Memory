@@ -648,3 +648,7 @@ function addScore(points, username, moves, time, boardSize) {
 
     setCookie('leaderboard', JSON.stringify(LEADER_BOARD), CONFIG.scoring.timeCookieDays);
 }
+
+window.addEventListener('load', (event) => {
+    generateBackground(CARD_TYPE);
+})

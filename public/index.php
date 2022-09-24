@@ -156,8 +156,9 @@ if (isset($_SESSION['error-messages'])) {
 </div>
 
 <?php require_once('../templates/footer.php'); ?>
+
+<script src="assets/js/background.js"></script>
 <script src="assets/js/index.js"></script>
 
-<div class="d-flex flex-wrap justify-content-around" id="background"></div>
 </body>
 </html>

@@ -307,122 +307,13 @@ function checkFormValid() {
 
 
 // -------------------------------------------
-//                BACKGROUND
+//       BACKGROUND CHANGE ON SELECT
 // -------------------------------------------
 
-window.addEventListener('load', (event) => {
-    generateBackground();
+window.addEventListener('load', () => {
+    generateBackground(document.getElementById('card-type').value);
 
     document.getElementById('card-type').addEventListener('change', () => {
         regenerateBackground();
     })
 })
-
-
-const EmojiPerPixel = 0.0088;
-
-const emojis = {
-    animals: [
-        '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🦮', '🐩', '🐺', '🦊', '🦝', '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴',
-        '🐎', '🦄', '🦓', '🦌', '🦬', '🐮', '🐂', '🐃', '🐄', '🐷', '🐖', '🐗', '🐽', '🐏', '🐑', '🐐', '🐪', '🐫',
-        '🦙', '🦒', '🦒', '🐘', '🦣', '🦏', '🦛', '🐭', '🐁', '🐀', '🐹', '🐰', '🐇', '🐿', '🦫', '🦔', '🦇', '🐻',
-        '🐨', '🐼', '🦥', '🦦', '🦨', '🦘', '🦡',
-
-        '🦃', '🐔', '🐓', '🐣', '🐤', '🐥', '🐦', '🐧', '🕊', '🦅', '🦆', '🦢', '🦉', '🦤', '🦩', '🦚', '🦜',
-
-        '🐸',
-
-        '🐊', '🐢', '🦎', '🐍', '🐲', '🐉', '🦖', '🦕',
-
-        '🐳', '🐋', '🐬', '🦭', '🐟', '🐠', '🐡', '🦈', '🐙', '🐚',
-
-        '🐌', '🦋', '🐛', '🐜', '🐝', '🪲', '🐞', '🦗', '🪳', '🕷', '🕸', '🦂', '🦟', '🪰', '🪱', '🦠'
-
-    ],
-    food: [
-        '🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🥭', '🍎', '🍏',
-        '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥',
-
-        '🥑', '🍆', '🥔', '🥕', '🌽', '🌶', '🫑', '🥒', '🥬', '🥦',
-        '🧄', '🧅', '🍄', '🥜', '🌰',
-
-        '🍞', '🥐', '🥖', '🫓', '🥨', '🥯', '🥞', '🧇', '🧀', '🍖', '🍗', '🥩', '🥓', '🍔', '🍟', '🍕', '🌭', '🥪',
-        '🌮', '🌯', '🫔', '🥙', '🧆', '🥚', '🍳', '🥘', '🍲', '🫕', '🥣', '🥗', '🍿', '🧈', '🧂', '🥫',
-
-        '🍱', '🍘', '🍙', '🍚', '🍛', '🍜', '🍝', '🍠', '🍢', '🍣', '🍤', '🍥', '🥮', '🍡', '🥟', '🥠', '🥡',
-
-        '🦀', '🦞', '🦐', '🦑', '🦪',
-
-        '🍦', '🍧', '🍨', '🍩', '🍪', '🎂', '🍰', '🧁', '🥧', '🍫', '🍬', '🍭', '🍮', '🍯',
-
-        '🍼', '🥛', '☕', '🫖', '🫖', '🍵', '🍶', '🍾', '🍷', '🍸', '🍹', '🍺', '🍻', '🥂', '🥃', '🥤', '🧋', '🧃',
-        '🧉', '🧊'
-    ],
-    transport: [
-        '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒',
-        '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🚲', '🛴', '🛵', '🚏', '🛣', '🛤', '⛽', '🚨',
-        '🚥', '🚦', '🚧', '🛑', '⚓', '⛵', '🛶', '🚤', '🛳', '⛴', '🛥', '🚢', '✈', '🛩', '🛫', '🛬', '💺', '🚁',
-        '🚟', '🚠', '🚡'
-    ]
-}
-
-function getRandomEmoji() {
-    let emoji;
-
-    let pos;
-
-    switch (document.getElementById('card-type').value) {
-        case 'animals':
-            pos = Math.floor(Math.random() * emojis.animals.length);
-            emoji = emojis.animals[pos];
-            break;
-        case 'food':
-            pos = Math.floor(Math.random() * emojis.food.length);
-            emoji = emojis.food[pos];
-            break;
-        case 'transport':
-            pos = Math.floor(Math.random() * emojis.transport.length);
-            emoji = emojis.transport[pos];
-            break;
-        default:
-            pos = Math.floor(Math.random() * (emojis.animals.length + emojis.food.length + emojis.transport.length));
-
-            if (pos < emojis.animals.length) {
-                emoji = emojis.animals[pos]
-            } else if (pos - emojis.animals.length < emojis.food.length) {
-                emoji = emojis.food[pos - emojis.animals.length]
-            } else if (pos - emojis.food.length - emojis.animals.length < emojis.transport.length) {
-                emoji = emojis.transport[pos - emojis.food.length - emojis.animals.length]
-            } else {
-                console.error('Position of emoji out of range:' + pos)
-            }
-    }
-
-    return emoji;
-}
-
-
-function generateBackground() {
-    const background = document.getElementById('background');
-
-    const x = screen.width * EmojiPerPixel;
-    const y = Math.floor(screen.height / 100);
-
-
-    for (let i = 0; i < y; i++) {
-        for (let j = 0; j < x; j++) {
-            let emoji = document.createElement('div');
-            emoji.innerText = getRandomEmoji();
-
-            background.appendChild(emoji);
-        }
-    }
-}
-
-function regenerateBackground() {
-    const background = document.getElementById('background');
-
-    for (const childNode of background.children) {
-        childNode.innerText = getRandomEmoji();
-    }
-}

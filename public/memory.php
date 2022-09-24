@@ -347,6 +347,7 @@ if ($error_found) {
 </div>
 
 <?php require_once('../templates/footer.php'); ?>
+<script src="assets/js/background.js"></script>
 <script src="assets/js/memory.js"></script>
 </body>
 </html>
