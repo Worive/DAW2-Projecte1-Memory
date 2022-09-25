@@ -18,7 +18,7 @@ if (isset($_COOKIE['leaderboard'])) {
 
     usort($leaderboard, "compareScores");
 
-    $content .= '<table class="table table-striped">
+    $content .= '<table class="table table-dark table-striped">
         <thead>
         <tr>
             <th scope="col">Punts</th>
