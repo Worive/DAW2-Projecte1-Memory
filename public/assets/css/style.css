@@ -1,26 +1,19 @@
 @import "bootstrap.min.css";
 
-:root {
-    --bg-color-1: #2B2D42;
-    --color-primary: #EF233C;
-    --color-white: #EDF2F4;
-    --color-gray: #8D99AE;
-}
-
 body {
     height: 100vh;
     margin: 0;
     display:flex;
     flex-direction:column;
     color: #EDF2F4;
-    background-color: var(--bg-color-1);
+    background-color: var(--bs-dark);
 }
 
 /* ===========[ Bottom Footer ]=========== */
 
 footer {
     margin-top: auto;
-    background-color: var(--bg-color-1) !important;
+    background-color: var(--bs-dark) !important;
 }
 
 /* ===========[ Error Toast ]=========== */
@@ -43,29 +36,40 @@ footer {
     max-width: 800px;
 }
 
+.game-container > div {
+    flex: 1 0 0;
+}
+
 /* ===========[ Board ]=========== */
 
 #board {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: rgb(172, 170, 170);
-    padding: 7px;
-    align-content: space-around;
-    justify-content: space-between;
+    background-color: var(--bs-dark);
+    border-radius: 10px 10px 0 0;
+    border-top: 10px solid var(--bs-primary);
 }
 
 /* ===========[ Card ]=========== */
 
+.memory-card, #background > div {
+    /* Disable selection */
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+}
+
 .memory-card {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
     text-align: center;
-    line-height: 90px;
-    background-color: rgb(172, 170, 170);
-    border: 0;
     justify-content: center;
     align-items: center;
-    font-size: 60px;
+    font-size: 50px;
     color: white;
 }
 
@@ -82,6 +86,8 @@ footer {
 }
 
 .card-front,.card-back {
+    background-color: var(--bs-dark);
+    box-shadow: 3px 3px 10px 0 rgba(0,0,0,51);
     border-radius: 6px;
     position: absolute;
     width: 100%;
@@ -100,23 +106,16 @@ footer {
 }
 
 .card-front {
+    border: 2px solid #3bccf8;
     transition: background-color 0.3s;
-    background-color: rgb(134, 132, 132);
+    background-color: var(--bs-dark);
     color: white;
     transform: rotateY(180deg);
-
-    /* Disable selection */
-    -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-drag: none;
 }
 
 .card-back {
-    background-color: rgb(71, 68, 68);
+    border: 2px solid var(--bs-primary);
+    background-color: var(--bs-dark);
 }
 
 .memory-card.visible > .card-front {
@@ -132,7 +131,6 @@ footer {
     gap: 3em;
     padding: 20px;
     filter: blur(3px) brightness(80%);
-    background-color: var(--bg-color-1);
 }
 
 #background > div {
@@ -140,20 +138,13 @@ footer {
     transform: rotate(-45deg);
     width: fit-content;
     height: fit-content;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Old versions of Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 
 /* ===========[ Form ]=========== */
 
 .header, .body {
-    background-color: var(--bg-color-1);
+    background-color: var(--bs-dark);
     border-top: solid 10px #EF233C;
     border-radius: 10px 10px 0 0;
     padding: 20px;
@@ -170,8 +161,6 @@ footer {
 }
 
 .body button {
-    background-color: var(--color-primary);
-    color: var(--color-white);
     font-weight: 300;
 }
 
@@ -185,15 +174,6 @@ footer {
     font-size: 27px;
 }
 
-.body button:hover {
-    background-color: #d01f34 !important;
-}
-
-.body hr {
-    color: var(--color-gray) !important;
-    opacity: 1 !important;
-}
-
 #btn-return {
     font-size: 40px;
     height: 50px;
@@ -202,4 +182,48 @@ footer {
 
 #player-names {
     min-height: 142px;
+}
+
+/* ===========[ Sidebar ]=========== */
+
+.player-stats {
+    min-width: 280px;
+}
+
+/* ===========[ Fancy-Card-Header ]=========== */
+
+.fancy-card {
+    width: max-content;
+}
+
+.fancy-card-header {
+    height: 24px;
+    background-color: var(--bs-primary);
+    border-radius: 10px 10px 0 0;
+    letter-spacing: 1px;
+}
+
+.fancy-card-content.player-stats {
+    background-color: var(--bs-secondary);
+}
+
+.fancy-card-content.player-stats.active > .fancy-card-header {
+    background-color: var(--bs-primary);
+}
+
+.fancy-card-content {
+    background-color: var(--bs-dark);
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.fancy-card-content hr {
+    width: 80%;
+    border-color: var(--bs-primary);
+    margin: 0.5rem auto;
+    opacity: 1;
+}
+
+.fancy-card-content .material-icons {
+    font-size: 30px;
 }

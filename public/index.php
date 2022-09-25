@@ -17,7 +17,6 @@ if (isset($_SESSION['error-messages'])) {
     <meta charset="UTF-8">
     <title>Projecte 1</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -53,18 +52,18 @@ if (isset($_SESSION['error-messages'])) {
             <input type="text" class="d-none" name="players" id="playerCount">
 
             <div class="d-flex flex-column align-items-center justify-content-center">
-                <button type="button" class="btn me-auto mb-3 d-none" id="btn-return">
+                <button type="button" class="btn btn-primary text-white me-auto mb-3 d-none" id="btn-return">
                     <span class="material-icons">arrow_back</span>
                 </button>
 
 
                 <div id="player-picker" class="text-center">
-                    <button type="button" id="btn-singleplayer" class="btn btn-lg mb-3">Un Jugador</button>
-                    <button type="button" id="btn-multiplayer" class="btn btn-lg">Multi Jugador</button>
+                    <button type="button" id="btn-singleplayer" class="btn btn-primary text-white btn-lg mb-3">Un Jugador</button>
+                    <button type="button" id="btn-multiplayer" class="btn btn-primary text-white btn-lg">Multi Jugador</button>
                     <div id="multiplayer-choice" class="d-none">
-                        <button id="btn-multi-2" type="button" class="btn btn-sm">2 Jugadors</button>
-                        <button id="btn-multi-3" type="button" class="btn btn-sm">3 Jugadors</button>
-                        <button id="btn-multi-4" type="button" class="btn btn-sm">4 Jugadors</button>
+                        <button id="btn-multi-2" type="button" class="btn btn-primary btn-sm text-white">2 Jugadors</button>
+                        <button id="btn-multi-3" type="button" class="btn btn-primary btn-sm text-white">3 Jugadors</button>
+                        <button id="btn-multi-4" type="button" class="btn btn-primary btn-sm text-white">4 Jugadors</button>
                     </div>
                 </div>
                 <div id="player-names" class="d-none w-100">
@@ -149,7 +148,7 @@ if (isset($_SESSION['error-messages'])) {
 
 
             <hr>
-            <button id="btn-submit" type="submit" class="btn btn-lg disabled">Jugar</button>
+            <button id="btn-submit" type="submit" class="btn btn-primary btn-lg text-white disabled">Jugar</button>
 
         </form>
     </div>

@@ -118,19 +118,21 @@ function getRandomList(int $size, string $cardType): array
  */
 function generateCards(int $size, string $cardType): string
 {
-    $emojis = getRandomList($size / 2, $cardType);
-
-    shuffle($emojis);
-
-    $content = "";
-    for ($i = 0; $i < $size; $i++) {
-        $content .=
-            '<div class="memory-card" id="card-' . $i . '" card="' . $emojis[$i]['key'] . '">
+    function generateCardElement($id, $emojiKey, $emojiValue): string {
+        return '<div class="memory-card" id="card-' . $id . '" card="' . $emojiKey . '">
             <div class="card-inner">
-                <div class="card-front">' . $emojis[$i]['value'] . '</div>
+                <div class="card-front">' . $emojiValue . '</div>
                 <div class="card-back"></div>
             </div>
         </div>';
+    }
+
+    $emojis = getRandomList($size / 2, $cardType);
+    shuffle($emojis);
+    $content = "";
+    
+    for ($i = 0; $i < $size; $i++) {
+        $content .= generateCardElement($i, $emojis[$i]['key'], $emojis[$i]['value']);
     }
 
     return $content;
@@ -182,6 +184,36 @@ function logError($message): void
     $_SESSION['error-messages'][] = $message;
 }
 
+
+function getPlayerStatElement(int $id, string $playerName): string
+{
+    return '<div id="player-stats-' . $id . '" class="player-stats fancy-card text-center">
+            <div class="fancy-card-header">Jugant</div>
+            <div class="fancy-card-content pt-2">
+                <h4 class="px-2">' . $playerName . '</h4>
+                <hr>
+
+                <div class="d-flex">
+                    <div class="col-4 d-flex flex-column">
+                        <span class="material-icons">touch_app</span>
+                        <span id="moves-counter-' . $id . '">0</span>
+                    </div>
+
+                    <div class="col-4 d-flex flex-column">
+                        <span class="material-icons">star</span>
+                        <span id="total-counter-' . $id . '">0</span>
+                    </div>
+
+                    <div class="col-4 d-flex flex-column">
+                        <span class="material-icons">timelapse</span>
+                        <span id="time-counter-' . $id . '">00:00</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>';
+}
+
 session_start();
 
 $sizeWidth = -1;
@@ -209,17 +241,7 @@ if (isset($_POST['size-width']) && isset($_POST['size-height']) && isset($_POST[
 
             if (checkPlayerName($playerName)) {
                 $playerNames[] = $playerName;
-
-                $playerStats .= '
-                              <h1 class="card-title">' . $playerName . '</h1>
-        
-        
-                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Moviments: <span id="moves-counter-' . $i . '">0</span></li>
-                                <li class="list-group-item">Punts: <span id="total-counter-' . $i . '">0</span></li>
-                                <li class="list-group-item">Temps: <span id="time-counter-' . $i . '">00:00</span></li>
-                            </ul>
-                            ';
+                $playerStats .= getPlayerStatElement($i, $playerName);
 
             } else {
                 error_log("Invalid username provided for player " . $i . " :" . $playerName);
@@ -275,14 +297,13 @@ if ($error_found) {
 <head>
     <meta charset="UTF-8">
     <title>Projecte 1</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
 
     <style>
         #board {
-            min-width: <?= $sizeWidth ?>00px;
-            width: <?= $sizeWidth ?>00px;
-            height: <?= $sizeHeight ?>00px;
-            min-height: <?= $sizeHeight ?>00px;
+            min-width: <?= $sizeWidth * (80 + 12) + 16?>px;
+            width: <?= $sizeWidth * (80 + 12) + 16 ?>px;
         }
     </style>
 
@@ -297,50 +318,71 @@ if ($error_found) {
     </script>
 </head>
 <body onload="initGame()">
-<?php require_once('../templates/header.php'); ?>
 
-<div class="d-flex justify-content-center my-3 gap-3">
-    <div class="card">
-        <div class="card-body">
-            Torn Actual: <span id="current-player"><?= $playerNames[$firstPlayer] ?></span>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            Temps: <span id="timer"><?= $timerValue ?></span>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            Parelles restant: <span id="remaining-pairs"><?= $sizeWidth * $sizeHeight / 2 ?></span>
-        </div>
-    </div>
-</div>
-
-<div class="d-flex justify-content-center my-3">
-    <div class="card" style="width: 18rem;">
+<div class="game-container d-flex align-items-center justify-content-center p-3 gap-3">
+    <div class="d-flex flex-column justify-content-start gap-3 align-items-start mb-auto">
         <?= $playerStats ?>
     </div>
-    <div id="board">
-        <?= $cards ?>
+
+    <div class="d-flex flex-column justify-content-center align-items-center gap-3">
+        <div class="d-flex flex-row justify-content-between gap-3">
+            <div class="fancy-card text-center">
+                <div class="fancy-card-header px-2">Jugador</div>
+                <div class="fancy-card-content py-1 px-4">
+                    <h4 id="current-player"><?= $playerNames[$firstPlayer] ?></h4>
+                </div>
+            </div>
+            <div class="fancy-card text-center">
+                <div class="fancy-card-header px-2">Temps Torn</div>
+                <div class="fancy-card-content py-1 px-4">
+                    <h4 id="timer"><?= $timerValue ?></h4>
+                </div>
+            </div>
+            <div class="fancy-card text-center">
+                <div class="fancy-card-header px-2">Parelles restants</div>
+                <div class="fancy-card-content py-1 px-4">
+                    <h4 id="remaining-pairs"><?= $sizeWidth * $sizeHeight / 2 ?></h4>
+                </div>
+            </div>
+        </div>
+        <div id="board" class="d-flex flex-wrap justify-content-around align-content-around gap-2 p-3">
+            <?= $cards ?>
+        </div>
+    </div>
+
+    <div class="mb-auto">
+        <div class="fancy-card text-center ms-auto">
+            <div class="fancy-card-header">Temps Partida</div>
+            <div class="fancy-card-content py-2 px-4">
+                <h4 id="timer">00:00:00</h4>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="modal" tabindex="-1" id="win-recap">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content bg-dark">
             <div class="modal-header">
-                <h5 class="modal-title">Victoria!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h4 class="modal-title">Victoria!</h4>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <h4>Resultats</h4>
+                <p>Puntuació: <b><span>22.6</span> punts</b></p>
+                <p>Mida Taulell: <b><span>2</span> x <span>2</span></b></p>
+                <p>Temps Limit per Torn: <b><span>5</span> segons</b></p>
+                <hr>
+                <h4>Detalls</h4>
+                <p>Difficultat: <b><span>2.5</span>%</b> (<span>-64.4</span> punts)</p>
+                <p>Temps per torn: <b><span>10 segons</span></b> (<span>-8</span> punts)</p>
+                <p>Cartes girades més d'un cop: <b><span>4</span> cartes</b> (<span>-4</span> punts)</p>
+                <p>Encertades de seguida: <b><span>4</span> cartes</b> (<span>+4</span> punts)</p>
+                <p>Moviments perfectes: <b><span>47</span>%</b> (<span>-5</span> punts)</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary">Return to Home</button>
-                <button type="button" class="btn btn-primary">Replay</button>
+                <button type="button" class="btn btn-primary text-white me-auto">Tornar al Inici</button>
+                <button type="button" class="btn btn-secondary text-white">Hall Of Fame</button>
+                <button type="button" class="btn btn-primary text-white">Tornar a començar</button>
             </div>
         </div>
     </div>

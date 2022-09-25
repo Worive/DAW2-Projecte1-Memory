@@ -84,7 +84,7 @@ function getRandomEmoji(emojiType) {
 function generateBackground(emojiType) {
     const background = document.createElement('div');
 
-    background.setAttribute('class', 'd-flex flex-wrap justify-content-around');
+    background.setAttribute('class', 'd-flex flex-wrap justify-content-around bg-dark');
     background.setAttribute('id', 'background');
 
     const x = screen.width * EmojiPerPixel;
