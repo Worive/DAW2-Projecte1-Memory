@@ -1,4 +1,5 @@
 <?php
+require_once('../config/config.php');
 
 /**
  * List of emojis
@@ -378,8 +379,8 @@ if ($error_found) {
                 <p>Un error s'ha produit.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" href="/DAW2-Projecte1-Memory/" class="btn btn-primary text-white me-auto">Tornar al Inici</a>
-                <a role="button" href="/DAW2-Projecte1-Memory/leaderboard.php" class="btn btn-primary text-white">Hall Of Fame</a>
+                <a role="button" href="<?= WEB_DIRECTORY ?>" class="btn btn-primary text-white me-auto">Tornar al Inici</a>
+                <a role="button" href="<?= WEB_DIRECTORY ?>leaderboard.php" class="btn btn-primary text-white">Hall Of Fame</a>
             </div>
         </div>
     </div>
