@@ -513,8 +513,13 @@ function win() {
 
     switch (PLAYER_AMOUNT) {
         case 1:
-            const points = calculatePoints(getCurrentPlayer().time.seconds(), getCurrentPlayer().moves, getCurrentPlayer().stats);
-            addScore(points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime(), `${BOARD_SIZE_WIDTH} x ${BOARD_SIZE_HEIGHT}`)
+            const score = generateScoring(getCurrentPlayer().time.seconds(), getCurrentPlayer().moves, getCurrentPlayer().stats);
+
+
+            console.log(score)
+            document.getElementById('victory-stats').innerHTML = generateScoreResultElement(score);
+
+            addScore(score.points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime(), `${BOARD_SIZE_WIDTH} x ${BOARD_SIZE_HEIGHT}`)
             break;
     }
 
@@ -532,9 +537,9 @@ function win() {
  * @param {number} moves - Moves done
  * @param {{knownCards: number[], consecutive: {best: number, current: number, inRow: boolean}}} stats - Best consecutive amount of cards found.
  *
- * @return {number} - Final Points.
+ * @return {{timeLimit: number, difficulty: {value: number, points: number}, size: {horizontally: number, vertically: number}, knownCards: {value: number, points: number}, timePerCard: {value: number, points: number}, consecutive: {value: number, points: number}, perfectMovements: {value: number, points: number}, points: number}} - Final Points.
  */
-function calculatePoints(timeInSeconds, moves, stats) {
+function generateScoring(timeInSeconds, moves, stats) {
     const difficulty = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 64; // 0 -> 100%
 
     let knownChecked = 0;
@@ -544,13 +549,123 @@ function calculatePoints(timeInSeconds, moves, stats) {
         if (value > 1) knownChecked += value - 1;
     }
 
-    let timePoints = timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * CONFIG.scoring.timePerTurn;
+    const timePerCard = timeInSeconds / BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2;
 
+    let timePoints = timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * CONFIG.scoring.timePerTurn;
     if (timePoints < 0) timePoints = 0;
 
-    const movePoints = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
+    const movePerfection =  BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
 
-    return Math.round(difficulty * movePoints * (CONFIG.scoring.startingPoints - knownChecked - timePoints + stats.consecutive.best));
+    const pointsBeforePercentage = Math.round(CONFIG.scoring.startingPoints - knownChecked - timePoints + stats.consecutive.best);
+    const pointsStepOne = Math.round(difficulty * pointsBeforePercentage);
+    const finalPoints = Math.round(movePerfection * pointsStepOne);
+
+    const difficultyPoints = pointsStepOne - pointsBeforePercentage;
+    const movementPoints = pointsStepOne - finalPoints;
+
+    return {
+        points: finalPoints,
+        size: {
+            vertically: BOARD_SIZE_HEIGHT,
+            horizontally: BOARD_SIZE_WIDTH,
+        },
+        timeLimit: TIMER,
+        difficulty: {
+            value: difficulty,
+            points: difficultyPoints,
+        },
+        timePerCard: {
+            value: timePerCard,
+            points: timePoints,
+        },
+        knownCards: {
+            value: knownChecked,
+            points: knownChecked,
+        },
+        consecutive: {
+            value: stats.consecutive.best,
+            points: stats.consecutive.best,
+        },
+        perfectMovements: {
+            value: movePerfection,
+            points: movementPoints
+        }
+    }
+}
+
+/**
+ * Generate the final score victory screen.
+ * @param points
+ * @param size
+ * @param timeLimit
+ * @param difficulty
+ * @param timeperCard
+ * @param knownCards
+ * @param consecutive
+ * @param perfectMovements
+ *
+ * @return string
+ */
+function generateScoreResultElement({points, size, timeLimit, difficulty, timePerCard, knownCards, consecutive, perfectMovements}
+) {
+
+    /**
+     * Add the + symbol to numbers.
+     * @param {number} value
+     * @return {string}
+     */
+    function f(value) {
+        if (value === 1) {
+            return "+" + value + " point";
+        }
+
+        if (value > 0) {
+            return "+" + value + " points";
+        } else {
+            return '' + value + " points";
+        }
+    }
+
+    /**
+     * Format percentages
+     * @param {number} value
+     * @return {string}
+     */
+    function formatPercentage(value) {
+        return Math.round((value * 100 + Number.EPSILON) * 100) / 100 + ' %';
+    }
+
+    function formatTime(value, unlimited=false) {
+        if (value === 0 && unlimited) {
+            return "Unlimited";
+        } else {
+            let minutes = Math.floor(value / 60);
+            let seconds = value - (minutes * 60);
+
+            const minuteString = `${minutes} minute${(minutes > 1 ? 's' : '')}`;
+            const secondsString = `${seconds} second${(seconds > 1 ? 's' : '')}`;
+
+            if (minutes > 0 && seconds > 0) {
+                return minuteString + ' ' + secondsString;
+            } else if (minutes > 0) {
+                return minuteString;
+            } else {
+                return secondsString
+            }
+        }
+    }
+
+    return `<h4>Resultats</h4>
+                <p>Puntuació: <b><span>${points}</span> punts</b></p>
+                <p>Mida Taulell: <b><span>${size.horizontally}</span> x <span>${size.vertically}</span></b></p>
+                <p>Temps Limit per Torn: <b><span>${formatTime(timeLimit, true)}</span></b></p>
+                <hr>
+                <h4>Detalls</h4>
+                <p>Difficultat: <b><span>${formatPercentage(difficulty.value)}</span></b> (<span>${f(difficulty.points)}</span>)</p>
+                <p>Temps per torn: <b><span>${formatTime(timePerCard.value)}</span></b> (<span>${f(timePerCard.points)}</span>)</p>
+                <p>Cartes girades més d'un cop: <b><span>${knownCards.value}</span> cartes</b> (<span>${f(knownCards.points)}</span>)</p>
+                <p>Encertades de seguida: <b><span>${consecutive.value}</span> cartes</b> (<span>${f(consecutive.points)}</span>)</p>
+                <p>Moviments perfectes: <b><span>${formatPercentage(perfectMovements.value)}</span></b> (<span>${f(perfectMovements.points)}</span>)</p>`
 }
 
 // -------------------------------------------
@@ -560,20 +675,20 @@ function calculatePoints(timeInSeconds, moves, stats) {
 /**
  * LeaderBoard of scores.
  *
- * @type {{scores: {points: number, username: string, moves: number, time: string, date: string}}}
+ * @type {{scores: [{points: number, username: string, moves: number, time: string, date: string}]}}
  */
 const LEADER_BOARD = loadLeaderBoard();
 
 /**
  * Load the leaderboard from cookies
  *
- * @returns {{scores: {
+ * @returns {{scores: [{
  *     points: number,
  *     username: string,
  *     moves: number,
  *     time: string,
  *     date: string
- * }}}
+ * }]}}
  */
 function loadLeaderBoard() {
     function getCookie(cname) {

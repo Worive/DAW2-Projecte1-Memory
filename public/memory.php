@@ -374,23 +374,12 @@ if ($error_found) {
             <div class="modal-header">
                 <h4 class="modal-title">Victoria!</h4>
             </div>
-            <div class="modal-body">
-                <h4>Resultats</h4>
-                <p>Puntuació: <b><span>22.6</span> punts</b></p>
-                <p>Mida Taulell: <b><span>2</span> x <span>2</span></b></p>
-                <p>Temps Limit per Torn: <b><span>5</span> segons</b></p>
-                <hr>
-                <h4>Detalls</h4>
-                <p>Difficultat: <b><span>2.5</span>%</b> (<span>-64.4</span> punts)</p>
-                <p>Temps per torn: <b><span>10 segons</span></b> (<span>-8</span> punts)</p>
-                <p>Cartes girades més d'un cop: <b><span>4</span> cartes</b> (<span>-4</span> punts)</p>
-                <p>Encertades de seguida: <b><span>4</span> cartes</b> (<span>+4</span> punts)</p>
-                <p>Moviments perfectes: <b><span>47</span>%</b> (<span>-5</span> punts)</p>
+            <div class="modal-body" id="victory-stats">
+                <p>Un error s'ha produit.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary text-white me-auto">Tornar al Inici</button>
-                <button type="button" class="btn btn-secondary text-white">Hall Of Fame</button>
-                <button type="button" class="btn btn-primary text-white">Tornar a començar</button>
+                <a role="button" href="/DAW2-Projecte1-Memory/" class="btn btn-primary text-white me-auto">Tornar al Inici</a>
+                <a role="button" href="/DAW2-Projecte1-Memory/leaderboard.php" class="btn btn-primary text-white">Hall Of Fame</a>
             </div>
         </div>
     </div>
