@@ -66,10 +66,18 @@ function getRandomEmoji(string $cardType): array
             $emoji = emojis[$cardType][$pos];
             break;
         case 'random':
-            $pos = array_rand(range(0, sizeof(emojis['food'])+sizeof(emojis['transport'])+sizeof(emojis['animals']) - 1));
+            $foodSize = sizeof(emojis['food']);
+            $animalSize = sizeof(emojis['animals']);
+            $transportSize = sizeof(emojis['transport']);
 
-            if ($pos < sizeof(emojis['food'])) {
-//                TODO: Implement
+            $pos = array_rand(range(0, $foodSize + $animalSize + $transportSize - 1));
+
+            if ($pos < $foodSize) {
+                $emoji = emojis['food'][$pos];
+            } else if ($pos - $foodSize < $animalSize) {
+                $emoji = emojis['animals'][$pos - $foodSize];
+            } else if ($pos - $foodSize - $animalSize < $transportSize) {
+                $emoji = emojis['transport'][$pos - $foodSize - $animalSize];
             }
             break;
         default:
