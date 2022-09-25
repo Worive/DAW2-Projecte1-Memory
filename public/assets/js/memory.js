@@ -1,5 +1,73 @@
 // -------------------------------------------
-//                MEMORY GAME
+//           MEMORY GAME: Utils
+// -------------------------------------------
+/**
+ * Format a number of seconds into MM:SS
+ * @param {number} timeInSeconds
+ * @return {string}
+ */
+function formatToMMSS(timeInSeconds) {
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = timeInSeconds - (minutes * 60);
+
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return minutes + ':' + seconds;
+}
+
+
+// -------------------------------------------
+//           MEMORY GAME: DOM
+// -------------------------------------------
+
+function setTimer(playerId, timeInSeconds) {
+    document.getElementById('time-counter-' + playerId).innerText = formatToMMSS(timeInSeconds);
+}
+
+function setRemainingPairs(amount) {
+    document.getElementById('remaining-pairs').innerText = '' + amount;
+}
+
+function setPlayerCardsFound(playerId, cards) {
+    document.getElementById('total-counter-' + playerId).innerText = cards
+}
+
+function setPlayerMoves(playerId, moves) {
+    document.getElementById('moves-counter-' + playerId).innerText = moves;
+
+}
+
+function setCurrentPlayer(playerName) {
+    document.getElementById('current-player').innerText = playerName;
+}
+
+function setTurnTimer(timeInSecs) {
+    document.getElementById('timer').innerText = timeInSecs.toFixed(CONFIG.turns.showDecimals);
+}
+
+function setVictoryStats(content) {
+    document.getElementById('victory-stats').innerHTML = content;
+}
+
+function getCardId(cardId) {
+    return document.getElementById(cardId).getAttribute('card');
+}
+
+function showWinRecap() {
+    const modal = new bootstrap.Modal(document.getElementById('win-recap'), {backdrop: 'static'});
+    modal.show()
+}
+
+function resetMemoryCard(cardId) {
+    document.getElementById(cardId).setAttribute('class', 'memory-card');
+}
+
+// -------------------------------------------
+//           MEMORY GAME: Logic
 // -------------------------------------------
 
 /**
@@ -24,9 +92,7 @@ function SelfAdjustingTimer(player) {
     this.interval = 1000;
     let seconds = 0;
 
-    /**
-     * Starts the timer and define the expected time of end.
-     */
+    // Starts the timer and define the expected time of end.
     this.start = function () {
         this.stop(); // Let's prevent double timers
         expected = Date.now() + this.interval;
@@ -38,15 +104,6 @@ function SelfAdjustingTimer(player) {
      */
     this.stop = function () {
         clearTimeout(timeout);
-    }
-
-    /**
-     * Returns the seconds formatted.
-     *
-     * @returns {string} - Time format in MM:SS
-     */
-    this.formattedTime = function () {
-        return formattedTime(seconds);
     }
 
     /**
@@ -85,7 +142,7 @@ function SelfAdjustingTimer(player) {
     function step() {
         seconds += 1;
         const drift = Date.now() - expected;
-        document.getElementById('time-counter-' + player).innerText = formattedTime(seconds);
+        setTimer(player, seconds);
         expected += that.interval;
         timeout = setTimeout(step, Math.max(0, that.interval - drift));
     }
@@ -198,8 +255,8 @@ class PlayerData {
         card.classList.add('selected');
         this.selectedCards.second = card.id;
 
-        let firstCardID = document.getElementById(this.selectedCards.first).getAttribute('card');
-        let secondCardID = document.getElementById(this.selectedCards.second).getAttribute('card');
+        let firstCardID = getCardId(this.selectedCards.first);
+        let secondCardID = getCardId(this.selectedCards.second);
         let isSuccess = firstCardID === secondCardID;
         this.checkConsecutive(isSuccess);
 
@@ -233,8 +290,8 @@ class PlayerData {
     addTotalPoints() {
         this.cards += 1;
         GAME_DATA.remainingCards -= 1;
-        document.getElementById('remaining-pairs').innerText = '' + GAME_DATA.remainingCards;
-        document.getElementById('total-counter-' + this.id).innerText = this.cards;
+        setRemainingPairs(GAME_DATA.remainingCards);
+        setPlayerCardsFound(this.id, this.cards)
     }
 
 
@@ -243,7 +300,7 @@ class PlayerData {
      */
     addMove() {
         this.moves += 1;
-        document.getElementById('moves-counter-' + this.id).innerText = this.moves;
+        setPlayerMoves(this.id, this.moves);
     }
 
 
@@ -303,18 +360,6 @@ const CONFIG = {
 }
 
 /**
- * Static selector of DOM elements.
- *
- * @readonly
- * @type {{timer: HTMLElement, winRecap: HTMLElement, currentPlayer: HTMLElement}}
- */
-const SELECTORS = {
-    timer: document.getElementById('timer'),
-    currentPlayer: document.getElementById('current-player'),
-    winRecap: document.getElementById('win-recap'),
-}
-
-/**
  * Timer of time remaining for each player's turn.
  *
  * @param {number} timeInSeconds - Time in seconds.
@@ -357,7 +402,7 @@ function Timer(timeInSeconds) {
             return;
         }
 
-        SELECTORS.timer.innerText = that.remainingTime.toFixed(CONFIG.turns.showDecimals);
+        setTurnTimer(that.remainingTime)
     }
 }
 
@@ -393,7 +438,7 @@ function nextTurn(changePlayer = true) {
             GAME_DATA.currentPlayer += 1;
         }
 
-        SELECTORS.currentPlayer.innerText = getCurrentPlayer().username;
+        setCurrentPlayer(getCurrentPlayer().username);
     }
 
     getCurrentPlayer().time.start()
@@ -496,8 +541,8 @@ function onClickCard(target) {
  * @param {string} selectedCardB - Second Selected Card
  */
 function resetSelectedCards(selectedCardA, selectedCardB) {
-    document.getElementById(selectedCardA).setAttribute('class', 'memory-card')
-    document.getElementById(selectedCardB).setAttribute('class', 'memory-card')
+    resetMemoryCard(selectedCardA);
+    resetMemoryCard(selectedCardB);
 }
 
 /**
@@ -514,20 +559,12 @@ function win() {
     switch (PLAYER_AMOUNT) {
         case 1:
             const score = generateScoring(getCurrentPlayer().time.seconds(), getCurrentPlayer().moves, getCurrentPlayer().stats);
-
-
-            console.log(score)
-            document.getElementById('victory-stats').innerHTML = generateScoreResultElement(score);
-
-            addScore(score.points, getCurrentPlayer().username, getCurrentPlayer().moves, getCurrentPlayer().time.formattedTime(), `${BOARD_SIZE_WIDTH} x ${BOARD_SIZE_HEIGHT}`)
+            setVictoryStats(generateScoreResultElement(score))
+            addScore(score.points, getCurrentPlayer().username, getCurrentPlayer().moves, formatToMMSS(getCurrentPlayer().time.seconds()), `${BOARD_SIZE_WIDTH} x ${BOARD_SIZE_HEIGHT}`)
             break;
     }
 
-    const modal = new bootstrap.Modal(SELECTORS.winRecap, {
-        backdrop: 'static'
-    });
-
-    modal.show()
+    showWinRecap();
 }
 
 /**
