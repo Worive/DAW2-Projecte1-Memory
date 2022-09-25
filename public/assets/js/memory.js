@@ -561,7 +561,7 @@ function generateScoring(timeInSeconds, moves, stats) {
     const finalPoints = Math.round(movePerfection * pointsStepOne);
 
     const difficultyPoints = pointsStepOne - pointsBeforePercentage;
-    const movementPoints = pointsStepOne - finalPoints;
+    const movementPoints = finalPoints - pointsStepOne;
 
     return {
         points: finalPoints,
@@ -580,7 +580,7 @@ function generateScoring(timeInSeconds, moves, stats) {
         },
         knownCards: {
             value: knownChecked,
-            points: knownChecked,
+            points: knownChecked * -1,
         },
         consecutive: {
             value: stats.consecutive.best,
@@ -595,11 +595,12 @@ function generateScoring(timeInSeconds, moves, stats) {
 
 /**
  * Generate the final score victory screen.
+ *
  * @param points
  * @param size
  * @param timeLimit
  * @param difficulty
- * @param timeperCard
+ * @param timePerCard
  * @param knownCards
  * @param consecutive
  * @param perfectMovements
