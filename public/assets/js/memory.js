@@ -116,26 +116,6 @@ function SelfAdjustingTimer(player) {
     }
 
     /**
-     * Format a number (in seconds) and format it MM:SS
-     *
-     * @param {number} secs - Seconds elapsed.
-     * @returns {string} Time formatted in MM:SS.
-     */
-    function formattedTime(secs) {
-        const sec_num = secs;
-        let minutes = Math.floor(sec_num / 60);
-        let seconds = sec_num - (minutes * 60);
-
-        if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-        return minutes + ':' + seconds;
-    }
-
-    /**
      * Increase the time and self adjust the timeout to not be delayed/forward due of latency.
      * Also updates the time counter with the formattedTime.
      */
