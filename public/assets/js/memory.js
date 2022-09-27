@@ -70,6 +70,21 @@ function resetMemoryCard(cardId) {
     document.getElementById(cardId).setAttribute('class', 'memory-card');
 }
 
+function setCanPlay(canPlay) {
+    GAME_DATA.canPlay = canPlay;
+
+    const board = document.getElementById('board');
+    if (canPlay) {
+        if (board.classList.contains('moving-cards')) {
+            board.classList.remove('moving-cards');
+        }
+    } else {
+        if (!board.classList.contains('moving-cards')) {
+            board.classList.add('moving-cards');
+        }
+    }
+}
+
 // -------------------------------------------
 //           MEMORY GAME: Logic
 // -------------------------------------------
@@ -234,6 +249,7 @@ class PlayerData {
      * @param {Element} card - Card Element
      */
     flipSecondCard(card) {
+        setCanPlay(false);
         this.addMove();
 
         card.classList.add('selected');
@@ -250,8 +266,7 @@ class PlayerData {
         if (isSuccess) {
             this.addClassToSelectedCards('found');
             this.addTotalPoints();
-            GAME_DATA.turn.start();
-
+            setCanPlay(true);
             nextTurn(false);
         } else {
             this.addClassToSelectedCards('wrong');
@@ -302,14 +317,15 @@ class PlayerData {
 /**
  * Game data
  *
- * @type {{currentPlayer: number, players: PlayerData[], turn: Timer, remainingCards: number}}
+ * @type {{currentPlayer: number, players: PlayerData[], turn: Timer, remainingCards: number, canPlay: boolean}}
  */
 const GAME_DATA = {
     currentPlayer: FIRST_PLAYER,
     players: setupPlayers(),
     remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2,
     turn: new Timer(TIMER),
-    time: new SelfAdjustingTimer((seconds) => setGameTimer(seconds))
+    time: new SelfAdjustingTimer((seconds) => setGameTimer(seconds)),
+    canPlay: true,
 }
 
 
@@ -408,7 +424,12 @@ function setupPlayers() {
  * Change the turn.
  */
 function nextTurn(changePlayer = true) {
-    GAME_DATA.turn.stop();
+    if (changePlayer) {
+        GAME_DATA.turn.stop();
+    } else {
+        GAME_DATA.turn.start();
+    }
+
     if (GAME_DATA.remainingCards <= 0) {
         win();
         return
@@ -507,6 +528,10 @@ function validateData() {
  * @param {Element} target Card element
  */
 function onClickCard(target) {
+    if (!GAME_DATA.canPlay) {
+        return;
+    }
+
     // Ignore already selected cards
     if (target.classList.contains('selected')) {
         return;
@@ -529,6 +554,7 @@ function onClickCard(target) {
 function resetSelectedCards(selectedCardA, selectedCardB) {
     resetMemoryCard(selectedCardA);
     resetMemoryCard(selectedCardB);
+    setCanPlay(true);
 }
 
 /**
