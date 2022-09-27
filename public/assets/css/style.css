@@ -50,6 +50,14 @@ footer {
 
 /* ===========[ Card ]=========== */
 
+#board.moving-cards > .memory-card {
+    cursor: initial;
+}
+
+.memory-card:not(.selected) {
+    cursor: pointer;
+}
+
 .memory-card, #background > div {
     /* Disable selection */
     -moz-user-select: -moz-none;
@@ -75,19 +83,31 @@ footer {
 
 .memory-card.selected .card-inner {
     transform: rotateY(180deg);
+    transition: transform 0.8s;
 }
 
-.memory-card.wrong .card-inner .card-front{
-    background-color: #e15656;
+.memory-card.wrong .card-inner .card-front {
+    background-color: rgba(var(--bs-primary-rgb), 0.4);
+    border-color: var(--bs-primary);
 }
 
-.memory-card.found .card-inner .card-front{
-    background-color: #56e172;
+#board:not(.moving-cards) > .memory-card:hover:not(.selected) .card-back {
+    background-color: rgba(var(--bs-info-rgb), 0.1);
+    border-color: var(--bs-info)
 }
 
-.card-front,.card-back {
+.memory-card.found .card-inner .card-front {
+    background-color: rgba(86, 225, 114, 0.4);
+    border-color: rgb(86, 225, 114);
+}
+
+.memory-card.found {
+    cursor: initial;
+}
+
+.card-front, .card-back {
     background-color: var(--bs-dark);
-    box-shadow: 3px 3px 10px 0 rgba(0,0,0,51);
+    box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 51);
     border-radius: 6px;
     position: absolute;
     width: 100%;
@@ -101,7 +121,7 @@ footer {
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 0.8s;
+    transition: transform 0.5s;
     transform-style: preserve-3d;
 }
 
@@ -116,6 +136,7 @@ footer {
 .card-back {
     border: 2px solid var(--bs-primary);
     background-color: var(--bs-dark);
+    transition: background-color .3s, border-color 0.3s;
 }
 
 .memory-card.visible > .card-front {
