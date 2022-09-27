@@ -261,8 +261,6 @@ class PlayerData {
 
             setTimeout(() => resetSelectedCards(a, b), 800);
             nextTurn();
-
-            this.time.stop();
         }
 
         this.status = Status.idle;
@@ -417,16 +415,18 @@ function nextTurn(changePlayer = true) {
     }
 
     if (changePlayer && PLAYER_AMOUNT > 1) {
+        getCurrentPlayer().time.stop()
+
         if (GAME_DATA.currentPlayer === PLAYER_AMOUNT - 1) {
             GAME_DATA.currentPlayer = 0;
         } else {
             GAME_DATA.currentPlayer += 1;
         }
 
+        getCurrentPlayer().time.start()
         setCurrentPlayer(getCurrentPlayer().username);
     }
 
-    getCurrentPlayer().time.start()
     GAME_DATA.turn.start();
 }
 
@@ -539,7 +539,6 @@ function win() {
     GAME_DATA.time.stop();
     for (const player of GAME_DATA.players) {
         player.time.stop();
-        console.log(player)
     }
 
     switch (PLAYER_AMOUNT) {
