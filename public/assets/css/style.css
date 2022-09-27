@@ -143,6 +143,11 @@ footer {
     display: block;
 }
 
+/* ===========[ Memory Header ]=========== */
+.memory-header .fancy-card:first-child .fancy-card-header {
+    min-width: 225px;
+}
+
 /* ===========[ Emoji Background ]=========== */
 
 #background {
@@ -226,6 +231,22 @@ footer {
     padding-right: 0.5rem;
 }
 
+.player-stats.fancy-card > .fancy-card-header {
+    background-color: var(--bs-secondary);
+}
+
+.player-stats > .fancy-card-header::after {
+    content: 'Esperant';
+}
+
+.player-stats.playing > .fancy-card-header::after {
+    content: 'Jugant';
+}
+
+.player-stats.playing > .fancy-card-header {
+    background-color: var(--bs-primary);
+}
+
 .fancy-card-content.player-stats {
     background-color: var(--bs-secondary);
 }
@@ -250,3 +271,4 @@ footer {
 .fancy-card-content .material-icons {
     font-size: 30px;
 }
+

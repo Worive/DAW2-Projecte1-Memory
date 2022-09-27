@@ -197,7 +197,7 @@ function logError($message): void
 function getPlayerStatElement(int $id, string $playerName): string
 {
     return '<div id="player-stats-' . $id . '" class="player-stats fancy-card text-center">
-            <div class="fancy-card-header">Jugant</div>
+            <div class="fancy-card-header"></div>
             <div class="fancy-card-content pt-2">
                 <h4 class="px-2">' . $playerName . '</h4>
                 <hr>
@@ -334,7 +334,7 @@ if ($error_found) {
     </div>
 
     <div class="d-flex flex-column justify-content-center align-items-center gap-3">
-        <div class="d-flex flex-row justify-content-between gap-3">
+        <div class="memory-header d-flex flex-row justify-content-between gap-3">
             <div class="fancy-card text-center">
                 <div class="fancy-card-header px-2">Jugador</div>
                 <div class="fancy-card-content py-1 px-4">

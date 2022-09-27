@@ -19,6 +19,12 @@ function formatToMMSS(timeInSeconds) {
     return minutes + ':' + seconds;
 }
 
+function addClassTo(element, className) {
+    if (!element.classList.contains(className)) {
+        element.classList.add(className);
+    }
+}
+
 
 // -------------------------------------------
 //           MEMORY GAME: DOM
@@ -86,6 +92,19 @@ function setCanPlay(canPlay) {
             board.classList.add('moving-cards');
         }
     }
+}
+
+function setPlaying(playerId) {
+    const element = document.getElementById('player-stats-' + playerId);
+    addClassTo(element, 'playing');
+}
+
+function changePlayingStat(oldPlayerId, newPlayerId) {
+    console.log(`${oldPlayerId} -> ${newPlayerId}`)
+    const oldPlayer = document.getElementById('player-stats-' + oldPlayerId);
+    const newPlayer = document.getElementById('player-stats-' + newPlayerId);
+    addClassTo(newPlayer, 'playing');
+    oldPlayer.classList.remove('playing');
 }
 
 // -------------------------------------------
@@ -439,6 +458,7 @@ function nextTurn(changePlayer = true) {
     }
 
     if (changePlayer && PLAYER_AMOUNT > 1) {
+        const oldPlayer = getCurrentPlayer().id;
         getCurrentPlayer().time.stop()
 
         if (GAME_DATA.currentPlayer === PLAYER_AMOUNT - 1) {
@@ -447,8 +467,10 @@ function nextTurn(changePlayer = true) {
             GAME_DATA.currentPlayer += 1;
         }
 
+        const newPlayer = getCurrentPlayer().id;
         getCurrentPlayer().time.start()
         setCurrentPlayer(getCurrentPlayer().username);
+        changePlayingStat(oldPlayer, newPlayer)
     }
 
     GAME_DATA.turn.start();
@@ -484,6 +506,7 @@ function initGame() {
     }
 
     getCurrentPlayer().time.start();
+    setPlaying(FIRST_PLAYER + 1);
     GAME_DATA.turn.start();
     GAME_DATA.time.start();
 }
