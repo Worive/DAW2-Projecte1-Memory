@@ -62,7 +62,10 @@ function getCardId(cardId) {
 }
 
 function showWinRecap() {
-    const modal = new bootstrap.Modal(document.getElementById('win-recap'), {backdrop: 'static'});
+    const modal = new bootstrap.Modal(document.getElementById('win-recap'), {
+        backdrop: 'static',
+        keyboard: false
+    });
     modal.show()
 }
 
@@ -603,7 +606,7 @@ function generateScoring(timeInSeconds, moves, stats) {
     let timePoints = timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * CONFIG.scoring.timePerTurn;
     if (timePoints < 0) timePoints = 0;
 
-    const movePerfection =  BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
+    const movePerfection = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
 
     const pointsBeforePercentage = Math.round(CONFIG.scoring.startingPoints - knownChecked - timePoints + stats.consecutive.best);
     const pointsStepOne = Math.round(difficulty * pointsBeforePercentage);
