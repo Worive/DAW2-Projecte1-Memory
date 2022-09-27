@@ -201,6 +201,8 @@ footer {
     background-color: var(--bs-primary);
     border-radius: 10px 10px 0 0;
     letter-spacing: 1px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 .fancy-card-content.player-stats {
