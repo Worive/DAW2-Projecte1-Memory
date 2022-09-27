@@ -363,7 +363,7 @@ if ($error_found) {
         <div class="fancy-card text-center ms-auto">
             <div class="fancy-card-header">Temps Partida</div>
             <div class="fancy-card-content py-2 px-4">
-                <h4 id="timer">00:00:00</h4>
+                <h4 id="game-timer">00:00</h4>
             </div>
         </div>
     </div>

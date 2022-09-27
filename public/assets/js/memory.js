@@ -49,6 +49,10 @@ function setTurnTimer(timeInSecs) {
     document.getElementById('timer').innerText = timeInSecs.toFixed(CONFIG.turns.showDecimals);
 }
 
+function setGameTimer(timeInSecs) {
+    document.getElementById('game-timer').innerText = formatToMMSS(timeInSecs);
+}
+
 function setVictoryStats(content) {
     document.getElementById('victory-stats').innerHTML = content;
 }
@@ -84,9 +88,9 @@ const Status = {
 /**
  * Self adjusting timer automatically updating the timer display.
  *
- * @param {number} player - Player ID to select which timer display to edit.
+ * @param method
  */
-function SelfAdjustingTimer(player) {
+function SelfAdjustingTimer(method) {
     let that = this;
     let expected, timeout;
     this.interval = 1000;
@@ -122,7 +126,7 @@ function SelfAdjustingTimer(player) {
     function step() {
         seconds += 1;
         const drift = Date.now() - expected;
-        setTimer(player, seconds);
+        method(seconds);
         expected += that.interval;
         timeout = setTimeout(step, Math.max(0, that.interval - drift));
     }
@@ -151,7 +155,7 @@ class PlayerData {
         this.id = id;
         this.moves = 0;
         this.cards = 0;
-        this.time = new SelfAdjustingTimer(id);
+        this.time = new SelfAdjustingTimer((seconds) => setTimer(id, seconds));
         this.selectedCards = {
             first: null,
             second: null
@@ -306,7 +310,8 @@ const GAME_DATA = {
     currentPlayer: FIRST_PLAYER,
     players: setupPlayers(),
     remainingCards: BOARD_SIZE_HEIGHT * BOARD_SIZE_WIDTH / 2,
-    turn: new Timer(TIMER)
+    turn: new Timer(TIMER),
+    time: new SelfAdjustingTimer((seconds) => setGameTimer(seconds))
 }
 
 
@@ -456,6 +461,7 @@ function initGame() {
 
     getCurrentPlayer().time.start();
     GAME_DATA.turn.start();
+    GAME_DATA.time.start();
 }
 
 /**
@@ -530,7 +536,7 @@ function resetSelectedCards(selectedCardA, selectedCardB) {
  */
 function win() {
     GAME_DATA.turn.stop();
-
+    GAME_DATA.time.stop();
     for (const player of GAME_DATA.players) {
         player.time.stop();
         console.log(player)
