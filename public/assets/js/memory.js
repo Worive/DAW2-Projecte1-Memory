@@ -659,7 +659,16 @@ function generateScoring(timeInSeconds, moves, stats) {
  *
  * @return string
  */
-function generateScoreResultElement({points, size, timeLimit, difficulty, timePerCard, knownCards, consecutive, perfectMovements}
+function generateScoreResultElement({
+                                        points,
+                                        size,
+                                        timeLimit,
+                                        difficulty,
+                                        timePerCard,
+                                        knownCards,
+                                        consecutive,
+                                        perfectMovements
+                                    }
 ) {
 
     /**
@@ -688,7 +697,7 @@ function generateScoreResultElement({points, size, timeLimit, difficulty, timePe
         return Math.round((value * 100 + Number.EPSILON) * 100) / 100 + ' %';
     }
 
-    function formatTime(value, unlimited=false) {
+    function formatTime(value, unlimited = false) {
         if (value === 0 && unlimited) {
             return "Unlimited";
         } else {
