@@ -1,24 +1,24 @@
 // AUTHOR: mathusummut
 // DOWNLOADED FROM: https://www.cssscript.com/confetti-falling-animation/
 
-var maxParticleCount = 150; //set max confetti count
-var particleSpeed = 2; //set the particle animation speed
-var startConfetti; //call to start confetti animation
-var stopConfetti; //call to stop adding confetti
-var toggleConfetti; //call to start or stop the confetti animation depending on whether it's already running
-var removeConfetti; //call to stop the confetti animation and remove all confetti immediately
+const maxParticleCount = 150; //set max confetti count
+const particleSpeed = 2; //set the particle animation speed
+let startConfetti; //call to start confetti animation
+let stopConfetti; //call to stop adding confetti
+let toggleConfetti; //call to start or stop the confetti animation depending on whether it's already running
+let removeConfetti; //call to stop the confetti animation and remove all confetti immediately
 
-(function() {
+(function () {
 	startConfetti = startConfettiInner;
 	stopConfetti = stopConfettiInner;
 	toggleConfetti = toggleConfettiInner;
 	removeConfetti = removeConfettiInner;
-	var colors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"]
-	var streamingConfetti = false;
-	var animationTimer = null;
-	var particles = [];
-	var waveAngle = 0;
-	
+	const colors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"];
+	let streamingConfetti = false;
+	let animationTimer = null;
+	let particles = [];
+	let waveAngle = 0;
+
 	function resetParticle(particle, width, height) {
 		particle.color = colors[(Math.random() * colors.length) | 0];
 		particle.x = Math.random() * width;
@@ -43,7 +43,7 @@ var removeConfetti; //call to stop the confetti animation and remove all confett
 					return window.setTimeout(callback, 16.6666667);
 				};
 		})();
-		var canvas = document.getElementById("confetti-canvas");
+		let canvas = document.getElementById("confetti-canvas");
 		if (canvas === null) {
 			canvas = document.createElement("canvas");
 			canvas.setAttribute("id", "confetti-canvas");
@@ -56,7 +56,7 @@ var removeConfetti; //call to stop the confetti animation and remove all confett
 				canvas.height = window.innerHeight;
 			}, true);
 		}
-		var context = canvas.getContext("2d");
+		const context = canvas.getContext("2d");
 		while (particles.length < maxParticleCount)
 			particles.push(resetParticle({}, width, height));
 		streamingConfetti = true;
@@ -91,9 +91,9 @@ var removeConfetti; //call to stop the confetti animation and remove all confett
 	}
 
 	function drawParticles(context) {
-		var particle;
-		var x;
-		for (var i = 0; i < particles.length; i++) {
+		let particle;
+		let x;
+		for (let i = 0; i < particles.length; i++) {
 			particle = particles[i];
 			context.beginPath();
 			context.lineWidth = particle.diameter;
@@ -106,11 +106,11 @@ var removeConfetti; //call to stop the confetti animation and remove all confett
 	}
 
 	function updateParticles() {
-		var width = window.innerWidth;
-		var height = window.innerHeight;
-		var particle;
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+		let particle;
 		waveAngle += 0.01;
-		for (var i = 0; i < particles.length; i++) {
+		for (let i = 0; i < particles.length; i++) {
 			particle = particles[i];
 			if (!streamingConfetti && particle.y < -15)
 				particle.y = height + 100;
