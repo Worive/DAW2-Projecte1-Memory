@@ -314,6 +314,6 @@ window.addEventListener('load', () => {
     generateBackground(document.getElementById('card-type').value);
 
     document.getElementById('card-type').addEventListener('change', () => {
-        regenerateBackground();
+        regenerateBackground(document.getElementById('card-type').value);
     })
 })

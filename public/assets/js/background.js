@@ -102,10 +102,10 @@ function generateBackground(emojiType) {
     document.body.appendChild(background);
 }
 
-function regenerateBackground() {
+function regenerateBackground(emojiType) {
     const background = document.getElementById('background');
 
     for (const childNode of background.children) {
-        childNode.innerText = getRandomEmoji();
+        childNode.innerText = getRandomEmoji(emojiType);
     }
 }
