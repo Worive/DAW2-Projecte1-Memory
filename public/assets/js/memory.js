@@ -64,7 +64,7 @@ function setVictoryStats(content) {
 }
 
 function getCardId(cardId) {
-    return document.getElementById(cardId).getAttribute('card');
+    return document.getElementById(cardId).getAttribute('data-card');
 }
 
 function showWinRecap() {

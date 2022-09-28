@@ -128,7 +128,7 @@ function getRandomList(int $size, string $cardType): array
 function generateCards(int $size, string $cardType): string
 {
     function generateCardElement($id, $emojiKey, $emojiValue): string {
-        return '<div class="memory-card" id="card-' . $id . '" card="' . $emojiKey . '">
+        return '<div class="memory-card" id="card-' . $id . '" data-card="' . $emojiKey . '">
             <div class="card-inner">
                 <div class="card-front">' . $emojiValue . '</div>
                 <div class="card-back"></div>
