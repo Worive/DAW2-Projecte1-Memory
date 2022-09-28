@@ -9,7 +9,19 @@
  */
 function compareScores($a, $b): int
 {
-    return strcmp($b->points, $a->points);
+    $pointsA = $a->points;
+    $pointsB = $b->points;
+    if ($pointsA > $pointsB) {
+        return -1;
+    }
+
+    if ($pointsA == $pointsB) {
+        return 0;
+    }
+
+    if ($pointsB > $pointsA) {
+        return 1;
+    }
 }
 
 $content = "";
