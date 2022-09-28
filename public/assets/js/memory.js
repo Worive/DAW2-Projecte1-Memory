@@ -588,6 +588,7 @@ function resetSelectedCards(selectedCardA, selectedCardB) {
  */
 function win() {
     startConfetti();
+    setTimeout(stopConfetti, 3000);
     GAME_DATA.turn.stop();
     GAME_DATA.time.stop();
     for (const player of GAME_DATA.players) {
