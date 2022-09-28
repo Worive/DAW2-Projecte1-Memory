@@ -652,7 +652,7 @@ function generateScoring(timeInSeconds, moves, stats) {
         },
         timePerCard: {
             value: timePerCard,
-            points: timePoints,
+            points: timePoints * -1,
         },
         knownCards: {
             value: knownChecked,
