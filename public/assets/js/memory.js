@@ -209,6 +209,11 @@ class PlayerData {
         }
     }
 
+    /**
+     * Verify and count how many consecutive cards the player has found.
+     *
+     * @param success - If the last move was successful.
+     */
     checkConsecutive(success) {
         if (success) {
             if (this.stats.consecutive.inRow) {
@@ -228,6 +233,12 @@ class PlayerData {
         }
     }
 
+    /**
+     * Verify if the player found a card they know already.
+     *
+     * @param success If the last move was successful.
+     * @param cardId The card ID.
+     */
     checkKnownCard(success, cardId) {
         if (this.stats.knownCards[cardId]) {
             if (!success) {
@@ -625,9 +636,9 @@ function generateScoring(timeInSeconds, moves, stats) {
         if (value > 1) knownChecked += value - 1;
     }
 
-    const timePerCard = timeInSeconds / BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2;
+    const timePerCard = Math.round(timeInSeconds / BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2);
 
-    let timePoints = timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * CONFIG.scoring.timePerTurn;
+    let timePoints = Math.round(timeInSeconds - BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 * CONFIG.scoring.timePerTurn);
     if (timePoints < 0) timePoints = 0;
 
     const movePerfection = BOARD_SIZE_WIDTH * BOARD_SIZE_HEIGHT / 2 / moves; //0 -> 100% close to perfect movement.
