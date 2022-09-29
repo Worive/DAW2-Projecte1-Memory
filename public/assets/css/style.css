@@ -3,10 +3,14 @@
 body {
     height: 100vh;
     margin: 0;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     color: #EDF2F4;
     background-color: var(--bs-dark);
+}
+
+.bg-darker {
+    background-color: #222435;
 }
 
 /* ===========[ Bottom Footer ]=========== */
@@ -229,6 +233,7 @@ footer {
     letter-spacing: 1px;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    text-align: center;
 }
 
 .player-stats.fancy-card > .fancy-card-header {
