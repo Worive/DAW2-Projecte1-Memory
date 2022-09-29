@@ -1,4 +1,7 @@
 <?php
+require_once('../config/config.php');
+require_once('../templates/top-left-link.php');
+
 
 /**
  * Compares two scores.
@@ -78,8 +81,9 @@ if (isset($_COOKIE['leaderboard'])) {
     <title>Projecte 1</title>
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
-<body>
-<?php require_once('../templates/header.php'); ?>
+<body class="bg-darker p-3">
+
+<?= topLeftLink\get('Inici', WEB_DIRECTORY) ?>
 
 <div class="container">
     <?= $content ?>

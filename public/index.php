@@ -1,4 +1,7 @@
 <?php
+require_once('../config/config.php');
+require_once('../templates/top-left-link.php');
+
 session_start();
 $displayErrors = false;
 $error_messages = [];
@@ -46,7 +49,6 @@ if (isset($_SESSION['error-messages'])) {
     <div class="header text-center p-3">
         <h1>Projecte 1: Memograma</h1>
     </div>
-
     <div class="body">
         <form class="text-center" action="memory.php" method="POST">
             <input type="text" class="d-none" name="players" id="playerCount">
@@ -153,6 +155,8 @@ if (isset($_SESSION['error-messages'])) {
         </form>
     </div>
 </div>
+
+<?= topLeftLink\get('Hall of Fame', WEB_DIRECTORY . 'leaderboard.php') ?>
 
 <?php require_once('../templates/footer.php'); ?>
 
