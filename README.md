@@ -1,5 +1,4 @@
-# Projecte 1: Memory
-
+# Project 1: Memory
 School project about making a memory game in JavaScript and PHP.
 
 ## Getting Started
