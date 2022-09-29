@@ -161,7 +161,7 @@ if (isset($_SESSION['error-messages'])) {
 <?php require_once('../templates/footer.php'); ?>
 
 <script src="assets/js/background.js"></script>
-<script src="assets/js/index.js"></script>
+<script src="assets/js/form.js"></script>
 
 </body>
 </html>
