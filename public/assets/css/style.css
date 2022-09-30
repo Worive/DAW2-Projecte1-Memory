@@ -4,6 +4,7 @@
 .modal-dialog {
     max-width: none;
     width: fit-content;
+    min-width: var(--bs-modal-width);
 }
 
 body {
@@ -289,6 +290,7 @@ footer {
 .podium {
     display: flex;
     height: 30vh;
+    min-height: 200px;
     justify-content: space-evenly;
     flex-wrap: wrap;
     gap: 1rem;
@@ -300,21 +302,7 @@ footer {
     width: fit-content;
     text-align: center;
     padding: 1rem 1rem;
-}
-
-.podium-item.first {
-    height: 100%;
-}
-
-.podium-item.second {
-    height: 70%;
-}
-
-.podium-item.third {
-    height: 50%;
-}
-.podium-item.fourth {
-    height: 40%;
+    min-height: 70px;
 }
 
 .podium-item > div:nth-child(2) {

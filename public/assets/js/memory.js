@@ -100,7 +100,6 @@ function setPlaying(playerId) {
 }
 
 function changePlayingStat(oldPlayerId, newPlayerId) {
-    console.log(`${oldPlayerId} -> ${newPlayerId}`)
     const oldPlayer = document.getElementById('player-stats-' + oldPlayerId);
     const newPlayer = document.getElementById('player-stats-' + newPlayerId);
     addClassTo(newPlayer, 'playing');
@@ -618,14 +617,70 @@ function win() {
             break;
         default:
             const results = GAME_DATA.players
-                .map(player => generateScoring(player.time.seconds(), player.moves, player.stats))
-                .sort((a,b) => a.points - b.points);
+                .map(player => {
+                    return {
+                        username: player.username,
+                        score: player.cards
+                    }
+                })
+                .sort((a, b) => b.score - a.score);
 
-
+            setVictoryStats(generatePodium(results));
 
     }
 
     showWinRecap();
+}
+
+/**
+ * Generate the scoring for multiples players as a podium.
+ *
+ * @param {{username: string, score: number}[]} data Scoring data.
+ * @returns {string} HTML string.
+ */
+function generatePodium(data) {
+
+    /**
+     * Generate the podium element's height style.
+     *
+     * @param {number} value Points
+     * @returns {string} Height style.
+     */
+    function getHeightStyle(value) {
+        const result = (value / data[0].score) * 100;
+
+        return `style="height: ${Math.floor(result)}%"`;
+    }
+
+    let string = `<div class="podium">`;
+
+    if (data.length > 1) {
+        string += `<div class="podium-item" ${getHeightStyle(data[1].score)}>
+                        <div>${data[1].username}</div>
+                        <div>${data[1].score}</div>
+                    </div>`;
+    }
+
+    string += `<div class="podium-item" ${getHeightStyle(data[0].score)}>
+        <div>${data[0].username}</div>
+        <div>${data[0].score}</div>
+    </div>`;
+
+    if (data.length > 2) {
+        string += `<div class="podium-item" ${getHeightStyle(data[2].score)}>
+        <div>${data[2].username}</div>
+        <div>${data[2].score}</div>
+    </div>`;
+    }
+    if (data.length > 3) {
+        string += `<div class="podium-item" ${getHeightStyle(data[3].score)}>
+        <div>${data[3].username}</div>
+        <div>${data[3].score}</div>
+    </div>`;
+    }
+
+    return string;
+
 }
 
 /**
@@ -792,13 +847,16 @@ const LEADER_BOARD = loadLeaderBoard();
 /**
  * Load the leaderboard from cookies
  *
- * @returns {{scores: [{
+ * @returns {{
+    scores: [{
  *     points: number,
  *     username: string,
  *     moves: number,
  *     time: string,
  *     date: string
- * }]}}
+ *
+    }]
+}}
  */
 function loadLeaderBoard() {
     function getCookie(cname) {
