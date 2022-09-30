@@ -376,7 +376,25 @@ if ($error_found) {
                 <h4 class="modal-title">Victoria!</h4>
             </div>
             <div class="modal-body" id="victory-stats">
-                <p>Un error s'ha produit.</p>
+                <div class="podium">
+                    <div class="podium-item second" data-points="10">
+                        <div>Andre the bitch</div>
+                        <div>40</div>
+                    </div>
+                    <div class="podium-item first" data-points="10">
+                        <div>Andre the bitch</div>
+                        <div>50</div>
+
+                    </div>
+                    <div class="podium-item third" data-points="10">
+                        <div>Name</div>
+                        <div>35</div>
+                    </div>
+                    <div class="podium-item fourth" data-points="10">
+                        <div>Name</div>
+                        <div>23</div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <a role="button" href="<?= WEB_DIRECTORY ?>" class="btn btn-primary text-white me-auto">Tornar al Inici</a>
@@ -390,5 +408,9 @@ if ($error_found) {
 <script src="assets/js/confetti.js"></script>
 <script src="assets/js/background.js"></script>
 <script src="assets/js/memory.js"></script>
+
+<script>
+    showWinRecap();
+</script>
 </body>
 </html>

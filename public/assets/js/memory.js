@@ -594,6 +594,10 @@ function resetSelectedCards(selectedCardA, selectedCardB) {
     setCanPlay(true);
 }
 
+// -------------------------------------------
+//               WIN & SCORE
+// -------------------------------------------
+
 /**
  * Handle the win.
  */
@@ -612,6 +616,13 @@ function win() {
             setVictoryStats(generateScoreResultElement(score))
             addScore(score.points, getCurrentPlayer().username, getCurrentPlayer().moves, formatToMMSS(getCurrentPlayer().time.seconds()), `${BOARD_SIZE_WIDTH} x ${BOARD_SIZE_HEIGHT}`)
             break;
+        default:
+            const results = GAME_DATA.players
+                .map(player => generateScoring(player.time.seconds(), player.moves, player.stats))
+                .sort((a,b) => a.points - b.points);
+
+
+
     }
 
     showWinRecap();
@@ -764,6 +775,8 @@ function generateScoreResultElement({
                 <p>Encertades de seguida: <b><span>${consecutive.value}</span> cartes</b> (<span>${f(consecutive.points)}</span>)</p>
                 <p>Moviments perfectes: <b><span>${formatPercentage(perfectMovements.value)}</span></b> (<span>${f(perfectMovements.points)}</span>)</p>`
 }
+
+
 
 // -------------------------------------------
 //                LEADER SCORE
